@@ -1,0 +1,19 @@
+<div class="row">
+  <nav>
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a href="#!" class="brand-logo">insightful</a>
+        <ul class="right hide-on-med-and-down">
+          <li><%= link_to 'Survey', surveys_path %> </li>
+          <li>
+            <% if user_signed_in? %>
+              <%= link_to 'Logout', destroy_user_session_path, :method => :delete %>
+            <% else %>
+              <%= link_to 'Login', new_user_session_path %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
