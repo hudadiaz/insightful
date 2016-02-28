@@ -8,7 +8,11 @@ gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Materialize
-gem 'materialize-sass'
+# gem 'materialize-sass'
+# Using less because twitter bootstrap
+# gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+# Using twitter bootstrap for styling
+gem "twitter-bootstrap-rails"
 # Using Material icons
 gem 'material_icons'
 # Use Uglifier as compressor for JavaScript assets
@@ -16,7 +20,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'therubyracer', platforms: :ruby
+# gem 'therubyracer', platforms: :ruby
 # Using device for user management
 gem 'devise'
 # Using omniauth google for user
@@ -34,8 +38,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
-
+gem 'bcrypt-ruby'
 # Use Unicorn as the app server
 # gem 'unicorn'
 

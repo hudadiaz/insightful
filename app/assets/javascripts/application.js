@@ -12,6 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require materialize-sprockets
+//= require nprogress
+//= require nprogress-turbolinks
 //= require turbolinks
 //= require_tree .
+
+$( document ).ready(function() {
+  $.material.init();
+  $(".select").dropdown({"optionClass": "withripple"});
+});
