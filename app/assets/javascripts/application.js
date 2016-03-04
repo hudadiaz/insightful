@@ -11,13 +11,17 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
+//= require bootstrap
+//= require bootstrap-material-design
 //= require nprogress
 //= require nprogress-turbolinks
-//= require turbolinks
+//= require d3
 //= require_tree .
+//= require turbolinks
 
-$( document ).ready(function() {
+$(document).ready(function () {
   $.material.init();
-  $(".select").dropdown({"optionClass": "withripple"});
+  $(".select").dropdown({ "autoinit" : ".select" });
 });

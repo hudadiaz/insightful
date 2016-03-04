@@ -7,14 +7,26 @@ gem 'rails', '4.2.5.1'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+# Using d3js for graphing
+gem 'd3js-rails'
 # Use Materialize
 # gem 'materialize-sass'
 # Using less because twitter bootstrap
 # gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 # Using twitter bootstrap for styling
-gem "twitter-bootstrap-rails"
+# gem "twitter-bootstrap-rails"
+
+source 'http://rails-assets.org' do
+  gem 'rails-assets-bootstrap'
+  gem 'rails-assets-bootstrap-material-design'
+end
+
+#Using breadcrumbs_on_rails for breadcrumbs
+gem 'breadcrumbs_on_rails'
 # Using Material icons
 gem 'material_icons'
+# Active link to will add active class for link of same controller
+gem 'active_link_to'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -28,6 +40,8 @@ gem 'omniauth'
 gem 'omniauth-google'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+# jQuery Turbolinks
+gem 'jquery-turbolinks'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Display progress bar
@@ -38,7 +52,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt-ruby'
+gem 'bcrypt'
 # Use Unicorn as the app server
 # gem 'unicorn'
 

@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
   
-  resources :responses
-  resources :options
-  resources :questions
+  get 'draw/:id/sankey' => 'draw#sankey', as: "draw_sankey"
+
+  resources :data do
+    member do
+      get :sankey
+    end
+  end
+  
   resources :surveys
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

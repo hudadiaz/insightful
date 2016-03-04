@@ -1,0 +1,32 @@
+<%= form_for(@datum, { :multipart => true }) do |f| %>
+  <% if @datum.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@datum.errors.count, "error") %> prohibited this datum from being saved:</h2>
+
+      <ul>
+      <% @datum.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group label-static is-empty">
+    <%= f.label :name, class: "control-label" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group is-empty is-fileinput">
+    <%= f.file_field :file %>
+    <input type="text" readonly="" class="form-control" placeholder="Upload a CSV file">
+  </div>
+
+  <div class="form-group label-floating is-empty">
+    <%= f.text_area :content, class: "form-control", placeholder: "Or paste the CSV formatted data directly here" %>
+    <p class="help-block">Will be overridden with the content of the <code>file</code> above if applicable.</p>
+  </div>
+
+  <div class="form-group">
+    <%= f.button class: "btn btn-primary waves-effect" %>
+  </div>
+<% end %>

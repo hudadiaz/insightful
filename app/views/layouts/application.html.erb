@@ -8,8 +8,12 @@
 </head>
 <body>
   <%= render partial: "layouts/nav" %>
-
   <div class="container">
+    <% unless breadcrumbs.empty? %>
+      <ul class="breadcrumb" style="margin-bottom: 5px;">
+        <%= render_breadcrumbs :tag => :li, :separator => "" %>
+      </ul>
+    <% end %>
     <%= yield %>
   </div>
 

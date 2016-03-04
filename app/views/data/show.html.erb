@@ -1,0 +1,29 @@
+<div class="bs-docs-section">
+  <div class="row">
+    <div class="col-md-12">
+      <h2><%= @datum.name %></h2>
+
+      <p id="notice"><%= notice %></p>
+
+      <p>
+        <strong>Item:</strong>
+        <pre><%= @headers %></pre>
+      </p>
+
+      <p>
+        <strong>Count:</strong>
+        <pre><%= @items.count %></pre>
+      </p>
+
+      <div class="bs-component">
+        <%= link_to 'JSON', datum_path(@datum, format: :json), target: :blank, class: "btn btn-info" %>
+        <%= link_to 'Sankey', sankey_datum_path(@datum), class: "btn btn-info" %>
+      </div>
+
+      <div class="bs-component">
+        <%= link_to 'Edit', edit_datum_path(@datum), class: "btn btn-sm" %>
+        <%= link_to 'Back', data_path, class: "btn btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>
