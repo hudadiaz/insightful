@@ -10,12 +10,21 @@
     </div>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
       <ul class="nav navbar-nav">
-        <li><%= active_link_to 'Data', data_path, wrap_tag: :li %> </li>
+        <li><%= active_link_to 'Data', data_path, wrap_tag: :li %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown open">
+          
+        </li>
         <li>
           <% if user_signed_in? %>
-            <%= link_to 'Logout', destroy_user_session_path, :method => :delete %>
+            <a href="index.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= current_user.email %>
+              <b class="caret"></b><div class="ripple-container"></div></a>
+            <ul class="dropdown-menu">
+              <li><%= active_link_to 'Account', edit_user_registration_path, wrap_tag: :li %></li>
+              <li class="divider"></li>
+              <li><%= link_to 'Logout', destroy_user_session_path, :method => :delete %></li>
+            </ul>
           <% else %>
             <%= link_to 'Login', new_user_session_path %>
           <% end %>

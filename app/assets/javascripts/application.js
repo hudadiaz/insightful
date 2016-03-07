@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
+//= require selectize
 //= require bootstrap
 //= require bootstrap-material-design
 //= require nprogress
@@ -23,5 +24,5 @@
 
 $(document).ready(function () {
   $.material.init();
-  $(".select").dropdown({ "autoinit" : ".select" });
+  // $(".select").dropdown({ "autoinit" : ".select" });
 });

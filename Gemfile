@@ -9,6 +9,8 @@ gem 'pg'
 gem 'sass-rails', '~> 5.0'
 # Using d3js for graphing
 gem 'd3js-rails'
+# Using slectize for cuter select
+gem 'selectize-rails'
 # Use Materialize
 # gem 'materialize-sass'
 # Using less because twitter bootstrap

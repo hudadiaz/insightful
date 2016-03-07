@@ -19,7 +19,10 @@ ActiveRecord::Schema.define(version: 20160302054732) do
   create_table "data", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
+    t.string   "headers"
     t.string   "content"
+    t.string   "ignored"
+    t.string   "types"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

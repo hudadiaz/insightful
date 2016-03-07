@@ -10,4 +10,6 @@ end
 
 json.count @items.count
 
-json.items @items
+json.items @items do |i|
+  @headers.map { |h| json.extract! i, h }
+end

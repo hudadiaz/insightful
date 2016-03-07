@@ -17,7 +17,12 @@ class DataController < ApplicationController
     add_breadcrumb @datum.name, @datum
 
     @csv = CSV.parse(@datum.content, :headers => true)
-    @headers = @csv.headers
+    unless @datum.ignored.nil?
+      @headers = eval(@datum.headers) - eval(@datum.ignored)
+    else
+      @headers = eval(@datum.headers)
+    end
+    # @headers = @csv.headers
     @items = @csv.map {|row| row.to_hash }
   end
 
@@ -26,6 +31,13 @@ class DataController < ApplicationController
     add_breadcrumb "Sankey", sankey_datum_path(@datum)
 
     render_view :sankey
+  end
+  
+  def stacked_bars
+    add_breadcrumb @datum.name, @datum
+    add_breadcrumb "Stacked bars", stacked_bars_datum_path(@datum)
+
+    render_view :stacked_bars
   end
 
   # GET /data/new
@@ -59,10 +71,15 @@ class DataController < ApplicationController
     datum_params_copy.delete :file
 
     @datum = current_user.data.new(datum_params_copy)
+    @datum.headers = assign_name_to_unnamed(CSV.parse(datum_params_copy[:content].lines.first).first)
+    if @datum.content.lines.count > 1
+      a = "\"" + eval(@datum.headers).join("\"\,\"") + "\""
+      @datum.content.sub! @datum.content.lines.first.chomp, eval(@datum.headers).to_csv
+    end
 
     respond_to do |format|
       if @datum.save
-        format.html { redirect_to @datum, notice: 'Datum was successfully created.' }
+        format.html { redirect_to edit_datum_path(@datum), notice: 'Datum was successfully created.' }
         format.json { render :show, status: :created, location: @datum }
       else
         format.html { render :new }
@@ -103,10 +120,21 @@ class DataController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def datum_params
-      params.require(:datum).permit(:name, :content, :file)
+      params.require(:datum).permit(:name, :content, :ignored, :types, :file)
     end
 
     def render_view view
       render :template => "data/draw/"+view.to_s
+    end
+
+    def assign_name_to_unnamed headers
+      arr = []
+      headers.each_with_index do |h, index|
+        if h.empty?
+          h = 'unnamed_attribute_'+(index+1).to_s
+        end
+        arr << h
+      end
+      arr
     end
 end
