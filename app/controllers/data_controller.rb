@@ -33,11 +33,18 @@ class DataController < ApplicationController
     render_view :sankey
   end
   
-  def stacked_bars
+  def stacked_bar
     add_breadcrumb @datum.name, @datum
-    add_breadcrumb "Stacked bars", stacked_bars_datum_path(@datum)
+    add_breadcrumb "Stacked bar", stacked_bar_datum_path(@datum)
 
-    render_view :stacked_bars
+    render_view :stacked_bar
+  end
+
+  def normalized_stacked_bar
+    add_breadcrumb @datum.name, @datum
+    add_breadcrumb "Normalized stacked bar", normalized_stacked_bar_datum_path(@datum)
+
+    render_view :normalized_stacked_bar
   end
 
   # GET /data/new

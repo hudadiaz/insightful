@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   resources :data do
     member do
       get :sankey
-      get :stacked_bars
+      get :stacked_bar
+      get :normalized_stacked_bar
     end
   end
   

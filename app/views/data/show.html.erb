@@ -18,7 +18,8 @@
       <div class="bs-component">
         <%= link_to 'JSON', datum_path(@datum, format: :json), target: :blank, class: "btn btn-info" %>
         <%= link_to 'Sankey', sankey_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Stacked bars', stacked_bars_datum_path(@datum), class: "btn btn-info" %>
+        <%= link_to 'Stacked bar', stacked_bar_datum_path(@datum), class: "btn btn-info" %>
+        <%= link_to 'Normalized stacked bar', normalized_stacked_bar_datum_path(@datum), class: "btn btn-info" %>
       </div>
 
       <div class="bs-component">

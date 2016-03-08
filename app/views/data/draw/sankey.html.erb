@@ -1,9 +1,5 @@
 <style>
 
-  .container {
-    width: 80% !important;
-  }
-
   .node rect {
     cursor: move;
     fill-opacity: .9;
@@ -79,7 +75,6 @@
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
 
   $.when(req).done(function(res) {
-    console.log("req")
     data = res;
     updateSelect(data.headers);
   });
@@ -223,7 +218,7 @@
     var units = "Records";
 
     var margin = {top: 10, right: 10, bottom: 10, left: 10},
-        width = $("#chart").width() - margin.left - margin.right,
+        width = $("#chart").width() - margin.left - margin.right - 4,
         height = 600 - margin.top - margin.bottom;
 
     var formatNumber = d3.format(",.0f"),    // zero decimal places

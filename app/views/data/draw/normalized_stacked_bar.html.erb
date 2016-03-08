@@ -1,9 +1,5 @@
 <style>
 
-  .container {
-    width: 80% !important;
-  }
-
   .axis path,
   .axis line {
     fill: none;
@@ -29,20 +25,92 @@
 
 </style>
 
+<h1>Draw#normalized_stacked_bar</h1>
+
+<div class="row">
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-cat">Compare</label>
+      <select id="select-cat" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-stack">On</label>
+      <select id="select-stack" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-measure">According to</label>
+      <select id="select-measure" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="selectedItem">
+</div>
+
+<!-- <div class="form-group">
+  <a class="btn btn-primary" onclick="draw()">Draw</a>
+  <a class="btn" onclick="reset()">Reset</a>
+</div> -->
+
   <p id="chart"></p>
 
 <script>
-  var data;
+  var data, selects = ["cat", "stack", "measure"];
 
   // drawStackedBars(data);
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
 
   $.when(req).done(function(res) {
     data = res;
-    processData("raisedCurrency", "category", "raisedAmt", function(processedData){
-      drawStackedBars(processedData, "raisedCurrency", "raisedAmt")
-    });
+    $.each(selects, function(i, val) {
+      updateSelect(i, val, data["headers"]);
+    })
   });
+
+  var updateSelect = function(index, id, keys) {
+    $.each(keys, function(i, key) {
+      if (index == 0 && !isNaN(data["values"][key][0])) return true;
+      if (index == 1 && (data["values"][key].length > 9 || !isNaN(data["values"][key][0]))) return true;
+      if (index == 2 && isNaN(data["values"][key][0])) return true;
+      $("#select-"+id)
+        .append($("<option></option>")
+        .attr("value",key)
+        .text(key)); 
+    })
+    $("#select-"+id).selectize();
+    $("#select-"+id).change(function() {
+      draw();
+    })
+  }
+
+  var draw = function() {
+    reset()
+    var obj = {}, valid = true;
+
+    $.each(selects, function(i, id) {
+      if ($("#select-"+id).val().length < 1) valid = false;
+      obj[id] = $("#select-"+id).val();
+    })
+
+    if (valid)
+      processData(obj.cat, obj.stack, obj.measure, function(processedData){
+        drawStackedBars(processedData, obj.cat, obj.measure)
+      });
+  }
+
+  var reset = function() {
+    $("#chart").html("")
+  }
 
   var processData = function(category, stack, measure, callback) {
     var items = JSON.parse(JSON.stringify(data["items"]));
@@ -63,23 +131,27 @@
       }
       processedData.push(datum);
     }
-
+    var time = new Date().getTime();
+    console.log("start")
     for (var i = items.length - 1; i >= 0; i--) {
       for (var j = categories.length - 1; j >= 0; j--) {
-        for (var k = 0; k < stacks.length; k++) {
-          if (items[i][category] === processedData[j][category] && items[i][stack] === stacks[k]){
-            processedData[j][stacks[k]] += JSON.parse(items[i][measure])
+        if (items[i][category] === processedData[j][category]){
+          for (var k = 0; k < stacks.length; k++) {
+            if (items[i][stack] === stacks[k]){
+              processedData[j][stacks[k]] += JSON.parse(items[i][measure])
+            }
           }
         }
       }
     }
+    console.log(new Date().getTime()-time)
 
     callback(processedData);
   }
 
   var drawStackedBars = function (data, category, measure) {
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = $("#chart").width() - margin.left - margin.right,
+    width = $("#chart").width() - margin.left - margin.right - 4,
     height = 700 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -113,11 +185,10 @@
         var y0 = 0;
         //d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
         d.ages = color.domain().map(function(name) { return {myCat:myCat, name: name, y0: y0, y1: y0 += +d[name]}; });
-        d.total = d.ages[d.ages.length - 1].y1;
-
+        d.ages.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
       });
 
-      data.sort(function(a, b) { return b.total - a.total; });
+      data.sort(function(a, b) { return b.ages[0].y1 - a.ages[0].y1; });
 
       data = data.slice(0, 80);
 
@@ -151,9 +222,9 @@
       var yAxis = d3.svg.axis()
           .scale(y)
           .orient("left")
-          .tickFormat(d3.format(".2s"));
+          .tickFormat(d3.format(".0%"));
 
-      y.domain([0, d3.max(data, function(d) { return d.total; })]);
+      // y.domain([0, d3.max(data, function(d) { return d.total; })]);
 
       svg.append("g")
           .attr("class", "y axis")
@@ -169,7 +240,7 @@
           .data(data)
         .enter().append("g")
           .attr("class", "g")
-          .attr("transform", function(d) { return "translate(" + "0" + ",0)"; });
+          .attr("transform", function(d) { return "translate(0,0)"; });
           //.attr("transform", function(d) { return "translate(" + x(d[category]) + ",0)"; })
 
       catgory.selectAll("rect")
@@ -196,12 +267,15 @@
               var delta = d.y1 - d.y0;
               var xPos = parseFloat(d3.select(this).attr("x"));
               var yPos = parseFloat(d3.select(this).attr("y"));
-              var height = parseFloat(d3.select(this).attr("height"))
+              var width = parseFloat(d3.select(this).attr("width"));
+              var height = parseFloat(d3.select(this).attr("height"));
+
+              console.log(width)
 
               d3.select(this).attr("stroke","blue").attr("stroke-width",0.8);
 
               svg.append("text")
-              .attr("x",xPos)
+              .attr("x",xPos +width/2)
               .attr("y",yPos +height/2)
               .attr("class","tooltip")
               .text(d.name +": "+ delta); 
@@ -288,7 +362,7 @@
       legend.append("text")
           .attr("x", width - 24)
           .attr("y", 9)
-          .attr("dy", ".35em")
+          .attr("dy", "0.35em")
           .style("text-anchor", "end")
           .text(function(d) { return d; });
 
@@ -351,7 +425,7 @@
             .transition()
             .ease("bounce")
             .duration(1000)
-            .delay(750)
+            .delay(250)
             .attr("y", y_new);
        
         })    
