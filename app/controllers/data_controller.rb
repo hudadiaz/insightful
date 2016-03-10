@@ -15,15 +15,6 @@ class DataController < ApplicationController
   # GET /data/1.json
   def show
     add_breadcrumb @datum.name, @datum
-
-    @csv = CSV.parse(@datum.content, :headers => true)
-    unless @datum.ignored.nil?
-      @headers = eval(@datum.headers) - eval(@datum.ignored)
-    else
-      @headers = eval(@datum.headers)
-    end
-    # @headers = @csv.headers
-    @items = @csv.map {|row| row.to_hash }
   end
 
   def sankey
@@ -78,11 +69,6 @@ class DataController < ApplicationController
     datum_params_copy.delete :file
 
     @datum = current_user.data.new(datum_params_copy)
-    @datum.headers = assign_name_to_unnamed(CSV.parse(datum_params_copy[:content].lines.first).first)
-    if @datum.content.lines.count > 1
-      a = "\"" + eval(@datum.headers).join("\"\,\"") + "\""
-      @datum.content.sub! @datum.content.lines.first.chomp, eval(@datum.headers).to_csv
-    end
 
     respond_to do |format|
       if @datum.save
@@ -127,21 +113,10 @@ class DataController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def datum_params
-      params.require(:datum).permit(:name, :content, :ignored, :types, :file)
+      params.require(:datum).permit(:name, :content, :ignored, :numbers, :file)
     end
 
     def render_view view
       render :template => "data/draw/"+view.to_s
-    end
-
-    def assign_name_to_unnamed headers
-      arr = []
-      headers.each_with_index do |h, index|
-        if h.empty?
-          h = 'unnamed_attribute_'+(index+1).to_s
-        end
-        arr << h
-      end
-      arr
     end
 end

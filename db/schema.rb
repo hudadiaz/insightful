@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20160302054732) do
     t.string   "headers"
     t.string   "content"
     t.string   "ignored"
-    t.string   "types"
+    t.string   "numbers"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

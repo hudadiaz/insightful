@@ -118,7 +118,7 @@
     var stacks = JSON.parse(JSON.stringify(data["values"][stack]));
     var processedData = [];
 
-    for (var j = categories.length - 1; j >= 0; j--) {
+    for (var j =  0; j < categories.length; j++) {
       var datum = {};
 
       if(categories[j] == null)
@@ -134,14 +134,14 @@
     var time = new Date().getTime();
     console.log("start")
     for (var i = items.length - 1; i >= 0; i--) {
-      for (var j = categories.length - 1; j >= 0; j--) {
-        if (items[i][category] === processedData[j][category]){
-          for (var k = 0; k < stacks.length; k++) {
-            if (items[i][stack] === stacks[k]){
-              processedData[j][stacks[k]] += JSON.parse(items[i][measure])
-            }
-          }
-        }
+      var indexCat = categories.indexOf(items[i][category]),
+          indexStack = stacks.indexOf(items[i][stack]);
+
+      if (indexCat >= 0 && indexStack >= 0){
+        if (!measure)
+          processedData[indexCat][stacks[indexStack]]++;
+        else
+          processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][measure])
       }
     }
     console.log(new Date().getTime()-time)

@@ -6,7 +6,7 @@ class CreateData < ActiveRecord::Migration
       t.string :headers
       t.string :content
       t.string :ignored
-      t.string :types
+      t.string :numbers
       
       t.timestamps null: false
     end

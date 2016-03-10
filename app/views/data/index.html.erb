@@ -17,7 +17,7 @@
       <tr>
         <td><%= I18n.l datum.updated_at.localtime %></td>
         <td><%= datum.name %></td>
-        <td><%= datum.item_count %></td>
+        <td><%= datum.items.count %></td>
         <td><%= link_to 'Show', datum %></td>
         <td><%= link_to 'Edit', edit_datum_path(datum) %></td>
         <td><%= link_to 'Destroy', datum, method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger' %></td>
