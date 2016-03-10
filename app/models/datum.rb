@@ -20,7 +20,7 @@ class Datum < ActiveRecord::Base
   def items
     items = self.csv
 
-    unless self.ignored.nil?
+    unless self.ignored.nil? || self.ignored.blank?
       eval(self.ignored).each do |i|
         items.delete i
       end
