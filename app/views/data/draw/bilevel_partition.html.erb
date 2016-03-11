@@ -1,0 +1,120 @@
+<h1>Draw#bilevel_partition</h1>
+
+<div class="row">
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-cat">Compare</label>
+      <select id="select-cat" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-stack">On</label>
+      <select id="select-stack" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-measure">According to</label>
+      <select id="select-measure" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="selectedItem">
+</div>
+
+  <p id="chart"></p>
+  <pre id="json"></pre>
+
+<script>
+  var data, selects = ["cat", "stack", "measure"];
+
+  // drawStackedBars(data);
+  var req = $.get("<%= datum_path(@datum, format: :json) %>");
+
+  $.when(req).done(function(res) {
+    data = res;
+    // $.each(selects, function(i, val) {
+    //   updateSelect(i, val, data["headers"]);
+    // })
+
+    draw();
+  });
+
+  var updateSelect = function(index, id, keys) {
+    $.each(keys, function(i, key) {
+      if (index == 0 && !isNaN(data["values"][key][0])) return true;
+      if (index == 1 && (data["values"][key].length > 9 || !isNaN(data["values"][key][0]))) return true;
+      if (index == 2 && isNaN(data["values"][key][0])) return true;
+      $("#select-"+id)
+        .append($("<option></option>")
+        .attr("value",key)
+        .text(key)); 
+    })
+    $("#select-"+id).selectize();
+    $("#select-"+id).change(function() {
+      draw();
+    })
+  }
+
+  var draw = function() {
+    reset()
+    var obj = {cat: 'Sex', stack: 'Hair', measure: 'Eye'}, valid = true;
+
+    // $.each(selects, function(i, id) {
+    //   if ($("#select-"+id).val().length < 1) valid = false;
+    //   obj[id] = $("#select-"+id).val();
+    // })
+
+    if (valid)
+      processData(obj.cat, obj.stack, obj.measure, function(processedData){
+        // drawStackedBars(processedData, obj.cat, obj.measure)
+          $("#json").html(JSON.stringify(processedData, undefined, 2))
+      });
+  }
+
+  var reset = function() {
+    $("#chart").html("")
+  }
+
+  var processData = function(category, stack, measure, callback) {
+    var items = JSON.parse(JSON.stringify(data["items"]));
+    var categories = JSON.parse(JSON.stringify(data["values"][category]));
+    var stacks = JSON.parse(JSON.stringify(data["values"][stack]));
+    var processedData = [];
+
+    for (var j =  0; j < categories.length; j++) {
+      var datum = {};
+
+      if(categories[j] == null)
+        categories[j] = "null" + j;
+
+      datum[category] = categories[j];
+
+      for (var k = 0; k < stacks.length; k++) {
+        datum[stacks[k]] = 0;
+      }
+      processedData.push(datum);
+    }
+    var time = new Date().getTime();
+    console.log("start")
+    for (var i = items.length - 1; i >= 0; i--) {
+      var indexCat = categories.indexOf(items[i][category]),
+          indexStack = stacks.indexOf(items[i][stack]);
+
+      if (indexCat >= 0 && indexStack >= 0){
+          processedData[indexCat][stacks[indexStack]]++;
+      }
+    }
+    console.log(new Date().getTime()-time)
+    callback(processedData);
+  }
+
+</script>

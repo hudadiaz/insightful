@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :sankey
       get :stacked_bar
       get :normalized_stacked_bar
+      get :bilevel_partition
     end
   end
   

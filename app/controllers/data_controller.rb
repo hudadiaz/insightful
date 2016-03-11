@@ -19,23 +19,30 @@ class DataController < ApplicationController
 
   def sankey
     add_breadcrumb @datum.name, @datum
-    add_breadcrumb "Sankey", sankey_datum_path(@datum)
+    add_breadcrumb __method__.to_s.humanize, sankey_datum_path(@datum)
 
-    render_view :sankey
+    render_view __method__.to_s
   end
   
   def stacked_bar
     add_breadcrumb @datum.name, @datum
-    add_breadcrumb "Stacked bar", stacked_bar_datum_path(@datum)
+    add_breadcrumb __method__.to_s.humanize, stacked_bar_datum_path(@datum)
 
-    render_view :stacked_bar
+    render_view __method__.to_s
   end
 
   def normalized_stacked_bar
     add_breadcrumb @datum.name, @datum
-    add_breadcrumb "Normalized stacked bar", normalized_stacked_bar_datum_path(@datum)
+    add_breadcrumb __method__.to_s.humanize, normalized_stacked_bar_datum_path(@datum)
 
-    render_view :normalized_stacked_bar
+    render_view __method__.to_s
+  end
+
+  def bilevel_partition
+    add_breadcrumb @datum.name, @datum
+    add_breadcrumb __method__.to_s.humanize, bilevel_partition_datum_path(@datum)
+
+    render_view __method__.to_s
   end
 
   # GET /data/new
