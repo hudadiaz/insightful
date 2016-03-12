@@ -38,9 +38,9 @@ class DataController < ApplicationController
     render_view __method__.to_s
   end
 
-  def bilevel_partition
+  def sunburst
     add_breadcrumb @datum.name, @datum
-    add_breadcrumb __method__.to_s.humanize, bilevel_partition_datum_path(@datum)
+    add_breadcrumb __method__.to_s.humanize, sunburst_datum_path(@datum)
 
     render_view __method__.to_s
   end

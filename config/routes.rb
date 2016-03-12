@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
-  
-  get 'draw/:id/sankey' => 'draw#sankey', as: "draw_sankey"
-
   resources :data do
     member do
       get :sankey
       get :stacked_bar
       get :normalized_stacked_bar
-      get :bilevel_partition
+      get :sunburst
     end
+  end
+
+  authenticated :user do
+    root to: 'data#index', as: :authenticated_root
   end
   
   resources :surveys
