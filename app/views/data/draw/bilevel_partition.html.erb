@@ -1,27 +1,13 @@
 <style>
 
 #main {
-  float: left;
-  width: 750px;
-}
-
-#sidebar {
-  float: right;
-  width: 100px;
+  width: 100%;
+  text-align: center;
 }
 
 #sequence {
   width: 600px;
   height: 70px;
-}
-
-#legend {
-  padding: 10px 0 0 3px;
-}
-
-#sequence text, #legend text {
-  font-weight: 600;
-  fill: #fff;
 }
 
 #chart {
@@ -51,33 +37,22 @@
 <h1>Draw#bilevel_partition</h1>
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-9">
     <div class="form-group">
-      <label for="select-cat">Compare</label>
-      <select id="select-cat" class="form-control">
+      <label for="select-main">Compare</label>
+      <select id="select-main" class="form-control">
         <option disabled selected> loading... </option>
       </select>
     </div>
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <div class="form-group">
-      <label for="select-stack">On</label>
-      <select id="select-stack" class="form-control">
+      <label for="select-size">Based on</label>
+      <select id="select-size" class="form-control">
         <option disabled selected> loading... </option>
       </select>
     </div>
   </div>
-  <div class="col-sm-4">
-    <div class="form-group">
-      <label for="select-measure">According to</label>
-      <select id="select-measure" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
-    </div>
-  </div>
-</div>
-
-<div class="row" id="selectedItem">
 </div>
 
 <div id="main">
@@ -89,60 +64,61 @@
     </div>
   </div>
 </div>
-<div id="sidebar">
-  <input type="checkbox" id="togglelegend"> Legend<br/>
-  <div id="legend" style="visibility: hidden;"></div>
-</div>
   <!-- <pre id="json"></pre> -->
 
 <script>
-  var data, levels = ["Hair", "Sex", "Eye"];
+  var data, levels, measure = 'false';
 
   // drawStackedBars(data);
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
 
   $.when(req).done(function(res) {
     data = res;
-    // $.each(selects, function(i, val) {
-    //   updateSelect(i, val, data["headers"]);
-    // })
-
-    draw();
+    updateMainSelect(data["headers"]);
+    updateValuesSelect(data["headers"]);
   });
 
-  var updateSelect = function(index, id, keys) {
+  var updateMainSelect = function(keys) {
     $.each(keys, function(i, key) {
-      if (index == 0 && !isNaN(data["values"][key][0])) return true;
-      if (index == 1 && (data["values"][key].length > 9 || !isNaN(data["values"][key][0]))) return true;
-      if (index == 2 && isNaN(data["values"][key][0])) return true;
-      $("#select-"+id)
+      $("#select-main")
         .append($("<option></option>")
         .attr("value",key)
         .text(key)); 
     })
-    $("#select-"+id).selectize();
-    $("#select-"+id).change(function() {
+    $("#select-main").selectize({ maxItems: 10 });
+    $("#select-main").on("change" ,function() {
+      levels = $(this).val();
+      draw();
+    })
+  }
+
+  var updateValuesSelect = function(keys) {
+    $.each(keys, function(i, key) {
+      $("#select-size")
+        .append($("<option></option>")
+        .attr("value",key)
+        .text(key)); 
+    })
+    $("#select-size")
+      .append($("<option></option>")
+      .attr("value",false)
+      .text("Count records")); 
+    $("#select-size").selectize();
+    $("#select-size").on("change" ,function() {
+      measure = $(this).val();
       draw();
     })
   }
 
   var draw = function() {
     reset()
-    var valid = true;
-
-    // $.each(selects, function(i, id) {
-    //   if ($("#select-"+id).val().length < 1) valid = false;
-    //   obj[id] = $("#select-"+id).val();
-    // })
+    var valid = levels;
 
     if (valid)
-      processData(levels, false, function(processedData){
-        // drawStackedBars(processedData, obj.cat, obj.measure)
-          // $("#json").html(JSON.stringify(processedData, undefined, 2))
-          var values = [];
-          $.each(levels, function(k, v) {values = values.concat(data["values"][v])});
-          console.log(values)
-          createVisualization(processedData, values);
+      processData(levels, measure, function(processedData){
+        var values = [];
+        $.each(levels, function(k, v) {values = values.concat(data["values"][v])});
+        createVisualization(processedData, values);
       });
   }
 
@@ -167,6 +143,10 @@
 
         if (existing != undefined) {
           current_node = existing;
+
+          if (measure == 'false')
+            current_node.size++;
+
           f(current_node, {name: null, children: [], size: 0}, ++i);
           return
         }
@@ -178,7 +158,11 @@
 
         if (current_node.children.length < 1){
           delete current_node.children;
-          current_node.size = item["Freq"]
+
+          if (measure == 'false')
+            current_node.size++;
+          else
+            current_node.size = item[measure];
         }
 
         if (current_node.size < 1)
@@ -207,7 +191,7 @@
 function createVisualization(json, values) {
 
 // Dimensions of sunburst.
-  var width = 750;
+  var width = $("#chart").width();
   var height = 600;
   var radius = Math.min(width, height) / 2;
 
@@ -247,8 +231,6 @@ function createVisualization(json, values) {
 
     // Basic setup of page elements.
     initializeBreadcrumbTrail();
-    drawLegend();
-    d3.select("#togglelegend").on("click", toggleLegend);
 
   // Bounding circle underneath the sunburst, to make it easier to detect
   // when the mouse leaves the parent g.
@@ -411,48 +393,6 @@ function createVisualization(json, values) {
     d3.select("#trail")
         .style("visibility", "");
 
-  }
-
-  function drawLegend() {
-
-    // Dimensions of legend item: width, height, spacing, radius of rounded rect.
-    var li = {
-      w: 75, h: 30, s: 3, r: 3
-    };
-
-    var legend = d3.select("#legend").append("svg:svg")
-        .attr("width", li.w)
-        .attr("height", d3.keys(levels).length * (li.h + li.s));
-
-    var g = legend.selectAll("g")
-        .data(d3.entries(levels))
-        .enter().append("svg:g")
-        .attr("transform", function(d, i) {
-                return "translate(0," + i * (li.h + li.s) + ")";
-             });
-
-    g.append("svg:rect")
-        .attr("rx", li.r)
-        .attr("ry", li.r)
-        .attr("width", li.w)
-        .attr("height", li.h)
-        .style("fill", function(d) { return d.value; });
-
-    g.append("svg:text")
-        .attr("x", li.w / 2)
-        .attr("y", li.h / 2)
-        .attr("dy", "0.35em")
-        .attr("text-anchor", "middle")
-        .text(function(d) { return d.key; });
-  }
-
-  function toggleLegend() {
-    var legend = d3.select("#legend");
-    if (legend.style("visibility") == "hidden") {
-      legend.style("visibility", "");
-    } else {
-      legend.style("visibility", "hidden");
-    }
   }
 };
 
