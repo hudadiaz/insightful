@@ -64,7 +64,7 @@
     </div>
   </div>
 </div>
-  <!-- <pre id="json"></pre> -->
+  <pre id="json"></pre>
 
 <script>
   var data, levels, measure = 'false';
@@ -116,6 +116,7 @@
 
     if (valid)
       processData(levels, measure, function(processedData){
+        $("#json").html(JSON.stringify(processedData, undefined, 2))
         var values = [];
         $.each(levels, function(k, v) {values = values.concat(data["values"][v])});
         createVisualization(processedData, values);
@@ -142,10 +143,13 @@
 
 
         if (existing != undefined) {
-          current_node = existing;
 
           if (measure == 'false')
-            current_node.size++;
+            existing.size++;
+          else
+            existing.size += JSON.parse(item[measure]);
+
+          current_node = existing;
 
           f(current_node, {name: null, children: [], size: 0}, ++i);
           return
@@ -162,7 +166,7 @@
           if (measure == 'false')
             current_node.size++;
           else
-            current_node.size = item[measure];
+            current_node.size += JSON.parse(current_node.size)+JSON.parse(item[measure]);
         }
 
         if (current_node.size < 1)
