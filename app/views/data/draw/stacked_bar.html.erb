@@ -57,15 +57,10 @@
 <div class="row" id="selectedItem">
 </div>
 
-<!-- <div class="form-group">
-  <a class="btn btn-primary" onclick="draw()">Draw</a>
-  <a class="btn" onclick="reset()">Reset</a>
-</div> -->
-
-  <p id="chart"></p>
+<div id="chart"></div>
 
 <script>
-  var data, selects = ["cat", "stack", "measure"];
+  var data, selects = ["cat", "stack", "measure"], measure = 'false';
 
   // drawStackedBars(data);
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
@@ -74,7 +69,17 @@
     data = res;
     $.each(selects, function(i, val) {
       updateSelect(i, val, data["headers"]);
-    })
+    });
+    $("#select-measure")
+      .append($("<option></option>")
+      .attr("value", false)
+      .text("Count records"));
+    $.each(selects, function(i, val) {
+      $("#select-"+val).selectize();
+        $("#select-"+val).change(function() {
+          draw();
+        })
+      });
   });
 
   var updateSelect = function(index, id, keys) {
@@ -87,10 +92,6 @@
         .attr("value",key)
         .text(key)); 
     })
-    $("#select-"+id).selectize();
-    $("#select-"+id).change(function() {
-      draw();
-    })
   }
 
   var draw = function() {
@@ -101,6 +102,8 @@
       if ($("#select-"+id).val().length < 1) valid = false;
       obj[id] = $("#select-"+id).val();
     })
+
+    measure = obj.measure;
 
     if (valid)
       processData(obj.cat, obj.stack, obj.measure, function(processedData){
@@ -138,7 +141,7 @@
           indexStack = stacks.indexOf(items[i][stack]);
 
       if (indexCat >= 0 && indexStack >= 0){
-        if (!measure)
+        if (measure == 'false')
           processedData[indexCat][stacks[indexStack]]++;
         else
           processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][measure])
@@ -277,7 +280,7 @@
               .attr("x",xPos +width/2)
               .attr("y",yPos +height/2)
               .attr("class","tooltip")
-              .text(d.name +": "+ delta); 
+              .text(d.name +": "+ delta.toFixed(2)); 
               
            })
            .on("mouseout",function(){
