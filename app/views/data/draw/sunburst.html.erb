@@ -251,12 +251,6 @@ path {
           .attrTween("d", function(d) { return function() { return arc(d); }; });
     }
 
-
-    // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
-    var b = {
-      w: 75, h: 30, s: 3, t: 10
-    };
-
     // Total size of all segments; we set this later, after loading the data.
     var totalSize = 0; 
 
@@ -346,6 +340,11 @@ path {
         .style("fill", "#000");
     }
 
+    // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+    var b = {
+      w: 75, h: 30, s: 3, t: 10
+    };
+
     // Generate a string that describes the points of a breadcrumb polygon.
     function breadcrumbPoints(d, i) {
       var points = [];
@@ -357,6 +356,7 @@ path {
       if (i > 0) { // Leftmost breadcrumb; don't include 6th vertex.
         points.push(b.t + "," + (b.h / 2));
       }
+      
       return points.join(" ");
     }
 
