@@ -5,13 +5,34 @@
 
       <p id="notice"><%= notice %></p>
 
-      <p>
-        <strong>Item:</strong>
-        <pre><%= @datum.heads %></pre>
-      </p>
+      <h4>Listing Visualizations</h4>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Datum</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @datum.visualizations.each do |visualization| %>
+            <tr>
+              <td><%= visualization.title %></td>
+              <td><%= visualization.type %></td>
+              <td><%= visualization.datum.name %></td>
+              <td><%= link_to 'Show', visualization, target: '_blank' %></td>
+              <td><%= link_to 'Edit', edit_visualization_path(visualization) %></td>
+              <td><%= link_to 'Destroy', visualization, method: :delete, data: { confirm: 'Are you sure?' }, class: "text-danger" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
       <div class="bs-component">
-        <%= link_to 'JSON', datum_path(@datum, format: :json), target: :blank, class: "btn btn-info" %>
+        <h4>Create visualizations</h4>
         <%= link_to 'Sankey', sankey_datum_path(@datum), class: "btn btn-info" %>
         <%= link_to 'Stacked bar', stacked_bar_datum_path(@datum), class: "btn btn-info" %>
         <%= link_to 'Normalized stacked bar', normalized_stacked_bar_datum_path(@datum), class: "btn btn-info" %>

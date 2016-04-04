@@ -2,19 +2,138 @@
 <html>
 <head>
   <title>Insightful</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'draw/'+@visualization.type.dasherize %>
   <%= csrf_meta_tags %>
+
+  <style>
+
+    body {
+      background: white;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      padding: 15px;
+    }
+
+    #chart {
+      position: relative;
+      text-align: center;
+    }
+
+    .title {
+      margin-top: 0;
+    }
+
+    path {
+      stroke: #fff;
+      fill-rule: evenodd;
+    }
+
+    #percentage {
+      font-size: 2.5em;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000 !important;
+      shape-rendering: crispEdges;
+    }
+
+    .tooltip{
+      text-anchor: middle;
+      font-family: sans-serif;
+      /*font-size: 10px;*/
+      font-weight: bold;
+      fill:black; 
+    }
+
+    .caption {
+      width: 100%;
+      text-align: center;
+    }
+
+    .node right: ;ect {
+      cursor: move;
+      fill-opacity: .9;
+      shape-rendering: crispEdges;
+    }
+
+    .node text {
+      pointer-events: none;
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    .link {
+      fill: none;
+      stroke: #000;
+      stroke-opacity: .2;
+    }
+
+    .link:hover {
+      stroke-opacity: .5;
+    }
+
+    .list-group {
+      min-height: 25px;
+    }
+
+    .panel-body > .checkbox {
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    .panel-body.selected {
+      background: #efefef;
+    }
+
+    .panel-body.selected:hover {
+      background: #fafafa;
+    }
+
+    .panel-body:hover {
+      background: #eaeaea;
+    }
+
+    .credit-link {
+      position: absolute;
+      right: 15px;
+      bottom: 0;
+    }
+
+</style>
 </head>
 <body>
   <div class="container">
     
     <!-- Content Start -->
+      <h1 class="title"><%= @visualization.title %></h1>
       <div id="sequence"></div>
       <div id="chart"></div>
+      <em class="caption"><%= @visualization.caption %></em>
+      <p class="credit-link">visualized with <%= link_to 'Insightful', root_path, target: '_blank' %></p>
     <!-- Content End -->
 
   </div>
 
+  <script>
+
+    var req = $.get("<%= datum_path(@visualization.datum, format: :json) %>");
+
+    $.when(req).done(function(res) {
+      data = res;
+      visualize(res, <%= @visualization.selections.html_safe %>);
+    });
+
+  </script>
 </body>
 </html>

@@ -2,24 +2,29 @@ class VisualizationsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_visualization, only: [:show, :edit, :update, :destroy]
 
+  add_breadcrumb "Home", :root_path, except: [:index, :show]
+  add_breadcrumb "Data", :data_path, except: [:index, :show]
+
   # GET /visualizations
   # GET /visualizations.json
   def index
-    @visualizations = Visualization.all
+    if user_signed_in?
+      redirect_to data_path
+    else
+      @visualizations = Visualization.all
+    end
   end
 
   # GET /visualizations/1
   # GET /visualizations/1.json
   def show
-  end
-
-  # GET /visualizations/new
-  def new
-    @visualization = Visualization.new
+    render layout: false
   end
 
   # GET /visualizations/1/edit
   def edit
+    add_breadcrumb @visualization.datum.name, @visualization.datum
+    add_breadcrumb "Edit visualization"
   end
 
   # POST /visualizations
@@ -29,7 +34,7 @@ class VisualizationsController < ApplicationController
 
     respond_to do |format|
       if @visualization.save
-        format.html { redirect_to :edit, notice: 'Visualization was successfully created.' }
+        format.html { render js: "window.location.href = '#{edit_visualization_path(@visualization)}'", notice: 'Visualization was successfully created.' }
         format.json { render :show, status: :created, location: @visualization }
       else
         format.html { render :new }
@@ -43,7 +48,7 @@ class VisualizationsController < ApplicationController
   def update
     respond_to do |format|
       if @visualization.update(visualization_params)
-        format.html { redirect_to @visualization, notice: 'Visualization was successfully updated.' }
+        format.html { redirect_to @visualization.datum, notice: 'Visualization was successfully updated.' }
         format.json { render :show, status: :ok, location: @visualization }
       else
         format.html { render :edit }
@@ -55,9 +60,10 @@ class VisualizationsController < ApplicationController
   # DELETE /visualizations/1
   # DELETE /visualizations/1.json
   def destroy
+    datum = @visualization.datum
     @visualization.destroy
     respond_to do |format|
-      format.html { redirect_to visualizations_url, notice: 'Visualization was successfully destroyed.' }
+      format.html { redirect_to datum, notice: 'Visualization was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

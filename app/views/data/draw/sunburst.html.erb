@@ -127,13 +127,18 @@ path {
 
     if (valid) {
       var type = "sunburst",
-        selections = JSON.stringify(levels),
+        selections = {},
         datum_id = <%= @datum.id %>;
 
-        var jqxhr = $.post("<%= visualizations_path %>", { visualization: { type: type, selections: selections, datum_id: datum_id }})
-          .fail(function() {
-            alert( "Error! Please try again later." );
-          });
+      selections.data = levels;
+      selections.measure = measure;
+      var jqxhr = $.post("<%= visualizations_path %>", { visualization: { type: type, selections: JSON.stringify(selections), datum_id: datum_id }})
+        .done(function(data) {
+          $.globalEval(data);
+        })
+        .fail(function() {
+          alert( "Error! Please try again later." );
+        });
     }
   }
 

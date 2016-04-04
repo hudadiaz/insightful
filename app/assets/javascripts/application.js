@@ -19,7 +19,7 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require d3
-//= require_tree .
+//= require_directory .
 //= require turbolinks
 
 $(document).ready(function () {

@@ -57,6 +57,8 @@
 <div class="row" id="selectedItem">
 </div>
 
+<button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
+
 <div id="chart"></div>
 
 <script>
@@ -105,13 +107,39 @@
 
     measure = obj.measure;
 
-    if (valid)
+    if (valid) {
+      $("#saveButton").show();
       processData(obj.cat, obj.stack, obj.measure, function(processedData){
         drawStackedBars(processedData, obj.cat, obj.measure)
       });
+    }
+  }
+
+  var save = function() {
+    var obj = {}, valid = true;
+
+    $.each(selects, function(i, id) {
+      if ($("#select-"+id).val().length < 1) valid = false;
+      obj[id] = $("#select-"+id).val();
+    })
+
+    if (valid) {
+      var type = "stacked_bar",
+        selections = JSON.stringify(obj),
+        datum_id = <%= @datum.id %>;
+
+      var jqxhr = $.post("<%= visualizations_path %>", { visualization: { type: type, selections: selections, datum_id: datum_id }})
+        .done(function(data) {
+          $.globalEval(data);
+        })
+        .fail(function() {
+          alert( "Error! Please try again later." );
+        });
+    }
   }
 
   var reset = function() {
+    $("#saveButton").hide();
     $("#chart").html("")
   }
 

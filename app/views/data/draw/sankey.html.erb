@@ -61,11 +61,14 @@
   <a class="btn" onclick="reset()">Reset</a>
 </div>
 
-  <p id="chart"></p>
+<button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
+
+<div id="chart"></div>
 
 <script>
   var data,
     graph,
+    graphCopy;
     nodes = {},
     panelsCount = 0,
     maxPanel = 4,
@@ -155,6 +158,7 @@
   }
 
   var reset = function() {
+    $("#saveButton").hide();
     graph = {"nodes":[], "links":[]};
     $("#chart").html("")
   }
@@ -164,8 +168,25 @@
       addNode(selectize.getValue()[i]);
     }
     linkNodes();
+    graphCopy = jQuery.extend(true, {}, graph)
+    $("#saveButton").show();
     drawSankey(graph);
     return false;
+  }
+
+  var save = function() {
+    console.log(graphCopy)
+    var type = "sankey",
+      selections = JSON.stringify(graphCopy),
+      datum_id = <%= @datum.id %>;
+
+    var jqxhr = $.post("<%= visualizations_path %>", { visualization: { type: type, selections: selections, datum_id: datum_id }})
+      .done(function(data) {
+        $.globalEval(data);
+      })
+      .fail(function() {
+        alert( "Error! Please try again later." );
+      });
   }
 
   var addNode = function(header) {
