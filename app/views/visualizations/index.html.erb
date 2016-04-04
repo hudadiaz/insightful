@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Visualizations</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Type</th>
+      <th>Datum</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @visualizations.each do |visualization| %>
+      <tr>
+        <td><%= visualization.title %></td>
+        <td><%= visualization.type %></td>
+        <td><%= visualization.datum.name %></td>
+        <td><%= link_to 'Show', visualization %></td>
+        <td><%= link_to 'Edit', edit_visualization_path(visualization) %></td>
+        <td><%= link_to 'Destroy', visualization, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

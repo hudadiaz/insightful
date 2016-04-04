@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :sunburst
     end
   end
+  resources :visualizations
 
   authenticated :user do
     root to: 'data#index', as: :authenticated_root

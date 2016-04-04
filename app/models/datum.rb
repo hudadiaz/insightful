@@ -1,5 +1,6 @@
 class Datum < ActiveRecord::Base
   belongs_to :user
+  has_many :visualizations, dependent: :destroy
 
   after_initialize :default_values
   before_save :retrieve_headers

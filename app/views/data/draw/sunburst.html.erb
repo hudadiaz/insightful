@@ -60,6 +60,8 @@ path {
   </div>
 </div>
 
+<button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
+
 <div id="sequence"></div>
 <div id="chart"></div>
 <!-- <pre id="json"></pre> -->
@@ -112,13 +114,31 @@ path {
     reset()
     var valid = levels;
 
-    if (valid)
+    if (valid){
+      $("#saveButton").show();
       processData(levels, measure, function(processedData){
         drawZoomable(processedData);
       });
+    }
+  }
+
+  var save = function() {
+    var valid = levels;
+
+    if (valid) {
+      var type = "sunburst",
+        selections = JSON.stringify(levels),
+        datum_id = <%= @datum.id %>;
+
+        var jqxhr = $.post("<%= visualizations_path %>", { visualization: { type: type, selections: selections, datum_id: datum_id }})
+          .fail(function() {
+            alert( "Error! Please try again later." );
+          });
+    }
   }
 
   var reset = function() {
+    $("#saveButton").hide();
     $("#chart").html("")
     $("#sequence").html("")
   }
