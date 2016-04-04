@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Insightful</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag 'draw/'+@visualization.type.dasherize %>
@@ -9,8 +10,19 @@
 
   <style>
 
+    @media print {
+      .container {
+        width: 50%;
+        height: 50%;
+      }
+
+      .download-btn {
+        display: none;
+      }
+    }
+
     body {
-      background: white;
+      background: none;
       position: absolute;
       top: 0;
       bottom: 0;
@@ -110,6 +122,20 @@
       bottom: 0;
     }
 
+    .download-btn {
+      position: absolute !important;
+      right: 15px;
+      top: 15px;
+      width: auto;
+    }
+
+    .download-menu {
+      position: absolute;
+      top: 39px;
+      right: 15px;
+      left: inherit;
+    }
+
 </style>
 </head>
 <body>
@@ -122,7 +148,13 @@
       <em class="caption"><%= @visualization.caption %></em>
       <p class="credit-link">visualized with <%= link_to 'Insightful', root_path, target: '_blank' %></p>
     <!-- Content End -->
-
+        <!-- <a href="#" data-target="#" class="download-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <i class="material-icons">file_download</i><div class="ripple-container"></div>
+        <ul class="dropdown-menu download-menu">
+          <li><a href="javascript:void(0)"><i class="material-icons">image</i>&nbsp;&nbsp;Save Image</a></li>
+          <li><a href="javascript:void(0)"><i class="material-icons">picture_as_pdf</i>&nbsp;&nbsp;Save PDF</a></li>
+          <li><a href="javascript:window.print()"><i class="material-icons">print</i>&nbsp;&nbsp;Print</a></li>
+        </ul> -->
   </div>
 
   <script>
