@@ -11,7 +11,7 @@ class VisualizationsController < ApplicationController
     if user_signed_in?
       redirect_to data_path
     else
-      @visualizations = Visualization.all
+      @visualizations = Visualization.all.page params[:page]
     end
   end
 
