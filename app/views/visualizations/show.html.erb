@@ -126,14 +126,6 @@
       <div id="chart"></div>
       <em class="caption"><%= @visualization.caption %></em>
       <p class="credit-link">visualized with <%= link_to 'Insightful', root_url, target: '_blank' %></p>
-    <!-- Content End -->
-        <!-- <a href="#" data-target="#" class="download-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <i class="material-icons">file_download</i><div class="ripple-container"></div>
-        <ul class="dropdown-menu download-menu">
-          <li><a href="javascript:void(0)"><i class="material-icons">image</i>&nbsp;&nbsp;Save Image</a></li>
-          <li><a href="javascript:void(0)"><i class="material-icons">picture_as_pdf</i>&nbsp;&nbsp;Save PDF</a></li>
-          <li><a href="javascript:window.print()"><i class="material-icons">print</i>&nbsp;&nbsp;Print</a></li>
-        </ul> -->
   </div>
 
   <% if user_signed_in? %>
@@ -168,7 +160,9 @@
           </div>
           <div class="modal-body">
             <h4>Iframe</h4>
-            <div class="well" id="iframe-content"></div>
+            <div class="form-group" style="width: 100%">
+              <textarea class="form-control" id="iframe-content"></textarea>
+            </div>
             <h4>Image</h4>
             <form class="form-inline" action="" target="_blank">
             <input hidden name="save" placeholder="Height" value="true">
@@ -229,7 +223,7 @@
 
     function save() {
       if(getParameterByName('save') == "true")
-        screenGrabber('<%= @visualization.title.titleize.delete(' ').underscore %>');
+        screenGrabber('<%= @visualization.title.blank? ? @visualization.id : @visualization.title.titleize.delete(' ').underscore %>');
     }
 
   </script>
