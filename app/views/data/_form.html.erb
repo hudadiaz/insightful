@@ -27,32 +27,37 @@
   </div>
 
   <% if params[:action] == "edit" %>
-      <%= f.hidden_field :ignored, class: "form-control", hidden: true %>
+      <%= f.hidden_field :ignored, hidden: true %>
+      <%= f.hidden_field :numbers, hidden: true %>
     <div class="form-group">
       <%= f.label :ignore, class: "control-label" %>
-      <%= select_tag :select, options_for_select([nil]+eval(@datum.headers)), class: "form-control", onchange: "update(this)" %>
+      <%= select_tag :select_ignored, options_for_select([nil]+eval(@datum.headers)), class: "form-control", onchange: "update(this, '#datum_ignored')" %>
+      <p class="help-block">Values of selected properties will be ignored in processing.</p>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :ignore, class: "control-label" %>
+      <%= select_tag :select_numbers, options_for_select([nil]+eval(@datum.headers)), class: "form-control", onchange: "update(this, '#datum_numbers')" %>
       <p class="help-block">Values of selected properties will be ignored in processing.</p>
     </div>
 
     <script>
-      var $select = null;
       $(document).ready(function() {
-        $select = $("#select").selectize({
+        $("#select_ignored").selectize({
           maxItems:<%= eval(@datum.headers).count %>,
           items: JSON.parse($("#datum_ignored").val() || '[]')
         });
+        $("#select_numbers").selectize({
+          maxItems:<%= eval(@datum.headers).count %>,
+          items: JSON.parse($("#datum_numbers").val() || '[]')
+        });
       })
 
-      var update = function(el) {
-        $("#datum_ignored").val(JSON.stringify($(el).val() || '[]'));
-        console.log($("#datum_ignored").val())
+      var update = function(el, input) {
+        $(input).val(JSON.stringify($(el).val() || '[]'));
+        console.log($(input).val())
       }
     </script>
-
-    <div class="form-group label-static is-empty">
-      <%= f.label :numbers, class: "control-label" %>
-      <%= f.text_field :numbers, class: "form-control" %>
-    </div>
   <% end %>
 
   <div class="form-group">
