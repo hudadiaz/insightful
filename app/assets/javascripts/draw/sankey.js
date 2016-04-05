@@ -1,5 +1,55 @@
 var data;
 
+var linkNodes = function(graph, data) {
+  var items = JSON.parse(JSON.stringify(data["items"]))
+  var loop = graph.nodes.length;
+  var links = [];
+
+  for (var i = 0; i < loop; i++) {
+    for (var j = 0; j < loop; j++) {
+      var link = {"source":i,"target":j,"value":0};
+      links.push(link);
+    }
+  }
+  var time = new Date().getTime()
+  console.log("start")
+  for (var i = items.length - 1; i >= 0; i--) {
+    var item = items[i];
+
+    for (var j = 0; j < loop; j++) {
+      var ff = graph.nodes[j];
+      if(item[ff.header] == ff.name){
+        for (var k = j; k < loop; k++) {
+          var tt = graph.nodes[k];
+          if(ff.header == tt.header) continue;
+          if(item[ff.header] == ff.name && item[tt.header] == tt.name){
+            if (item["Freq"] != undefined)
+              links[j*loop+k].value += parseInt(item["Freq"]);
+            else links[j*loop+k].value++;
+            delete item[ff.header]
+          }
+        }
+      }
+    }
+  }
+  console.log(new Date().getTime() - time)
+
+  for (var i = links.length - 1; i >= 0; i--) {
+    if (links[i].value == 0) {
+      links.splice(i, 1);
+    }
+  }
+
+  linkNodesWithOther(5, graph, data);
+  graph.links = links;
+}
+
+var linkNodesWithOther = function(percent, graph, data) {
+  var total = JSON.parse(JSON.stringify(data["count"])),
+      limit = (percent/100*total) + 1;
+  console.log(limit);
+}
+
 var drawSankey = function(graph) {
   var units = "Records";
 
