@@ -7,7 +7,7 @@ class Datum < ActiveRecord::Base
 
   validates_presence_of :content
 
-  def heads
+  def significant_headers
     unless self.ignored.nil? || self.ignored.blank?
       eval(self.headers) - eval(self.ignored)
     else
@@ -15,12 +15,16 @@ class Datum < ActiveRecord::Base
     end
   end
 
-  def retrieve_numbers
+  def number_headers
     unless self.numbers.nil? || self.numbers.blank?
       eval(self.numbers)
     else
       []
     end
+  end
+
+  def nominal_and_nominal_headers
+    self.significant_headers - self.number_headers
   end
 
   def csv
@@ -43,10 +47,10 @@ class Datum < ActiveRecord::Base
     d = {}
     d[:id] = self.id
     d[:name] = self.name
-    d[:headers] = self.heads
-    d[:numbers] = self.retrieve_numbers
+    d[:headers] = self.significant_headers
+    d[:numbers] = self.number_headers
     d[:values] = {}
-      self.heads.each do |h|
+      self.nominal_and_nominal_headers.each do |h|
         d[:values][h] = self.csv[h].uniq
       end
     d[:items] = self.items
