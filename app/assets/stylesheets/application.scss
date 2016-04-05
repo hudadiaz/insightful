@@ -23,6 +23,10 @@ $nprogress-color: #fff;
   padding-right: 5px;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+}
+
 .navbar-avatar {
   height: 30px;
   border-radius: 50%;

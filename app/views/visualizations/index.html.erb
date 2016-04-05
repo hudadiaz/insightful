@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Visualizations</h1>
+
+<div class="table-wrapper">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Datum</th>
+        <th>User</th>
+        <th></th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <% @visualizations.each do |visualization| %>
+        <tr>
+          <td><%= visualization.title %></td>
+          <td><%= visualization.type.humanize %></td>
+          <td><%= visualization.datum.name %></td>
+          <td><%= visualization.user.email %></td>
+          <td><%= link_to 'Show', visualization %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= paginate @visualizations %>

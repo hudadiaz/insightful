@@ -1,5 +1,6 @@
 GEM
   remote: https://rubygems.org/
+  remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.5.1)
       actionpack (= 4.2.5.1)
@@ -145,7 +146,7 @@ GEM
       activesupport (= 4.2.5.1)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.5.0)
+    rake (11.1.0)
     rdoc (4.2.2)
       json (~> 1.4)
     responders (2.1.1)
@@ -209,8 +210,8 @@ DEPENDENCIES
   omniauth-google
   pg
   rails (= 4.2.5.1)
-  rails-assets-bootstrap
-  rails-assets-bootstrap-material-design
+  rails-assets-bootstrap!
+  rails-assets-bootstrap-material-design!
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selectize-rails

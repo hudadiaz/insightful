@@ -1,6 +1,6 @@
 class DataController < ApplicationController
   before_action :set_datum, except: [:index, :new, :create]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, unless: :show_json_request?
 
   add_breadcrumb "Home", :root_path
   add_breadcrumb "Data", :data_path
@@ -115,7 +115,7 @@ class DataController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_datum
-      @datum = current_user.data.find(params[:id])
+      @datum = Datum.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -125,5 +125,9 @@ class DataController < ApplicationController
 
     def render_view view
       render :template => "data/draw/"+view.to_s
+    end
+
+    def show_json_request?
+      :show && request.format.json?
     end
 end
