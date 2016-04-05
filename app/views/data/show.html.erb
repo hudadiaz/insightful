@@ -27,7 +27,7 @@
                 <td><%= visualization.title %></td>
                 <td><%= visualization.type.humanize %></td>
                 <td><%= visualization.datum.name %></td>
-                <td><%= I18n.l visualization.updated_at.localtime %></td>
+                <td><%= I18n.l visualization.updated_at.localtime, format: :long %></td>
                 <td><%= link_to 'Share', '', onclick: 'share("'+visualization_url(visualization)+'")', data: { toggle: :modal, target: "#myModal" } %></td>
                 <td><%= link_to 'Show', visualization, target: '_blank' %></td>
                 <td><%= link_to 'Edit', edit_visualization_path(visualization) %></td>

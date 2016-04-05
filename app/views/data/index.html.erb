@@ -16,7 +16,7 @@
     <tbody>
       <% @data.each do |datum| %>
         <tr>
-          <td><%= I18n.l datum.updated_at.localtime %></td>
+          <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
           <td><%= datum.name %></td>
           <td><%= datum.items.count %></td>
           <td><%= link_to 'Show', datum %></td>
