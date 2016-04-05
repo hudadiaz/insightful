@@ -1,1 +1,1 @@
-json.(@datum.as_json, :id, :name, :headers, :values, :count, :items)
+json.(@datum.as_json, :id, :name, :headers, :numbers, :values, :count, :items)

@@ -22,7 +22,7 @@
   </div>
 
   <div class="form-group label-floating is-empty">
-    <%= f.text_area :content, class: "form-control", placeholder: "Or paste the CSV formatted data directly here" %>
+    <%= f.text_area :content, class: "form-control", rows: 10, placeholder: "Or paste the CSV formatted data directly here" %>
     <p class="help-block">Will be overridden with the content of the <code>file</code> above if applicable.</p>
   </div>
 
@@ -36,9 +36,9 @@
     </div>
 
     <div class="form-group">
-      <%= f.label :ignore, class: "control-label" %>
+      <%= f.label :numbers, class: "control-label" %>
       <%= select_tag :select_numbers, options_for_select([nil]+eval(@datum.headers)), class: "form-control", onchange: "update(this, '#datum_numbers')" %>
-      <p class="help-block">Values of selected properties will be ignored in processing.</p>
+      <p class="help-block">Values of selected properties will be treated as numbers.</p>
     </div>
 
     <script>

@@ -15,6 +15,14 @@ class Datum < ActiveRecord::Base
     end
   end
 
+  def retrieve_numbers
+    unless self.numbers.nil? || self.numbers.blank?
+      eval(self.numbers)
+    else
+      []
+    end
+  end
+
   def csv
     CSV.parse(content, :headers => true)
   end
@@ -36,6 +44,7 @@ class Datum < ActiveRecord::Base
     d[:id] = self.id
     d[:name] = self.name
     d[:headers] = self.heads
+    d[:numbers] = self.retrieve_numbers
     d[:values] = {}
       self.heads.each do |h|
         d[:values][h] = self.csv[h].uniq
