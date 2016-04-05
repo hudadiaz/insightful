@@ -20,10 +20,10 @@ gem 'selectize-rails'
 # Using twitter bootstrap for styling
 # gem "twitter-bootstrap-rails"
 
-# source 'http://rails-assets.org' do
+source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-bootstrap-material-design'
-# end
+end
 
 #Using breadcrumbs_on_rails for breadcrumbs
 gem 'breadcrumbs_on_rails'
