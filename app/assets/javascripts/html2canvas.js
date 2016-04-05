@@ -3374,6 +3374,8 @@ function hasEntries(array) {
 
 NodeParser.prototype.getChildren = function(parentContainer) {
     return flatten([].filter.call(parentContainer.node.childNodes, renderableNode).map(function(node) {
+        var container = [node.nodeType === Node.TEXT_NODE && !(node.parentNode instanceof SVGElement) ? new TextContainer(node, parentContainer) : new NodeContainer(node, parentContainer)].filter(nonIgnoredElement);
+        return node.nodeType === Node.ELEMENT_NODE && container.length && node.tagName !== "TEXTAREA" ? (container[0].isElementVisible() ? container.concat(this.getChildren(container[0])) : []) : container;
     }, this));
 };
 
