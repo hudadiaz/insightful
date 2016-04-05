@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :data do
+  concern :paginatable do
+    get '(page/:page)', action: :index, on: :collection, as: ''
+  end
+
+  resources :data, concerns: :paginatable do
     member do
       get :sankey
       get :stacked_bar

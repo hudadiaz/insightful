@@ -5,6 +5,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.5.1'
 # Use pg as the database for Active Record
 gem 'pg'
+# kaminari pagination
+gem 'kaminari'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Using d3js for graphing
@@ -18,10 +20,10 @@ gem 'selectize-rails'
 # Using twitter bootstrap for styling
 # gem "twitter-bootstrap-rails"
 
-source 'http://rails-assets.org' do
+# source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-bootstrap-material-design'
-end
+# end
 
 #Using breadcrumbs_on_rails for breadcrumbs
 gem 'breadcrumbs_on_rails'
