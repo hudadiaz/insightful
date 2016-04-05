@@ -5,6 +5,8 @@ class Datum < ActiveRecord::Base
   before_save :retrieve_headers
   # before_save :assign_name_to_unnamed_headers
 
+  validates_presence_of :content
+
   def heads
     unless self.ignored.nil? || self.ignored.blank?
       eval(self.headers) - eval(self.ignored)
