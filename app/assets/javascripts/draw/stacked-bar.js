@@ -322,9 +322,10 @@ var drawStackedBars = function (data, category, measure) {
   // });
 }
 
-var visualize = function(res, selections) {
+var visualize = function(res, selections, callback) {
   data = res;
   processData(selections.cat, selections.stack, selections.measure, function(processedData){
     drawStackedBars(processedData, selections.cat, selections.measure);
+    callback;
   });
 }

@@ -11,11 +11,6 @@
   <style>
 
     @media print {
-      .container {
-        width: 50%;
-        height: 50%;
-      }
-
       .download-btn {
         display: none;
       }
@@ -37,7 +32,6 @@
     }
 
     #chart {
-      position: relative;
       text-align: center;
     }
 
@@ -122,31 +116,16 @@
       bottom: 0;
     }
 
-    .download-btn {
-      position: absolute !important;
-      right: 15px;
-      top: 15px;
-      width: auto;
-    }
-
-    .download-menu {
-      position: absolute;
-      top: 39px;
-      right: 15px;
-      left: inherit;
-    }
-
 </style>
 </head>
 <body>
   <div class="container">
-    
     <!-- Content Start -->
       <h1 class="title"><%= @visualization.title %></h1>
       <div id="sequence"></div>
       <div id="chart"></div>
       <em class="caption"><%= @visualization.caption %></em>
-      <p class="credit-link">visualized with <%= link_to 'Insightful', root_path, target: '_blank' %></p>
+      <p class="credit-link">visualized with <%= link_to 'Insightful', root_url, target: '_blank' %></p>
     <!-- Content End -->
         <!-- <a href="#" data-target="#" class="download-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <i class="material-icons">file_download</i><div class="ripple-container"></div>
@@ -157,6 +136,87 @@
         </ul> -->
   </div>
 
+  <% if user_signed_in? %>
+    <style>
+
+      .download-btn {
+        position: absolute !important;
+        right: 15px;
+        top: 15px;
+        width: auto;
+      }
+
+      .form-group {
+        margin: 0; 
+        width: 35%;
+      }
+
+    </style>
+
+    <!-- Button trigger modal -->
+    <a href="#" class="download-btn waves-effect" data-toggle="modal" data-target="#myModal">
+      <i class="material-icons">share</i>
+    </a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Share</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Iframe</h4>
+            <div class="well" id="iframe-content"></div>
+            <h4>Image</h4>
+            <form class="form-inline" action="" target="_blank">
+            <input hidden name="save" placeholder="Height" value="true">
+
+              <div class="form-group">
+                <label class="sr-only" for="widthInput">Width</label>
+                <div class="input-group">
+                  <div class="input-group-addon">Width</div>
+                  <input type="number" class="form-control" id="widthInput" name="width" value="800">
+                  <div class="input-group-addon">px</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="sr-only" for="heightInput">Height</label>
+                <div class="input-group">
+                  <div class="input-group-addon">Height</div>
+                  <input type="number" class="form-control" id="heightInput" name="height" value="600">
+                  <div class="input-group-addon">px</div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary">Generate</button>
+            </form>
+
+            <div class="well" id="image-link" style="display: none"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    
+      $(document).ready(function() {
+        $("#iframe-content").text('<iframe src="<%= visualization_url @visualization %>" frameborder="0" height="100%" width="100%"></iframe>');
+
+        if(getParameterByName('height'))
+          $("body").height(getParameterByName('height')+"px");
+        if(getParameterByName('width'))
+          $("body").width(getParameterByName('width')+"px");
+
+      });
+    </script>
+  <% end %>
+
   <script>
 
     var req = $.get("<%= datum_path(@visualization.datum, format: :json) %>");
@@ -164,7 +224,13 @@
     $.when(req).done(function(res) {
       data = res;
       visualize(res, <%= @visualization.selections.html_safe %>);
+      save();
     });
+
+    function save() {
+      if(getParameterByName('save') == "true")
+        screenGrabber('<%= @visualization.title.titleize.delete(' ').underscore %>');
+    }
 
   </script>
 </body>
