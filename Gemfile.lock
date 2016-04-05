@@ -1,6 +1,5 @@
 GEM
   remote: https://rubygems.org/
-  remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.5.1)
       actionpack (= 4.2.5.1)
@@ -81,6 +80,9 @@ GEM
       railties (>= 3.1.0)
       turbolinks
     json (1.8.3)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -200,14 +202,15 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
+  kaminari
   material_icons
   nprogress-rails
   omniauth
   omniauth-google
   pg
   rails (= 4.2.5.1)
-  rails-assets-bootstrap!
-  rails-assets-bootstrap-material-design!
+  rails-assets-bootstrap
+  rails-assets-bootstrap-material-design
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selectize-rails

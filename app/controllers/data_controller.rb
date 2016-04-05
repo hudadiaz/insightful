@@ -8,7 +8,7 @@ class DataController < ApplicationController
   # GET /data
   # GET /data.json
   def index
-    @data = current_user.data.order("updated_at DESC")
+    @data = current_user.data.order("updated_at DESC").page params[:page]
   end
 
   # GET /data/1
