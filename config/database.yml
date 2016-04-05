@@ -9,7 +9,7 @@ default: &default
   encoding: utf8
   pool: 5
   username: postgres
-  password: zaid
+  password: 1234
 
 development:
   <<: *default
