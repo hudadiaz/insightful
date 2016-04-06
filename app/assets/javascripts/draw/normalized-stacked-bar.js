@@ -26,7 +26,7 @@ var processData = function(category, stack, measure, callback) {
         indexStack = stacks.indexOf(items[i][stack]);
 
     if (indexCat >= 0 && indexStack >= 0){
-      if (measure == 'false')
+      if (measure == 'count')
         processedData[indexCat][stacks[indexStack]]++;
       else
         processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][measure].replace(/,/g, ''))

@@ -17,7 +17,7 @@ var processData = function(levels, measure, callback) {
 
       if (existing != undefined) {
 
-        if (measure == 'false')
+        if (measure == 'count')
           existing.size++;
         else
           existing.size += JSON.parse(item[measure].replace(/,/g, ''));
@@ -36,7 +36,7 @@ var processData = function(levels, measure, callback) {
       if (current_node.children.length < 1){
         delete current_node.children;
 
-        if (measure == 'false')
+        if (measure == 'count')
           current_node.size++;
         else
           current_node.size += JSON.parse(current_node.size)+JSON.parse(item[measure].replace(/,/g, ''));

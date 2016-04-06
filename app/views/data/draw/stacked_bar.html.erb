@@ -60,7 +60,7 @@
 
 <%= javascript_include_tag 'draw/'+action_name.dasherize %>
 <script>
-  var data, selects = ["cat", "stack", "measure"], measure = 'false';
+  var data, selects = ["cat", "stack", "measure"], measure = 'count';
 
   // drawStackedBars(data);
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
@@ -71,8 +71,8 @@
       updateSelect(i, val, data["headers"]);
     });
     $("#select-measure")
-      .append($("<option></option>")
-      .attr("value", false)
+      .append($("<option selected></option>")
+      .attr("value", 'count')
       .text("Count records"));
     $.each(selects, function(i, val) {
       $("#select-"+val).selectize();
