@@ -199,6 +199,7 @@
   }
 
   var buttonClick = function() {
+    reset();
     for (var i = 0; i < selectize.getValue().length; i++) {
       addNode(selectize.getValue()[i]);
     }
