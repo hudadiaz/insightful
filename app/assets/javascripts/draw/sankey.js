@@ -23,9 +23,11 @@ var linkNodes = function(graph, data, measure) {
           var tt = graph.nodes[k];
           if(ff.header == tt.header) continue;
           if(item[ff.header] == ff.name && item[tt.header] == tt.name){
-            if (measure == 'false')
-              links[j*loop+k].value++;
-            else links[j*loop+k].value += parseInt(item[measure].replace(/,/g, ''));
+            if (measure != 'count'){
+              console.log(measure)
+              links[j*loop+k].value += parseInt(item[measure].replace(/,/g, ''));
+            }
+            else links[j*loop+k].value++;
             delete item[ff.header]
           }
         }
@@ -51,7 +53,7 @@ var linkNodesWithOther = function(percent, graph, data) {
 }
 
 var drawSankey = function(graph) {
-  var units = "Records";
+  var units = "";
 
   var margin = {top: 10, right: 10, bottom: 10, left: 10},
       width = $(".container").width() - margin.left - margin.right,

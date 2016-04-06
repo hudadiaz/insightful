@@ -46,11 +46,23 @@
 
 <h1>Draw#sankey</h1>
 
-<div class="form-group">
-  <label for="select">Select</label>
-  <select id="select" class="form-control">
-    <option disabled selected> loading... </option>
-  </select>
+<div class="row">
+  <div class="col-sm-8">
+    <div class="form-group">
+      <label for="select-main">Compare</label>
+      <select id="select-main" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="form-group">
+      <label for="select-measure">According to</label>
+      <select id="select-measure" class="form-control">
+        <option disabled selected> loading... </option>
+      </select>
+    </div>
+  </div>
 </div>
 
 <div class="row" id="selectedItem">
@@ -73,26 +85,48 @@
     nodes = {},
     panelsCount = 0,
     maxPanel = 4,
-    $select = null
-    selectize = null;
+    selectize = null,
+    measure = 'count';
   graph = {"nodes":[], "links":[]};
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
 
   $.when(req).done(function(res) {
     data = res;
-    updateSelect(data.headers);
+    updateMainSelect(data.headers);
+    updateMeasureSelect(data.headers);
   });
 
-  var updateSelect = function(options) {
-    for (var i = options.length - 1; i >= 0; i--) {
-      $("#select").append('<option value="'+options[i]+'"">'+options[i]+'</option>')
-    }
-    $select = $("#select").selectize({
-      maxItems: 4,
-      onItemAdd: function(value, $item) {addPanel(value)},
-      onItemRemove: function(value) {removePanel(value)}
-    });
-    selectize = $select[0].selectize;
+  var updateMainSelect = function(options) {
+    $.each(options, function(i, key) {
+      if (data["numbers"].indexOf(key) != -1) return true;
+      $("#select-main")
+        .append($("<option></option>")
+        .attr("value",key)
+        .text(key)); 
+    })
+    selectize = $("#select-main").selectize({
+        maxItems: 4,
+        onItemAdd: function(value, $item) {addPanel(value)},
+        onItemRemove: function(value) {removePanel(value)}
+      })[0].selectize;
+  }
+
+  var updateMeasureSelect = function(options) {
+    $.each(options, function(i, key) {
+      if (data["numbers"].indexOf(key) == -1) return true;
+      $("#select-measure")
+        .append($("<option></option>")
+        .attr("value",key)
+        .text(key)); 
+    })
+    $("#select-measure")
+      .append($("<option selected></option>")
+      .attr("value", 'count')
+      .text("Count records"));
+    $("#select-measure").selectize()[0]
+      .selectize.on('change', function() {
+        measure = this.getValue();
+      });
   }
 
 
@@ -168,7 +202,7 @@
     for (var i = 0; i < selectize.getValue().length; i++) {
       addNode(selectize.getValue()[i]);
     }
-    linkNodes(graph, data);
+    linkNodes(graph, data, measure);
     graphCopy = jQuery.extend(true, {}, graph)
     $("#saveButton").show();
     drawSankey(graph);
