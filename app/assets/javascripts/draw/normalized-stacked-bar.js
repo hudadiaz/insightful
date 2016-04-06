@@ -40,7 +40,7 @@ var processData = function(category, stack, measure, callback) {
 var drawStackedBars = function (data, category, measure) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = $(".visualization-container").width() - margin.left - margin.right,
-      height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 30 - margin.top - margin.bottom;
+      height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 15 - margin.top - margin.bottom;
 
   var x = d3.scale.ordinal()
       .rangeRoundBands([0, width], .1);

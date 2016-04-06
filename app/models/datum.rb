@@ -52,7 +52,7 @@ class Datum < ActiveRecord::Base
     d[:numbers] = self.number_headers
     d[:values] = {}
       self.nominal_and_nominal_headers.each do |h|
-        d[:values][h] = self.csv[h].uniq
+        d[:values][h] = self.csv[h].map{ |v| v.strip unless v.nil? }.uniq
       end
     d[:items] = self.items
     d[:count] = d[:items].count

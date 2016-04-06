@@ -66,14 +66,19 @@
 </div>
 
 <div class="form-group">
-  <a class="btn btn-primary" onclick="buttonClick()">Draw</a>
+  <a class="btn btn-primary" onclick="draw()">Draw</a>
   <a class="btn" onclick="reset()">Reset</a>
+  <a id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</a>
 </div>
 
-<button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
+<div class="draw-container">
+  <div class="visualization-container">
+    <div id="chart"></div>
+  </div>
+</div>
 
-<div class="visualization-container">
-  <div id="chart"></div>
+<div class="row">
+  <div id="selectedItems"></div>
 </div>
 
 <%= javascript_include_tag 'draw/'+action_name.dasherize %>
@@ -131,9 +136,9 @@
 
   var addPanel = function(header) {
     if (panelsCount < maxPanel) {
-      $('.panels').removeClass("col-md-"+(12/panelsCount++))
-      $('.panels').addClass("col-md-"+(12/panelsCount))
-      $("#selectedItem").append(createPanel(header));
+      $('.panels').removeClass("col-sm-"+(12/panelsCount++))
+      $('.panels').addClass("col-sm-"+(12/panelsCount))
+      $("#selectedItems").append(createPanel(header));
       nodes[header] = [];
       nodes[header] = JSON.parse(JSON.stringify(data["values"][header]));
     }
@@ -141,8 +146,8 @@
 
   var removePanel = function(header) {
     if (panelsCount > 0) {
-      $('.panels').removeClass("col-md-"+(12/panelsCount--))
-      $('.panels').addClass("col-md-"+(12/panelsCount))
+      $('.panels').removeClass("col-sm-"+(12/panelsCount--))
+      $('.panels').addClass("col-sm-"+(12/panelsCount))
       $("#panel-"+removePunct(header)).remove();
       $("#panel-body-"+removePunct(header)).show();
       nodes[header] = [];
@@ -154,7 +159,7 @@
   }
 
   var createPanel = function(header) {
-    return  '<div class="panels col-md-'+(12/panelsCount)+'" id="panel-'+removePunct(header)+'">' +
+    return  '<div class="panels col-sm-'+(12/panelsCount)+'" id="panel-'+removePunct(header)+'">' +
               '<div class="bs-component">' +
                 '<div class="panel panel-primary">' +
                   '<div class="panel-heading">' +
@@ -192,13 +197,22 @@
   }
 
   var reset = function() {
+    $(".draw-container").height("700px");
     $("#saveButton").hide();
     graph = {"nodes":[], "links":[]};
     $("#chart").html("")
   }
 
-  var buttonClick = function() {
+  var draw = function() {
     reset();
+
+    $.each($(".panels"), function(i, panel) {
+      if ($(panel).height() > $('.draw-container').height())
+        $('.draw-container').height($(panel).height());
+      console.log($(panel).height())
+      console.log($('.draw-container').height())
+    })
+
     for (var i = 0; i < selectize.getValue().length; i++) {
       addNode(selectize.getValue()[i]);
     }
