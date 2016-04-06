@@ -56,7 +56,9 @@
 
 <button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
 
-<div id="chart"></div>
+<div class="visualization-container">
+  <div id="chart"></div>
+</div>
 
 <%= javascript_include_tag 'draw/'+action_name.dasherize %>
 <script>

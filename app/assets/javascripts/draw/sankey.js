@@ -56,8 +56,8 @@ var drawSankey = function(graph) {
   var units = "";
 
   var margin = {top: 10, right: 10, bottom: 10, left: 10},
-      width = $(".container").width() - margin.left - margin.right,
-      height = $(".container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 30 - margin.top - margin.bottom;
+      width = $(".visualization-container").width() - margin.left - margin.right,
+      height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 30 - margin.top - margin.bottom;
 
   var formatNumber = d3.format(",.0f"),    // zero decimal places
       format = function(d) { return formatNumber(d) + " " + units; },
