@@ -1,6 +1,6 @@
 function screenGrabber(title) {
     var time = new Date().getTime();
-    html2canvas($(".container"), {
+    html2canvas($(".visualization-container"), {
         allowTaint: true,
         useCORS: true,
         letterRendering: true,
@@ -9,7 +9,6 @@ function screenGrabber(title) {
             a.href = canvas.toDataURL();
             a.download = time+"_"+title+".jpg";
             a.click();
-            window.close();
         }
     });
 }

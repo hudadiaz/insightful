@@ -209,14 +209,14 @@
       $.when(req).done(function(res) {
         data = res;
         visualize(res, <%= @visualization.selections.html_safe %>);
-        save();
+        if(getParameterByName('save') == "true")
+          save();
       });
 
     });
 
     function save() {
-      if(getParameterByName('save') == "true")
-        screenGrabber('<%= @visualization.title.blank? ? @visualization.id : @visualization.title.titleize.delete(' ').underscore %>');
+      screenGrabber('<%= @visualization.title.blank? ? @visualization.id : @visualization.title.titleize.delete(' ').underscore %>');
     }
 
   </script>
