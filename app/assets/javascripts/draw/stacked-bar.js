@@ -29,7 +29,7 @@ var processData = function(category, stack, measure, callback) {
       if (measure == 'false')
         processedData[indexCat][stacks[indexStack]]++;
       else
-        processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][measure])
+        processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][measure].replace(/,/g, ''))
     }
   }
   console.log(new Date().getTime()-time)

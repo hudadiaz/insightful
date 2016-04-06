@@ -1,6 +1,6 @@
 var data;
 
-var linkNodes = function(graph, data) {
+var linkNodes = function(graph, data, measure) {
   var items = JSON.parse(JSON.stringify(data["items"]))
   var loop = graph.nodes.length;
   var links = [];
@@ -23,9 +23,9 @@ var linkNodes = function(graph, data) {
           var tt = graph.nodes[k];
           if(ff.header == tt.header) continue;
           if(item[ff.header] == ff.name && item[tt.header] == tt.name){
-            if (item["Freq"] != undefined)
-              links[j*loop+k].value += parseInt(item["Freq"]);
-            else links[j*loop+k].value++;
+            if (measure == 'false')
+              links[j*loop+k].value++;
+            else links[j*loop+k].value += parseInt(item[measure].replace(/,/g, ''));
             delete item[ff.header]
           }
         }
