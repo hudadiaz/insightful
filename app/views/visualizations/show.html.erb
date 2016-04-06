@@ -133,7 +133,7 @@
       <div id="sequence"></div>
       <div id="chart"></div>
       <em class="caption"><%= @visualization.caption %></em>
-      <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %> visualization, updated <%= I18n.l (@visualization.updated_at > @visualization.datum.updated_at ? @visualization : @visualization.datum).updated_at.localtime, format: :long %></p>
+      <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %> visualization, updated <%= I18n.l @visualization.modified.localtime, format: :long %></p>
   </div>
 
   <!-- Button trigger modal -->
