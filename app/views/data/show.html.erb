@@ -1,11 +1,9 @@
 <% visualizations = @datum.visualizations.order("updated_at DESC").page(params[:page]) %>
-
+<p id="notice"><%= notice %></p>
 <div class="bs-docs-section">
   <div class="row">
     <div class="col-md-12">
       <h2><%= @datum.name %></h2>
-
-      <p id="notice"><%= notice %></p>
 
       <h4>Listing Visualizations</h4>
 
@@ -100,18 +98,42 @@
         }
       </script>
 
-      <div class="bs-component">
-        <h4>Create visualizations</h4>
-        <%= link_to 'Sankey', sankey_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Stacked bar', stacked_bar_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Normalized stacked bar', normalized_stacked_bar_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Sunburst', sunburst_datum_path(@datum), class: "btn btn-info" %>
-      </div>
-
-      <div class="bs-component">
-        <%= link_to 'Edit', edit_datum_path(@datum), class: "btn btn-sm waves-effect" %>
-        <%= link_to 'Back', data_path, class: "btn btn-sm waves-effect" %>
-      </div>
+      
     </div>
+    <div class="row">
+      <h4>Create visualizations</h4>
+        <div class="col-sm-3 col-xs-6">
+          <div class="thumb-container">
+            <a href="<%= sankey_datum_path(@datum) %>" class="thumb-link">
+              <p class="thumb-link-text">Sankey</p>
+              <img src="<%= image_path('visualizations/sankey-medium.png') %>" class="thumb-img" alt="">
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+          <div class="thumb-container">
+            <a href="<%= sunburst_datum_path(@datum) %>" class="thumb-link">
+              <p class="thumb-link-text">Sunburst</p>
+              <img src="<%= image_path('visualizations/sunburst-medium.png') %>" class="thumb-img" alt="">
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+          <div class="thumb-container">
+            <a href="<%= stacked_bar_datum_path(@datum) %>" class="thumb-link">
+              <p class="thumb-link-text">Stacked bar</p>
+              <img src="<%= image_path('visualizations/stacked-bar-medium.png') %>" class="thumb-img" alt="">
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+          <div class="thumb-container">
+            <a href="<%= normalized_stacked_bar_datum_path(@datum) %>" class="thumb-link">
+              <p class="thumb-link-text">Normalized stacked bar</p>
+              <img src="<%= image_path('visualizations/normalized-stacked-bar-medium.png') %>" class="thumb-img" alt="">
+            </a>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
