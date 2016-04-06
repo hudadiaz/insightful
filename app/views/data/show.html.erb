@@ -100,12 +100,40 @@
         }
       </script>
 
-      <div class="bs-component">
-        <h4>Create visualizations</h4>
-        <%= link_to 'Sankey', sankey_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Stacked bar', stacked_bar_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Normalized stacked bar', normalized_stacked_bar_datum_path(@datum), class: "btn btn-info" %>
-        <%= link_to 'Sunburst', sunburst_datum_path(@datum), class: "btn btn-info" %>
+      <h4>Create visualizations</h4>
+      <div class="row">
+        <div class="col-sm-3 col-xs-6">
+          <p>
+            <a href="<%= sankey_datum_path(@datum) %>">
+              Sankey
+              <img src="<%= image_path('visualizations/sankey-medium.png') %>" class="visualization-thumb" alt="">
+            </a>
+          </p>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+          <p>
+            <a href="<%= sunburst_datum_path(@datum) %>">
+              Sunburst
+              <img src="<%= image_path('visualizations/sunburst-medium.png') %>" class="visualization-thumb" alt="">
+            </a>
+          </p>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+          <p>
+            <a href="<%= stacked_bar_datum_path(@datum) %>">
+              Stacked bar
+              <img src="<%= image_path('visualizations/stacked-bar-medium.png') %>" class="visualization-thumb" alt="">
+            </a>
+          </p>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+          <p>
+            <a href="<%= normalized_stacked_bar_datum_path(@datum) %>">
+              Normalized stacked bar
+              <img src="<%= image_path('visualizations/normalized-stacked-bar-medium.png') %>" class="visualization-thumb" alt="">
+            </a>
+          </p>
+        </div>
       </div>
 
       <div class="bs-component">

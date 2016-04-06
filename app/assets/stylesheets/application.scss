@@ -52,3 +52,11 @@ $nprogress-color: #fff;
   border: 1px dashed #aaa;
   margin-bottom: 30px;
 }
+
+img.visualization-thumb {
+  width: 100%;
+}
+
+img.visualization-thumb:hover {
+  opacity: .5;
+}
