@@ -66,7 +66,7 @@ function findWithAttr(array, attr, value) {
 
 function drawZoomable(root) {
   var width = $(".visualization-container").width() - 30,
-      height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 60,
+      height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 75,
       radius = (Math.min(width, height) / 2);
 
   var formatNumber = d3.format(",d");

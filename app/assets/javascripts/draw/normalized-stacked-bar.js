@@ -46,7 +46,7 @@ var drawStackedBars = function (data, category, measure) {
       .rangeRoundBands([0, width], .1);
 
   var color = d3.scale.ordinal()
-      .range(["#004529", "#006837", "#238443", "#41ab5d", "#78c679", "#addd8e", "#d9f0a3", "#f7fcb9", "#ffffe5"]);
+      .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'].reverse());
 
   var xAxis = d3.svg.axis()
       .scale(x)
