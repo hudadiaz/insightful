@@ -1,4 +1,3 @@
-<% javascript 'draw/'+action_name.dasherize %>
 <style>
 
   .axis path,
@@ -59,6 +58,7 @@
 
 <div id="chart"></div>
 
+<%= javascript_include_tag 'draw/'+action_name.dasherize %>
 <script>
   var data, selects = ["cat", "stack", "measure"], measure = 'false';
 

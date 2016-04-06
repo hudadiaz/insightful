@@ -1,4 +1,3 @@
-<% javascript 'draw/'+action_name.dasherize %>
 <style>
 
   .node rect {
@@ -66,6 +65,7 @@
 
 <div id="chart"></div>
 
+<%= javascript_include_tag 'draw/'+action_name.dasherize %>
 <script>
   var data,
     graph,
