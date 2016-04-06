@@ -105,16 +105,11 @@
       background: #eaeaea;
     }
 
-    .last-modified {
-      position: absolute;
-      right: 15px;
-      bottom: 15px;
-    }
-
     .credit-link {
       position: absolute;
-      right: 15px;
-      bottom: 0;
+      right: 10px;
+      bottom: 5px;
+      margin: 0;
     }
 
     .download-btn {
@@ -138,8 +133,7 @@
       <div id="sequence"></div>
       <div id="chart"></div>
       <em class="caption"><%= @visualization.caption %></em>
-      <p class="last-modified">Last modified <%= I18n.l (@visualization.updated_at > @visualization.datum.updated_at ? @visualization : @visualization.datum).updated_at.localtime, format: :long %></p>
-      <p class="credit-link">visualized with <%= link_to 'Insightful', root_url, target: '_blank' %></p>
+      <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %> visualization, updated <%= I18n.l (@visualization.updated_at > @visualization.datum.updated_at ? @visualization : @visualization.datum).updated_at.localtime, format: :long %></p>
   </div>
 
   <!-- Button trigger modal -->
