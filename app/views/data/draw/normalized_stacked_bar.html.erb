@@ -84,9 +84,8 @@
 
   var updateSelect = function(index, id, keys) {
     $.each(keys, function(i, key) {
-      if (index == 0 && !isNaN(data["values"][key][0])) return true;
-      if (index == 1 && (data["values"][key].length > 9 || !isNaN(data["values"][key][0]))) return true;
-      if (index == 2 && isNaN(data["values"][key][0])) return true;
+      if (index != 2 && data["numbers"].indexOf(key) != -1) return true;
+      if (index == 2 && data["numbers"].indexOf(key) == -1) return true;
       $("#select-"+id)
         .append($("<option></option>")
         .attr("value",key)
