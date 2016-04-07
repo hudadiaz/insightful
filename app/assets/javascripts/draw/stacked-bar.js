@@ -95,10 +95,12 @@ var drawStackedBars = function (data, info) {
 
     x.domain(data.map(function(d) { return d[category]; }));
 
+
     var gXAxis = svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
     gXAxis.selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
@@ -115,6 +117,15 @@ var drawStackedBars = function (data, info) {
     height = height - maxWidth;
 
     gXAxis.attr("transform", "translate(0," + height + ")");
+
+    var categoryLabel = gXAxis.append("g")
+          .attr("transform", "translate(" + width/2 + "," + maxWidth + ")")
+        .append("text")
+          .style("font-weight", "600")
+          .style("text-anchor", "middle")
+          .attr("dx", "-.8em")
+          .attr("dy", ".15em")
+          .text(category);
 
     var y = d3.scale.linear()
         .rangeRound([height, 0]);
@@ -183,11 +194,10 @@ var drawStackedBars = function (data, info) {
        .on("mouseout",function(){
           svg.select(".tooltip").remove();
           d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
-                                
         })
 
-    svg.append("text")
-      .attr("x", width)
+    var stackLabel = svg.append("text")
+        .attr("x", width)
         .attr("y", 9)
         .attr("dy", ".45em")
         .style("text-anchor", "end")
