@@ -163,29 +163,36 @@ var drawStackedBars = function (data, info) {
         .style("fill", function(d) { return color(d.name); });
 
     catgory.selectAll("rect")
-         .on("mouseover", function(d){
+        .on("mouseover", function(d){
 
-            var delta = d.y1 - d.y0;
-            var xPos = parseFloat(d3.select(this).attr("x"));
-            var yPos = parseFloat(d3.select(this).attr("y"));
-            var width = parseFloat(d3.select(this).attr("width"));
-            var height = parseFloat(d3.select(this).attr("height"));
+          var delta = d.y1 - d.y0;
+          var xPos = parseFloat(d3.select(this).attr("x"));
+          var yPos = parseFloat(d3.select(this).attr("y"));
+          var width = parseFloat(d3.select(this).attr("width"));
+          var height = parseFloat(d3.select(this).attr("height"));
 
-            d3.select(this).attr("stroke","red").attr("stroke-width",0.8);
+          d3.select(this).attr("stroke","red").attr("stroke-width",0.8);
 
-            svg.append("text")
-            .attr("x",xPos +width/2)
-            .attr("y",yPos +height/2)
-            .attr("class","tooltip")
-            .text(d.name +": "+ delta.toFixed(2)); 
-            
-         })
-         .on("mouseout",function(){
-            svg.select(".tooltip").remove();
-            d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
-                                  
-          })
+          svg.append("text")
+          .attr("x",xPos +width/2)
+          .attr("y",yPos +height/2)
+          .attr("class","tooltip")
+          .text(d.name +": "+ delta.toFixed(2)); 
+          
+        })
+       .on("mouseout",function(){
+          svg.select(".tooltip").remove();
+          d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
+                                
+        })
 
+    svg.append("text")
+      .attr("x", width)
+        .attr("y", 9)
+        .attr("dy", ".45em")
+        .style("text-anchor", "end")
+        .style("font-weight", "600")
+        .text(stack);
 
     var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
@@ -195,7 +202,7 @@ var drawStackedBars = function (data, info) {
           legendClassArray.push(d.replace(/\s/g, '')); //remove spaces
           return "legend";
         })
-        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+        .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 25) + ")"; });
 
     //reverse order to match order in which bars are stacked    
     legendClassArray = legendClassArray.reverse();
@@ -254,8 +261,7 @@ var drawStackedBars = function (data, info) {
             }
 
           } //end active_link check
-                            
-                                  
+
         });
 
     legend.append("text")
