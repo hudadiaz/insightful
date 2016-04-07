@@ -110,6 +110,15 @@ var drawStackedBars = function (data, info) {
 
     gXAxis.attr("transform", "translate(0," + height + ")");
 
+    var categoryLabel = gXAxis.append("g")
+          .attr("transform", "translate(" + width/2 + "," + maxWidth + ")")
+        .append("text")
+          .style("font-weight", "600")
+          .style("text-anchor", "middle")
+          .attr("dx", "-.8em")
+          .attr("dy", ".15em")
+          .text(category);
+
     var y = d3.scale.linear()
         .rangeRound([height, 0]);
 
@@ -182,6 +191,13 @@ var drawStackedBars = function (data, info) {
                                   
           })
 
+    var stackLabel = svg.append("text")
+        .attr("x", width)
+        .attr("y", 9)
+        .attr("dy", ".45em")
+        .style("text-anchor", "end")
+        .style("font-weight", "600")
+        .text(stack);
 
     var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
@@ -191,7 +207,7 @@ var drawStackedBars = function (data, info) {
           legendClassArray.push(d.replace(/\s/g, '')); //remove spaces
           return "legend";
         })
-        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+        .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 25) + ")"; });
 
     //reverse order to match order in which bars are stacked    
     legendClassArray = legendClassArray.reverse();
