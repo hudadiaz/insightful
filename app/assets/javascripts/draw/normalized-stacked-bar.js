@@ -1,10 +1,13 @@
 var data;
 
-var processData = function(category, stack, measure, callback) {
-  var items = JSON.parse(JSON.stringify(data["items"]));
-  var categories = JSON.parse(JSON.stringify(data["values"][category]));
-  var stacks = JSON.parse(JSON.stringify(data["values"][stack]));
-  var processedData = [];
+var processData = function(info, callback) {
+  var category = info.category,
+      stack = info.stack,
+      measure = info.measure,
+      items = JSON.parse(JSON.stringify(data["items"])),
+      categories = JSON.parse(JSON.stringify(data["values"][category])),
+      stacks = JSON.parse(JSON.stringify(data["values"][stack])),
+      processedData = [];
 
   for (var j =  0; j < categories.length; j++) {
     var datum = {};
@@ -37,7 +40,11 @@ var processData = function(category, stack, measure, callback) {
   callback(processedData);
 }
 
-var drawStackedBars = function (data, category, measure) {
+var drawStackedBars = function (data, info) {
+  var category = info.category,
+      stack = info.stack,
+      measure = info.measure;
+
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = $(".visualization-container").width() - margin.left - margin.right,
       height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 15 - margin.top - margin.bottom;
@@ -325,7 +332,7 @@ var drawStackedBars = function (data, category, measure) {
 
 var visualize = function(res, selections) {
   data = res;
-  processData(selections.cat, selections.stack, selections.measure, function(processedData){
-    drawStackedBars(processedData, selections.cat, selections.measure);
+  processData(selections, function(processedData){
+    drawStackedBars(processedData, selections);
   });
 }
