@@ -189,8 +189,6 @@
   </div>
 
   <script>
-    
-    var req = $.get("<%= datum_path(@visualization.datum, format: :json) %>");
 
     $(document).ready(function() {
       $("#iframe-content").text('<iframe src="<%= visualization_url @visualization %>" frameborder="0" height="100%" width="100%"></iframe>');
@@ -200,6 +198,8 @@
       if(getParameterByName('width'))
         $("body").width(getParameterByName('width')+"px");
 
+    
+      var req = $.get("<%= datum_path(@visualization.datum, format: :json) %>");
       $.when(req).done(function(res) {
         data = res;
         visualize(res, <%= @visualization.selections.html_safe %>);
