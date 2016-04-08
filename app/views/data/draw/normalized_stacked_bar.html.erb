@@ -30,8 +30,8 @@
 <div class="row">
   <div class="col-sm-4">
     <div class="form-group">
-      <label for="select-cat">Compare</label>
-      <select id="select-cat" class="form-control">
+      <label for="select-category">Compare</label>
+      <select id="select-category" class="form-control">
         <option disabled selected> loading... </option>
       </select>
     </div>
@@ -64,7 +64,7 @@
 
 <%= javascript_include_tag 'draw/'+action_name.dasherize %>
 <script>
-  var data, selects = ["cat", "stack", "measure"], measure = 'count';
+  var data, selects = ["category", "stack", "measure"], measure = 'count';
 
   // drawStackedBars(data);
   var req = $.get("<%= datum_path(@datum, format: :json) %>");
@@ -110,8 +110,8 @@
 
     if (valid){
       $("#saveButton").show();
-      processData(obj.cat, obj.stack, obj.measure, function(processedData){
-        drawStackedBars(processedData, obj.cat, obj.measure)
+      processData(obj, function(processedData){
+        drawStackedBars(processedData, obj)
       });
     }
   }

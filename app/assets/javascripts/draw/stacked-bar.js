@@ -1,10 +1,13 @@
 var data;
 
-var processData = function(category, stack, measure, callback) {
-  var items = JSON.parse(JSON.stringify(data["items"]));
-  var categories = JSON.parse(JSON.stringify(data["values"][category]));
-  var stacks = JSON.parse(JSON.stringify(data["values"][stack]));
-  var processedData = [];
+var processData = function(info, callback) {
+  var category = info.category,
+      stack = info.stack,
+      measure = info.measure,
+      items = JSON.parse(JSON.stringify(data["items"])),
+      categories = JSON.parse(JSON.stringify(data["values"][category])),
+      stacks = JSON.parse(JSON.stringify(data["values"][stack])).reverse(),
+      processedData = [];
 
   for (var j =  0; j < categories.length; j++) {
     var datum = {};
@@ -37,26 +40,35 @@ var processData = function(category, stack, measure, callback) {
   callback(processedData);
 }
 
-var drawStackedBars = function (data, category, measure) {
-  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+var drawStackedBars = function (data, info) {
+  var category = info.category,
+      stack = info.stack,
+      measure = info.measure;
+
+  var measurePad = 30,
+      margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = $(".visualization-container").width() - margin.left - margin.right,
       height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 15 - margin.top - margin.bottom;
 
-  var x = d3.scale.ordinal()
-      .rangeRoundBands([0, width], .1);
 
   var color = d3.scale.ordinal()
       .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'].reverse());
 
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
 
   var svg = d3.select("#chart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + (margin.left+measurePad) + "," + margin.top + ")");
+
+  width = width - measurePad;
+
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
 
   var active_link = "0"; //to control legend selections and hover
   var legendClicked; //to control legend selections
@@ -83,10 +95,12 @@ var drawStackedBars = function (data, category, measure) {
 
     x.domain(data.map(function(d) { return d[category]; }));
 
+
     var gXAxis = svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
     gXAxis.selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
@@ -94,13 +108,13 @@ var drawStackedBars = function (data, category, measure) {
       .attr("transform", "rotate(-65)");
 
     // Find the maxLabel height, adjust the height accordingly and transform the x axis.
-    var maxWidth = 0;
+    var xmaxWidth = 0;
     gXAxis.selectAll("text").each(function () {
       var boxWidth = this.getBBox().width;
-      if (boxWidth > maxWidth) maxWidth = boxWidth;
+      if (boxWidth > xmaxWidth) xmaxWidth = boxWidth;
     });
 
-    height = height - maxWidth;
+    height = height - xmaxWidth;
 
     gXAxis.attr("transform", "translate(0," + height + ")");
 
@@ -115,15 +129,9 @@ var drawStackedBars = function (data, category, measure) {
 
     y.domain([0, d3.max(data, function(d) { return d.total; })]);
 
-    svg.append("g")
+    var gYAxis = svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end");
-        //.text("Population");
+        .call(yAxis);
 
     var catgory = svg.selectAll(".catgory")
         .data(data)
@@ -151,29 +159,52 @@ var drawStackedBars = function (data, category, measure) {
         .style("fill", function(d) { return color(d.name); });
 
     catgory.selectAll("rect")
-         .on("mouseover", function(d){
+        .on("mouseover", function(d){
 
-            var delta = d.y1 - d.y0;
-            var xPos = parseFloat(d3.select(this).attr("x"));
-            var yPos = parseFloat(d3.select(this).attr("y"));
-            var width = parseFloat(d3.select(this).attr("width"));
-            var height = parseFloat(d3.select(this).attr("height"));
+          var delta = d.y1 - d.y0;
+          var xPos = parseFloat(d3.select(this).attr("x"));
+          var yPos = parseFloat(d3.select(this).attr("y"));
+          var width = parseFloat(d3.select(this).attr("width"));
+          var height = parseFloat(d3.select(this).attr("height"));
 
-            d3.select(this).attr("stroke","red").attr("stroke-width",0.8);
+          d3.select(this).attr("stroke","red").attr("stroke-width",0.8);
 
-            svg.append("text")
-            .attr("x",xPos +width/2)
-            .attr("y",yPos +height/2)
-            .attr("class","tooltip")
-            .text(d.name +": "+ delta.toFixed(2)); 
-            
-         })
-         .on("mouseout",function(){
-            svg.select(".tooltip").remove();
-            d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
-                                  
-          })
+          svg.append("text")
+          .attr("x",xPos +width/2)
+          .attr("y",yPos +height/2)
+          .attr("class","tooltip")
+          .text(d.name +": "+ delta.toFixed(2)); 
+          
+        })
+       .on("mouseout",function(){
+          svg.select(".tooltip").remove();
+          d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
+        })
 
+    var measureLabel = gYAxis.append("g")
+          .attr("class", "visualization-labels")
+          .attr("transform", "translate(" + -(margin.left+measurePad/2) + "," + (height/2-margin.top) + ")")
+        .append("text")
+          .style("text-anchor", "middle")
+          .style("font-weight", "600")
+          .attr("transform", "rotate(-90)")
+          .text(measure);
+
+    var categoryLabel = gXAxis.append("g")
+          .attr("class", "visualization-labels")
+          .attr("transform", "translate(" + width/2 + "," + (xmaxWidth+margin.top) + ")")
+        .append("text")
+          .style("text-anchor", "middle")
+          .style("font-weight", "600")
+          .text(category);
+
+    var stackLabel = svg.append("g")
+          .attr("class", "visualization-labels")
+          .attr("transform", "translate(" + width + "," + margin.top + ")")
+        .append("text")
+          .style("text-anchor", "end")
+          .style("font-weight", "600")
+          .text(stack);
 
     var legend = svg.selectAll(".legend")
         .data(color.domain().slice().reverse())
@@ -183,7 +214,7 @@ var drawStackedBars = function (data, category, measure) {
           legendClassArray.push(d.replace(/\s/g, '')); //remove spaces
           return "legend";
         })
-        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+        .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 25) + ")"; });
 
     //reverse order to match order in which bars are stacked    
     legendClassArray = legendClassArray.reverse();
@@ -242,8 +273,7 @@ var drawStackedBars = function (data, category, measure) {
             }
 
           } //end active_link check
-                            
-                                  
+
         });
 
     legend.append("text")
@@ -324,8 +354,8 @@ var drawStackedBars = function (data, category, measure) {
 
 var visualize = function(res, selections, callback) {
   data = res;
-  processData(selections.cat, selections.stack, selections.measure, function(processedData){
-    drawStackedBars(processedData, selections.cat, selections.measure);
+  processData(selections, function(processedData){
+    drawStackedBars(processedData, selections);
     callback;
   });
 }
