@@ -215,20 +215,34 @@ function drawZoomable(root) {
     trail.append("svg:text")
       .attr("id", "endlabel")
       .style("fill", "#000");
+
+    d3.selectAll("path").each(function(d) {
+      var text = svg.append("text")
+        .attr("text-anchor", "middle")
+        .text(d.name);
+      d.width = text.node().getBBox().width + 50;
+      text.remove();
+    })
   }
 
-  // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+  // Breadcrumb dimensions: margin, height, spacing, width of tip/tail.
   var b = {
-    w: 75, h: 30, s: 3, t: 10
+    m: 15, h: 30, s: 3, t: 10
   };
+
+  function getTextWidth(text) {
+    var a = document.createElement('canvas');
+    var b = a.getContext('2d');
+    return b.measureText(text).width;
+  }
 
   // Generate a string that describes the points of a breadcrumb polygon.
   function breadcrumbPoints(d, i) {
     var points = [];
     points.push("0,0");
-    points.push(b.w + ",0");
-    points.push(b.w + b.t + "," + (b.h / 2));
-    points.push(b.w + "," + b.h);
+    points.push(d.width + ",0");
+    points.push(d.width + b.t + "," + (b.h / 2));
+    points.push(d.width + "," + b.h);
     points.push("0," + b.h);
     if (i > 0) { // Leftmost breadcrumb; don't include 6th vertex.
       points.push(b.t + "," + (b.h / 2));
@@ -239,6 +253,7 @@ function drawZoomable(root) {
 
   // Update the breadcrumb trail to show the current sequence and percentage.
   function updateBreadcrumbs(nodeArray, percentageString) {
+    var offset = 0;
 
     // Data join; key function combines name and depth (= position in sequence).
     var g = d3.select("#trail")
@@ -253,15 +268,20 @@ function drawZoomable(root) {
         .style("fill", function(d) { return color(d.name); });
 
     entering.append("svg:text")
-        .attr("x", (b.w + b.t) / 2)
+        .attr("x", function(d) { return (d.width + b.t) / 2})
         .attr("y", b.h / 2)
         .attr("dy", "0.35em")
         .attr("text-anchor", "middle")
         .text(function(d) { return d.name; });
 
     // Set position for entering and updating nodes.
-    g.attr("transform", function(d, i) {
-      return "translate(" + i * (b.w + b.s) + ", 0)";
+    g.each(function(d) {
+      d.offset = offset;
+      offset += d.width + 3;
+    })
+
+    g.attr("transform", function(d) {
+      return "translate(" + (d.offset + b.s) + ", 0)";
     });
 
     // Remove exiting nodes.
@@ -269,10 +289,10 @@ function drawZoomable(root) {
 
     // Now move and update the percentage at the end.
     d3.select("#trail").select("#endlabel")
-        .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
+        .attr("x", offset + b.m)
         .attr("y", b.h / 2)
         .attr("dy", "0.35em")
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", "start")
         .text(percentageString);
 
     // Make the breadcrumb trail visible, if it's hidden.
