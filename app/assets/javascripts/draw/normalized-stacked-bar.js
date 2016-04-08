@@ -200,7 +200,7 @@ var drawStackedBars = function (data, info) {
 
     var stackLabel = svg.append("g")
           .attr("class", "visualization-labels")
-          .attr("transform", "translate(" + width + "," + margin.top + ")")
+          .attr("transform", "translate(" + width + "," + 13 + ")")
         .append("text")
           .style("text-anchor", "end")
           .style("font-weight", "600")
@@ -214,7 +214,7 @@ var drawStackedBars = function (data, info) {
           legendClassArray.push(d.replace(/\s/g, '')); //remove spaces
           return "legend";
         })
-        .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 25) + ")"; });
+        .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 20) + ")"; });
 
     //reverse order to match order in which bars are stacked    
     legendClassArray = legendClassArray.reverse();
