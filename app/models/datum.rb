@@ -1,12 +1,11 @@
 class Datum < ActiveRecord::Base
   belongs_to :user
   has_many :visualizations, dependent: :destroy
+  validates_presence_of :user_id
 
   after_initialize :default_values
   before_save :retrieve_headers
   # before_save :assign_name_to_unnamed_headers
-
-  validates_presence_of :content
 
   def significant_headers
     unless self.ignored.nil? || self.ignored.blank?

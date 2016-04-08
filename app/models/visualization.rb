@@ -1,7 +1,8 @@
 class Visualization < ActiveRecord::Base
   self.inheritance_column = nil
   belongs_to :datum
-  delegate :user, to: :datum, :allow_nil => true
+  delegate :user, to: :datum, allow_nil: false
+  after_initialize :default_values
 
   def modified
     (self.updated_at > self.datum.updated_at ? self : self.datum).updated_at
@@ -9,6 +10,6 @@ class Visualization < ActiveRecord::Base
 
   private
     def default_values
-      self.name ||= datum.name
+      self.title ||= datum.name + " " + self.type
     end
 end
