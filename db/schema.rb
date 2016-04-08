@@ -18,13 +18,13 @@ ActiveRecord::Schema.define(version: 20160404072148) do
 
   create_table "data", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "name"
-    t.string   "headers"
-    t.string   "content"
-    t.string   "ignored"
-    t.string   "numbers"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                      null: false
+    t.string   "headers",                   null: false
+    t.text     "content",                   null: false
+    t.string   "ignored",    default: "[]"
+    t.string   "numbers",    default: "[]"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "data", ["user_id"], name: "index_data_on_user_id", using: :btree
@@ -50,11 +50,11 @@ ActiveRecord::Schema.define(version: 20160404072148) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "visualizations", force: :cascade do |t|
+    t.integer  "datum_id"
     t.string   "title"
     t.string   "caption"
-    t.string   "type"
-    t.string   "selections"
-    t.integer  "datum_id"
+    t.string   "type",       null: false
+    t.string   "selections", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
