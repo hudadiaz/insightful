@@ -6,7 +6,7 @@ var processData = function(info, callback) {
       measure = info.measure,
       items = JSON.parse(JSON.stringify(data["items"])),
       categories = JSON.parse(JSON.stringify(data["values"][category])),
-      stacks = JSON.parse(JSON.stringify(data["values"][stack])),
+      stacks = JSON.parse(JSON.stringify(data["values"][stack])).reverse(),
       processedData = [];
 
   for (var j =  0; j < categories.length; j++) {
@@ -111,7 +111,7 @@ var drawStackedBars = function (data, info) {
     gXAxis.attr("transform", "translate(0," + height + ")");
 
     var categoryLabel = gXAxis.append("g")
-          .attr("transform", "translate(" + width/2 + "," + maxWidth + ")")
+          .attr("transform", "translate(" + width/2 + "," + (maxWidth+20) + ")")
         .append("text")
           .style("font-weight", "600")
           .style("text-anchor", "middle")
