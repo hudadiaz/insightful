@@ -35,7 +35,7 @@ class Datum < ActiveRecord::Base
 
     unless self.ignored.nil? || self.ignored.blank?
       eval(self.ignored).each do |i|
-        items.delete i
+        items.delete key_gen(eval(self.headers).index(i))
       end
     end
 
@@ -54,10 +54,14 @@ class Datum < ActiveRecord::Base
     def csv_helper
       csv = Rails.cache.read(cache_key("csv"))
       if csv.nil? || csv.blank?
-        csv = CSV.parse(content, :headers => true)
+        csv = CSV.parse(content, headers: true, header_converters: header_converter, converters: lambda{ |v| v.strip unless v.nil? })
         Rails.cache.write(cache_key("csv"), csv, expires_in: 3.hours)
       end
       csv
+    end
+
+    def header_converter
+      lambda { |h, index| key_gen index.index unless h.nil? }
     end
 
     def as_json_helper
@@ -68,16 +72,35 @@ class Datum < ActiveRecord::Base
         json[:id] = self.id
         json[:name] = self.name
         json[:headers] = self.significant_headers
+        json[:header_keys] = header_keys
         json[:numbers] = self.number_headers
         json[:values] = {}
           self.ordinal_and_nominal_headers.each do |h|
-            json[:values][h] = csv[h].reject{ |v| v.nil? || v.empty? }.map{ |v| v.strip unless v.nil? }.uniq.sort_by!{ |v| v.downcase }
+            json[:values][json[:header_keys][h]] = csv[json[:header_keys][h]].reject{ |v| v.nil? || v.empty? }.uniq.sort_by!{ |v| v.downcase }
           end
         json[:items] = self.items
         json[:count] = json[:items].count
         Rails.cache.write(cache_key("json"), json, expires_in: 3.hours)
       end
       json
+    end
+
+    def header_keys
+      keys = {}
+      self.significant_headers.each do |h|
+        keys[h] = key_gen(eval(self.headers).index(h))
+      end
+      keys
+    end
+
+    def key_gen index
+      letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+      key = ''
+      while index > -1
+        key += letters[index%letters.size]
+        index -= letters.size
+      end
+      key
     end
 
     def default_values
