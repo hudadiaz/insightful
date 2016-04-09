@@ -8,7 +8,7 @@
       <tr>
         <th>Modified</th>
         <th>Name</th>
-        <th>Items</th>
+        <th>Visualizations</th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -18,7 +18,7 @@
         <tr>
           <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
           <td><%= datum.name %></td>
-          <td><%= datum.content.lines.count %></td>
+          <td><%= datum.visualizations.count %></td>
           <td><%= link_to 'Show', datum %></td>
           <td><%= link_to 'Edit', edit_datum_path(datum) %></td>
           <td><%= link_to 'Destroy', datum, method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger' %></td>
