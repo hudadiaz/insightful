@@ -65,6 +65,7 @@ class Datum < ActiveRecord::Base
     end
 
     def as_json_helper
+      retrieve_headers
       json = Rails.cache.read(cache_key("json"))
       if json.nil? || json.blank?
         csv = self.csv
@@ -108,7 +109,7 @@ class Datum < ActiveRecord::Base
     end
 
     def retrieve_headers
-      self.headers = CSV.parse(self.content.lines.first).first.to_a
+      self.headers = CSV.parse(self.content.lines.first).first.to_a.reject{ |v| v.nil? || v.empty? }
     end
 
     def assign_name_to_unnamed_headers
