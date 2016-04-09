@@ -10,6 +10,6 @@ class Visualization < ActiveRecord::Base
 
   private
     def default_values
-      self.title ||= datum.name + " " + self.type
+      self.title ||= datum.name + " " + self.type.humanize
     end
 end

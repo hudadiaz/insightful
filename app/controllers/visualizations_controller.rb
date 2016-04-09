@@ -88,6 +88,6 @@ class VisualizationsController < ApplicationController
     end
 
     def bc_name
-      truncate(@visualization.title.humanize, :ommision => "...", :length => 15)
+      truncate(@visualization.title, :ommision => "...", :length => 15)
     end
 end
