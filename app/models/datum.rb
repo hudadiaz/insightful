@@ -7,11 +7,13 @@ class Datum < ActiveRecord::Base
   before_save :retrieve_headers
 
   def significant_headers
+    headers = []
     unless self.ignored.nil? || self.ignored.blank?
-      eval(self.headers) - eval(self.ignored)
+      headers = eval(self.headers) - eval(self.ignored)
     else
-      eval(self.headers)
+      headers = eval(self.headers)
     end
+    headers.reject { |e| e.nil? || e.blank? }
   end
 
   def number_headers
@@ -33,8 +35,9 @@ class Datum < ActiveRecord::Base
   def items
     items = self.csv
 
-    unless self.ignored.nil? || self.ignored.blank?
-      eval(self.ignored).each do |i|
+    to_remove = (eval(self.headers) - significant_headers)
+    unless to_remove.nil? || to_remove.blank?
+      to_remove.each do |i|
         items.delete key_gen(eval(self.headers).index(i))
       end
     end
@@ -55,7 +58,7 @@ class Datum < ActiveRecord::Base
       csv = Rails.cache.read(cache_key("csv"))
       if csv.nil? || csv.blank?
         csv = CSV.parse(content, headers: true, header_converters: header_converter, converters: lambda{ |v| v.strip unless v.nil? })
-        Rails.cache.write(cache_key("csv"), csv, expires_in: 3.hours)
+        Rails.cache.write(cache_key("csv"), csv)
       end
       csv
     end
@@ -65,14 +68,12 @@ class Datum < ActiveRecord::Base
     end
 
     def as_json_helper
-      retrieve_headers
       json = Rails.cache.read(cache_key("json"))
       if json.nil? || json.blank?
         csv = self.csv
         json = {}
         json[:id] = self.id
         json[:name] = self.name
-        json[:headers] = self.significant_headers
         json[:header_keys] = header_keys
         json[:numbers] = self.number_headers
         json[:values] = {}
@@ -81,7 +82,7 @@ class Datum < ActiveRecord::Base
           end
         json[:items] = self.items
         json[:count] = json[:items].count
-        Rails.cache.write(cache_key("json"), json, expires_in: 3.hours)
+        Rails.cache.write(cache_key("json"), json)
       end
       json
     end
@@ -109,7 +110,7 @@ class Datum < ActiveRecord::Base
     end
 
     def retrieve_headers
-      self.headers = CSV.parse(self.content.lines.first).first.to_a.reject{ |v| v.nil? || v.empty? }
+      self.headers = CSV.parse(self.content.lines.first).first.to_a
     end
 
     def assign_name_to_unnamed_headers
