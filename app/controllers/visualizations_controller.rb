@@ -1,8 +1,9 @@
 class VisualizationsController < ApplicationController
   include ActionView::Helpers::TextHelper
 
-  before_action :authenticate_user!, except: [:index, :standalone]
+  before_action :authenticate_user!, only: [:show, :create, :edit, :update, :destroy]
   before_action :set_visualization, only: [:show, :standalone, :edit, :update, :destroy]
+  before_action :require_ownership, only: [:show, :edit, :update, :destroy]
 
   add_breadcrumb "Home", :root_path, except: [:index, :standalone]
   add_breadcrumb "Data", :data_path, except: [:index, :standalone]
@@ -35,6 +36,10 @@ class VisualizationsController < ApplicationController
   # POST /visualizations.json
   def create
     @visualization = Visualization.new(visualization_params)
+    
+    if current_user != @visualization.user
+      redirect_to :root, notice: 'You are not authorized for that action!', notice_type: 'danger'
+    end
 
     respond_to do |format|
       if @visualization.save
@@ -76,6 +81,12 @@ class VisualizationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_visualization
       @visualization = Visualization.find(params[:id])
+    end
+
+    def require_ownership
+      if current_user != @visualization.user
+        redirect_to :root, notice: 'You are not authorized for that action!', notice_type: 'danger'
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

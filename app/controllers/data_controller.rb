@@ -1,8 +1,9 @@
 class DataController < ApplicationController
   include ActionView::Helpers::TextHelper
   
-  before_action :set_datum, except: [:index, :new, :create]
+  before_action :set_datum, only: [:show, :edit, :update, :destroy, :sankey, :sunburst, :stacked_bar, :normalized_stacked_bar]
   before_action :authenticate_user!, unless: :show_json_request?
+  before_action :require_ownership, unless: :show_json_request?, only: [:show, :edit, :update, :destroy, :sankey, :sunburst, :stacked_bar, :normalized_stacked_bar]
 
   add_breadcrumb "Home", :root_path
   add_breadcrumb "Data", :data_path
@@ -124,6 +125,12 @@ class DataController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_datum
       @datum = Datum.find(params[:id])
+    end
+
+    def require_ownership
+      if current_user != @datum.user
+        redirect_to :root, notice: 'You are not authorized for that action!', notice_type: 'danger'
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

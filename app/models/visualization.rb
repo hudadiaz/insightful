@@ -4,6 +4,8 @@ class Visualization < ActiveRecord::Base
   delegate :user, to: :datum, allow_nil: false
   after_initialize :default_values
 
+  validates_presence_of :datum_id
+
   def modified
     (self.updated_at > self.datum.updated_at ? self : self.datum).updated_at
   end
