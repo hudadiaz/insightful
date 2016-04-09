@@ -38,7 +38,7 @@ class VisualizationsController < ApplicationController
 
     respond_to do |format|
       if @visualization.save
-        format.html { render js: "window.location.href = '#{edit_visualization_path(@visualization)}'", notice: 'Visualization was successfully created.' }
+        format.html { render js: "window.location.href = '#{edit_visualization_path(@visualization)}'", notice: 'Visualization was successfully created.', notice_type: 'primary' }
         format.json { render :show, status: :created, location: @visualization }
       else
         format.html { render :new }
@@ -52,7 +52,7 @@ class VisualizationsController < ApplicationController
   def update
     respond_to do |format|
       if @visualization.update(visualization_params)
-        format.html { redirect_to @visualization.datum, notice: 'Visualization was successfully updated.' }
+        format.html { redirect_to @visualization.datum, notice: 'Visualization was successfully updated.', notice_type: 'primary' }
         format.json { render :show, status: :ok, location: @visualization }
       else
         format.html { render :edit }

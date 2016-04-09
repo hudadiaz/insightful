@@ -36,34 +36,3 @@
   </div>
 <% end %>
 
-<script>
-  var datum_content_changed = false;
-
-  $('#datum_content').on('input',function(e){
-   datum_content_changed = true;
-  });
-
-  $('form').on('submit', function(e) {
-    if(!datum_content_changed)
-      $('#datum_content').attr('name', null);
-  })
-
-  <% if params[:action] == "edit" %>
-    $(document).ready(function() {
-      $("#select_ignored").selectize({
-        maxItems:<%= eval(@datum.headers).count %>,
-        items: JSON.parse($("#datum_ignored").val())
-      });
-      $("#select_numbers").selectize({
-        maxItems:<%= eval(@datum.headers).count %>,
-        items: JSON.parse($("#datum_numbers").val())
-      });
-    })
-
-    var update = function(el, input) {
-      $(input).val(JSON.stringify($(el).val()));
-      console.log($(input).val())
-    }
-  <% end %>
-</script>
-

@@ -25,6 +25,10 @@
 $(document).ready(function () {
   $.material.init();
   // $(".select").dropdown({ "autoinit" : ".select" });
+
+  setTimeout(function() {
+    $(".alert.alert-dismissible").fadeOut();
+  }, 3500);
 });
 
 function getParameterByName(name, url) {

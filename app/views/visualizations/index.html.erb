@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Listing Visualizations</h1>
 
 <div class="table-wrapper">
@@ -24,6 +22,7 @@
           <td>
             <%= link_to 'Show', visualization %>&nbsp;&nbsp;
             <%= link_to 'Permalink', standalone_visualization_path(visualization) %>
+            <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
           </td>
         </tr>
       <% end %>

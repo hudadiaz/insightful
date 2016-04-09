@@ -12,4 +12,14 @@ module ApplicationHelper
   def material_icons name
     content_tag(:i, name, class: "material-icons")
   end
+
+  def alert content, type
+    unless content.nil? || content.blank? || content.empty?
+      type = type || 'info'
+      content_tag :div, class: 'alert alert-dismissible alert-'+type do
+        content_tag(:button, 'x', class: 'close', data: { dismiss: 'alert' }) +
+        content
+      end
+    end
+  end
 end

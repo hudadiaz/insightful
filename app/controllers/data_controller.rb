@@ -87,7 +87,7 @@ class DataController < ApplicationController
 
     respond_to do |format|
       if @datum.save
-        format.html { redirect_to edit_datum_path(@datum), notice: 'Datum was successfully created.' }
+        format.html { redirect_to edit_datum_path(@datum), notice: 'Data was successfully created.', notice_type: 'primary' }
         format.json { render :show, status: :created, location: @datum }
       else
         format.html { render :new }
@@ -101,7 +101,7 @@ class DataController < ApplicationController
   def update
     respond_to do |format|
       if @datum.update(datum_params)
-        format.html { redirect_to @datum, notice: 'Datum was successfully updated.' }
+        format.html { redirect_to @datum, notice: 'Data was successfully updated.', notice_type: 'primary' }
         format.json { render :show, status: :ok, location: @datum }
       else
         format.html { render :edit }
@@ -115,7 +115,7 @@ class DataController < ApplicationController
   def destroy
     @datum.destroy
     respond_to do |format|
-      format.html { redirect_to data_url, notice: 'Datum was successfully destroyed.' }
+      format.html { redirect_to data_url, notice: 'Data was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
