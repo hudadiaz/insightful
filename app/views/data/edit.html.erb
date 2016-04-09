@@ -46,8 +46,7 @@
 
   <div class="form-group">
     <%= f.button 'Update', class: "btn btn-primary waves-effect btn-raised" %>
-    <%= link_to 'Display', datum_path(@datum), class: "btn btn-sm" %>
-    <%= link_to 'Cancel', data_path, class: "btn btn-sm" %>
+    <%= link_to 'Cancel', :back, class: "btn btn-sm" %>
   </div>
 <% end %>
 
