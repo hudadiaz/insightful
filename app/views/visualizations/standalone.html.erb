@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Insightful</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'draw/'+@visualization.type.dasherize %>
+  <%= csrf_meta_tags %>
+
+  <style>
+
+    @media print {
+      .download-btn {
+        display: none;
+      }
+    }
+
+    body {
+      background: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .visualization-container {
+        height: 100%;
+    }
+
+    .title {
+      margin-top: 0;
+      font-size: 3vw;
+    }
+
+    path {
+      stroke: #fff;
+      fill-rule: evenodd;
+    }
+
+    #percentage {
+      font-size: 2.5em;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000 !important;
+      shape-rendering: crispEdges;
+    }
+
+    .tooltip{
+      text-anchor: middle;
+      font-family: sans-serif;
+      /*font-size: 10px;*/
+      font-weight: bold;
+      fill:black; 
+    }
+
+    .caption {
+      width: 100%;
+      text-align: center;
+    }
+
+    .node right: ;ect {
+      cursor: move;
+      fill-opacity: .9;
+      shape-rendering: crispEdges;
+    }
+
+    .node text {
+      pointer-events: none;
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    .link {
+      fill: none;
+      stroke: #000;
+      stroke-opacity: .2;
+    }
+
+    .link:hover {
+      stroke-opacity: .5;
+    }
+
+    .list-group {
+      min-height: 25px;
+    }
+
+    .panel-body > .checkbox {
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+
+    .panel-body.selected {
+      background: #efefef;
+    }
+
+    .panel-body.selected:hover {
+      background: #fafafa;
+    }
+
+    .panel-body:hover {
+      background: #eaeaea;
+    }
+
+    .credit-link {
+      position: absolute;
+      right: 10px;
+      bottom: 5px;
+      margin: 0;
+    }
+
+    .download-btn {
+      position: absolute !important;
+      right: 15px;
+      top: 15px;
+      width: auto;
+    }
+
+    .form-group {
+      margin: 0; 
+      width: 35%;
+    }
+
+    #loadingPlaceholder {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      z-index: 999;
+      background: #c5523f;
+    }
+
+    #loadingText {
+      width: 100%;
+      text-align: center;
+      font-size: 2vw;
+    }
+
+</style>
+</head>
+<body>
+  <div class="visualization-container">
+      <div id="loadingPlaceholder"><div id="loadingText"><%= image_tag "squares-loading.svg" %></div></div>
+    <!-- Content Start -->
+      <h1 class="title"><%= @visualization.title %></h1>
+      <div id="sequence"></div>
+      <div id="chart"></div>
+      <em class="caption"><%= @visualization.caption %></em>
+      <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %> visualization, updated <%= I18n.l @visualization.modified.localtime, format: :long %></p>
+  </div>
+
+  <!-- Button trigger modal -->
+  <a href="#" class="download-btn waves-effect" data-toggle="modal" data-target="#myModal">
+    <i class="material-icons">share</i>
+  </a>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Share</h4>
+        </div>
+        <div class="modal-body">
+          <h4>Iframe</h4>
+          <div class="form-group" style="width: 100%">
+            <textarea class="form-control" id="iframe-content"></textarea>
+          </div>
+          <h4>Image</h4>
+          <form class="form-inline" action="" target="_blank">
+          <input hidden name="save" placeholder="Height" value="true">
+
+            <div class="form-group">
+              <label class="sr-only" for="widthInput">Width</label>
+              <div class="input-group">
+                <div class="input-group-addon">Width</div>
+                <input type="number" class="form-control" id="widthInput" name="width" value="800">
+                <div class="input-group-addon">px</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="heightInput">Height</label>
+              <div class="input-group">
+                <div class="input-group-addon">Height</div>
+                <input type="number" class="form-control" id="heightInput" name="height" value="600">
+                <div class="input-group-addon">px</div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary">Generate</button>
+          </form>
+
+          <div class="well" id="image-link" style="display: none"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    $(document).ready(function() {
+      $("#iframe-content").text('<iframe src="<%= standalone_visualization_url(@visualization) %>" frameborder="0" height="100%" width="100%"></iframe>');
+
+      if(getParameterByName('height'))
+        $("body").height(getParameterByName('height')+"px");
+      if(getParameterByName('width'))
+        $("body").width(getParameterByName('width')+"px");
+
+      var req = $.get("<%= datum_path(@visualization.datum, format: :json) %>");
+      $.when(req).done(function(res) {
+        data = res;
+
+        visualize(res, <%= @visualization.selections.html_safe %>);
+
+        $("#loadingPlaceholder").fadeOut();
+
+        if(getParameterByName('save') == "true")
+          setTimeout(function() {save();}, 800);
+      });
+
+    });
+
+    function save() {
+      screenGrabber('<%= @visualization.title.blank? ? @visualization.id : @visualization.title.titleize.delete(' ').underscore %>');
+    }
+
+  </script>
+</body>
+</html>
