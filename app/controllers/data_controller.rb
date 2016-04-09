@@ -15,6 +15,10 @@ class DataController < ApplicationController
   # GET /data/1.json
   def show
     add_breadcrumb @datum.name, @datum
+    respond_to do |format|
+      format.html
+      format.json { render json: Oj.dump(@datum.as_json) }
+    end
   end
 
   def sankey

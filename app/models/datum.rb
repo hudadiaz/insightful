@@ -5,7 +5,6 @@ class Datum < ActiveRecord::Base
 
   after_initialize :default_values
   before_save :retrieve_headers
-  # before_save :assign_name_to_unnamed_headers
 
   def significant_headers
     unless self.ignored.nil? || self.ignored.blank?
@@ -23,12 +22,12 @@ class Datum < ActiveRecord::Base
     end
   end
 
-  def nominal_and_nominal_headers
+  def ordinal_and_nominal_headers
     self.significant_headers - self.number_headers
   end
 
   def csv
-    CSV.parse(content, :headers => true)
+    csv_helper
   end
 
   def items
@@ -44,21 +43,43 @@ class Datum < ActiveRecord::Base
   end
 
   def as_json
-    d = {}
-    d[:id] = self.id
-    d[:name] = self.name
-    d[:headers] = self.significant_headers
-    d[:numbers] = self.number_headers
-    d[:values] = {}
-      self.nominal_and_nominal_headers.each do |h|
-        d[:values][h] = self.csv[h].reject{ |v| v.nil? || v.empty? }.map{ |v| v.strip unless v.nil? }.uniq.sort_by!{ |v| v.downcase }
-      end
-    d[:items] = self.items
-    d[:count] = d[:items].count
-    d
+    as_json_helper
   end
 
   private
+    def cache_key name
+      "datum_"+self.id.to_s+"_"+name
+    end
+
+    def csv_helper
+      csv = Rails.cache.read(cache_key("csv"))
+      if csv.nil? || csv.blank?
+        csv = CSV.parse(content, :headers => true)
+        Rails.cache.write(cache_key("csv"), csv, expires_in: 3.hours)
+      end
+      csv
+    end
+
+    def as_json_helper
+      json = Rails.cache.read(cache_key("json"))
+      if json.nil? || json.blank?
+        csv = self.csv
+        json = {}
+        json[:id] = self.id
+        json[:name] = self.name
+        json[:headers] = self.significant_headers
+        json[:numbers] = self.number_headers
+        json[:values] = {}
+          self.ordinal_and_nominal_headers.each do |h|
+            json[:values][h] = csv[h].reject{ |v| v.nil? || v.empty? }.map{ |v| v.strip unless v.nil? }.uniq.sort_by!{ |v| v.downcase }
+          end
+        json[:items] = self.items
+        json[:count] = json[:items].count
+        Rails.cache.write(cache_key("json"), json, expires_in: 3.hours)
+      end
+      json
+    end
+
     def default_values
       self.name ||= "Untitled data"
     end

@@ -5,6 +5,9 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.5.1'
 # Use pg as the database for Active Record
 gem 'pg'
+# Using oj for faster JSON parsing
+gem 'oj'
+gem 'oj_mimic_json'
 # kaminari pagination
 gem 'kaminari'
 # Use SCSS for stylesheets
@@ -20,10 +23,10 @@ gem 'selectize-rails'
 # Using twitter bootstrap for styling
 # gem "twitter-bootstrap-rails"
 
-source 'http://rails-assets.org' do
+# source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-bootstrap-material-design'
-end
+# end
 
 #Using breadcrumbs_on_rails for breadcrumbs
 gem 'breadcrumbs_on_rails'
