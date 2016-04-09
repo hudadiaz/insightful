@@ -124,10 +124,29 @@
       width: 35%;
     }
 
+    #loadingPlaceholder {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      z-index: 999;
+      background: #c5523f;
+    }
+
+    #loadingText {
+      width: 100%;
+      text-align: center;
+      font-size: 2vw;
+    }
+
 </style>
 </head>
 <body>
   <div class="visualization-container">
+      <div id="loadingPlaceholder"><div id="loadingText"><%= image_tag "squares-loading.svg" %></div></div>
     <!-- Content Start -->
       <h1 class="title"><%= @visualization.title %></h1>
       <div id="sequence"></div>
@@ -201,7 +220,11 @@
       var req = $.get("<%= datum_path(@visualization.datum, format: :json) %>");
       $.when(req).done(function(res) {
         data = res;
+
         visualize(res, <%= @visualization.selections.html_safe %>);
+
+        $("#loadingPlaceholder").fadeOut();
+
         if(getParameterByName('save') == "true")
           save();
       });
