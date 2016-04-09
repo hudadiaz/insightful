@@ -21,7 +21,7 @@
           <td><%= visualization.user.email %></td>
           <td>
             <%= link_to 'Show', visualization %>&nbsp;&nbsp;
-            <%= link_to 'Permalink', standalone_visualization_path(visualization) %>
+            <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
             <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
           </td>
         </tr>
