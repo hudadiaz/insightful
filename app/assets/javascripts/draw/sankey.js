@@ -18,17 +18,16 @@ var linkNodes = function(graph, data, measure) {
 
     for (var j = 0; j < loop; j++) {
       var ff = graph.nodes[j];
-      if(item[ff.header] == ff.name){
+      if(item[getDataHeaderKey(data, ff.header)] == ff.name){
         for (var k = j; k < loop; k++) {
           var tt = graph.nodes[k];
           if(ff.header == tt.header) continue;
-          if(item[ff.header] == ff.name && item[tt.header] == tt.name){
+          if(item[getDataHeaderKey(data, ff.header)] == ff.name && item[getDataHeaderKey(data, tt.header)] == tt.name){
             if (measure != 'count'){
-              console.log(measure)
               links[j*loop+k].value += parseInt(item[getDataHeaderKey(data, measure)].replace(/,/g, ''));
             }
             else links[j*loop+k].value++;
-            delete item[ff.header]
+            delete item[getDataHeaderKey(data, ff.header)]
           }
         }
       }
@@ -42,14 +41,13 @@ var linkNodes = function(graph, data, measure) {
     }
   }
 
-  linkNodesWithOther(5, graph, data);
+  // linkNodesWithOther(5, graph, data);
   graph.links = links;
 }
 
 var linkNodesWithOther = function(percent, graph, data) {
   var total = JSON.parse(JSON.stringify(data["count"])),
       limit = (percent/100*total) + 1;
-  console.log(limit);
 }
 
 var drawSankey = function(graph) {

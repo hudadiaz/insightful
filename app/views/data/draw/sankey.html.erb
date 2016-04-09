@@ -96,8 +96,9 @@
 
   $.when(req).done(function(res) {
     data = res;
-    updateMainSelect(data.headers);
-    updateMeasureSelect(data.headers);
+    console.log(res)
+    updateMainSelect(Object.keys(data.header_keys));
+    updateMeasureSelect(Object.keys(data.header_keys));
   });
 
   var updateMainSelect = function(options) {
@@ -140,7 +141,7 @@
       $('.panels').addClass("col-sm-"+(12/panelsCount))
       $("#selectedItems").append(createPanel(header));
       nodes[header] = [];
-      nodes[header] = JSON.parse(JSON.stringify(data["values"][header]));
+      nodes[header] = JSON.parse(JSON.stringify(data["values"][getDataHeaderKey(data, header)]));
     }
   }
 
@@ -175,8 +176,8 @@
   var fillPanel = function(header) {
     var r = "";
 
-    for (var i = 0; i < data["values"][header].length; i++) {
-      r += '<div class="panel-body selected" onclick="valueSelected(\''+header+'\', \''+data["values"][header][i]+'\', this)">'+data["values"][header][i]+'</div>'
+    for (var i = 0; i < data["values"][getDataHeaderKey(data, header)].length; i++) {
+      r += '<div class="panel-body selected" onclick="valueSelected(\''+header+'\', \''+data["values"][getDataHeaderKey(data, header)][i]+'\', this)">'+data["values"][getDataHeaderKey(data, header)][i]+'</div>'
     }
 
     return r;

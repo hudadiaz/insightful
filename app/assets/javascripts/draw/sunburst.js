@@ -7,7 +7,6 @@ var processData = function(levels, measure, callback) {
   var time = new Date().getTime();
 
   $.each(items, function(key, item) {
-    console.log(item)
     var node = {name: null, children: [], size: 0};
     var i = 0, max_i = levels.length;
 

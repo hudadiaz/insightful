@@ -72,7 +72,7 @@
   $.when(req).done(function(res) {
     data = res;
     $.each(selects, function(i, val) {
-      updateSelect(i, val, data["headers"]);
+      updateSelect(i, val, Object.keys(data.header_keys));
     });
     $("#select-measure")
       .append($("<option selected></option>")

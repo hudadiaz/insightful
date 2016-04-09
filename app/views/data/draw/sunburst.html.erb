@@ -78,8 +78,8 @@ path {
 
   $.when(req).done(function(res) {
     data = res;
-    updateMainSelect(data["headers"]);
-    updateValuesSelect(data["headers"]);
+    updateMainSelect(Object.keys(data.header_keys));
+    updateValuesSelect(Object.keys(data.header_keys));
   });
 
   var updateMainSelect = function(keys) {
