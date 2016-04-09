@@ -21,7 +21,10 @@
           <td><%= visualization.type.humanize %></td>
           <td><%= visualization.datum.name %></td>
           <td><%= visualization.user.email %></td>
-          <td><%= link_to 'Show', visualization %></td>
+          <td>
+            <%= link_to 'Show', visualization %>&nbsp;&nbsp;
+            <%= link_to 'Permalink', standalone_visualization_path(visualization) %>
+          </td>
         </tr>
       <% end %>
     </tbody>

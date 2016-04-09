@@ -1,4 +1,6 @@
 class DataController < ApplicationController
+  include ActionView::Helpers::TextHelper
+  
   before_action :set_datum, except: [:index, :new, :create]
   before_action :authenticate_user!, unless: :show_json_request?
 
@@ -14,7 +16,7 @@ class DataController < ApplicationController
   # GET /data/1
   # GET /data/1.json
   def show
-    add_breadcrumb @datum.name, @datum
+    add_breadcrumb bc_name, @datum
     respond_to do |format|
       format.html
       format.json { render json: Oj.dump(@datum.as_json) }
@@ -22,28 +24,28 @@ class DataController < ApplicationController
   end
 
   def sankey
-    add_breadcrumb @datum.name, @datum
+    add_breadcrumb bc_name, @datum
     add_breadcrumb __method__.to_s.humanize, sankey_datum_path(@datum)
 
     render_view __method__.to_s
   end
   
   def stacked_bar
-    add_breadcrumb @datum.name, @datum
+    add_breadcrumb bc_name, @datum
     add_breadcrumb __method__.to_s.humanize, stacked_bar_datum_path(@datum)
 
     render_view __method__.to_s
   end
 
   def normalized_stacked_bar
-    add_breadcrumb @datum.name, @datum
+    add_breadcrumb bc_name, @datum
     add_breadcrumb __method__.to_s.humanize, normalized_stacked_bar_datum_path(@datum)
 
     render_view __method__.to_s
   end
 
   def sunburst
-    add_breadcrumb @datum.name, @datum
+    add_breadcrumb bc_name, @datum
     add_breadcrumb __method__.to_s.humanize, sunburst_datum_path(@datum)
 
     render_view __method__.to_s
@@ -58,7 +60,7 @@ class DataController < ApplicationController
 
   # GET /data/1/edit
   def edit
-    add_breadcrumb @datum.name, @datum
+    add_breadcrumb bc_name, @datum
     add_breadcrumb "Edit"
 
     @datum.content = ""
@@ -135,5 +137,9 @@ class DataController < ApplicationController
 
     def show_json_request?
       :show && request.format.json?
+    end
+
+    def bc_name
+      truncate(@datum.name, :ommision => "...", :length => 15)
     end
 end

@@ -7,14 +7,6 @@
     shape-rendering: crispEdges;
   }
 
-  .bar {
-    fill: steelblue;
-  }
-
-  .x.axis path {
-    display: none;
-  }
-
   .tooltip{
     text-anchor: middle;
     font-family: sans-serif;
@@ -30,7 +22,7 @@
 <div class="row">
   <div class="col-sm-4">
     <div class="form-group">
-      <label for="select-category">Compare</label>
+      <label for="select-category">Select variable you want to compare</label>
       <select id="select-category" class="form-control">
         <option disabled selected> loading... </option>
       </select>
@@ -38,7 +30,7 @@
   </div>
   <div class="col-sm-4">
     <div class="form-group">
-      <label for="select-stack">On</label>
+      <label for="select-stack">Select variable to compare them on</label>
       <select id="select-stack" class="form-control">
         <option disabled selected> loading... </option>
       </select>

@@ -1,30 +1,34 @@
 class VisualizationsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_visualization, only: [:show, :edit, :update, :destroy]
+  include ActionView::Helpers::TextHelper
 
-  add_breadcrumb "Home", :root_path, except: [:index, :show]
-  add_breadcrumb "Data", :data_path, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :standalone]
+  before_action :set_visualization, only: [:show, :standalone, :edit, :update, :destroy]
+
+  add_breadcrumb "Home", :root_path, except: [:index, :standalone]
+  add_breadcrumb "Data", :data_path, except: [:index, :standalone]
 
   # GET /visualizations
   # GET /visualizations.json
   def index
-    if user_signed_in?
-      redirect_to data_path
-    else
-      @visualizations = Visualization.all.page params[:page]
-    end
+    @visualizations = Visualization.all.page params[:page]
   end
 
   # GET /visualizations/1
   # GET /visualizations/1.json
   def show
+    add_breadcrumb bc_datum_name, @visualization.datum
+    add_breadcrumb bc_name
+  end
+
+  def standalone
     render layout: false
   end
 
   # GET /visualizations/1/edit
   def edit
-    add_breadcrumb @visualization.datum.name, @visualization.datum
-    add_breadcrumb "Edit visualization"
+    add_breadcrumb bc_datum_name, @visualization.datum
+    add_breadcrumb bc_name, @visualization
+    add_breadcrumb "Edit"
   end
 
   # POST /visualizations
@@ -77,5 +81,13 @@ class VisualizationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def visualization_params
       params.require(:visualization).permit(:title, :caption, :type, :selections, :datum_id)
+    end
+
+    def bc_datum_name
+      truncate(@visualization.datum.name, :ommision => "...", :length => 15)
+    end
+
+    def bc_name
+      truncate(@visualization.title.humanize, :ommision => "...", :length => 15)
     end
 end
