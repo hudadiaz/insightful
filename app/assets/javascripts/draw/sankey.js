@@ -25,7 +25,7 @@ var linkNodes = function(graph, data, measure) {
           if(item[ff.header] == ff.name && item[tt.header] == tt.name){
             if (measure != 'count'){
               console.log(measure)
-              links[j*loop+k].value += parseInt(item[measure].replace(/,/g, ''));
+              links[j*loop+k].value += parseInt(item[getDataHeaderKey(data, measure)].replace(/,/g, ''));
             }
             else links[j*loop+k].value++;
             delete item[ff.header]

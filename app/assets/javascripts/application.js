@@ -36,3 +36,7 @@ function getParameterByName(name, url) {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+var getDataHeaderKey = function(data, header) {
+  return data["header_keys"][header];
+}

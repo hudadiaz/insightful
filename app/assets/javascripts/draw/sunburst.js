@@ -7,12 +7,13 @@ var processData = function(levels, measure, callback) {
   var time = new Date().getTime();
 
   $.each(items, function(key, item) {
+    console.log(item)
     var node = {name: null, children: [], size: 0};
     var i = 0, max_i = levels.length;
 
     var f = function(parent_node, current_node, i) {
       if(i == max_i) return;
-      var existing = parent_node.children[findWithAttr(parent_node.children, "name", item[levels[i]])]
+      var existing = parent_node.children[findWithAttr(parent_node.children, "name", item[getDataHeaderKey(data, levels[i])])]
 
 
       if (existing != undefined) {
@@ -20,7 +21,7 @@ var processData = function(levels, measure, callback) {
         if (measure == 'count')
           existing.size++;
         else
-          existing.size += JSON.parse(item[measure].replace(/,/g, ''));
+          existing.size += JSON.parse(item[getDataHeaderKey(data, measure)].replace(/,/g, ''));
 
         current_node = existing;
 
@@ -28,7 +29,7 @@ var processData = function(levels, measure, callback) {
         return
       }
       else {
-        current_node.name = item[levels[i]];
+        current_node.name = item[getDataHeaderKey(data, levels[i])];
       }
 
       f(current_node, {name: null, children: [], size: 0}, ++i);
@@ -39,7 +40,7 @@ var processData = function(levels, measure, callback) {
         if (measure == 'count')
           current_node.size++;
         else
-          current_node.size += JSON.parse(current_node.size)+JSON.parse(item[measure].replace(/,/g, ''));
+          current_node.size += JSON.parse(current_node.size)+JSON.parse(item[getDataHeaderKey(data, measure)].replace(/,/g, ''));
       }
 
       if (current_node.size < 1)

@@ -5,8 +5,8 @@ var processData = function(info, callback) {
       stack = info.stack,
       measure = info.measure,
       items = JSON.parse(JSON.stringify(data["items"])),
-      categories = JSON.parse(JSON.stringify(data["values"][category])),
-      stacks = JSON.parse(JSON.stringify(data["values"][stack])).reverse(),
+      categories = JSON.parse(JSON.stringify(data["values"][getDataHeaderKey(data, category)])),
+      stacks = JSON.parse(JSON.stringify(data["values"][getDataHeaderKey(data, stack)])).reverse(),
       processedData = [];
 
   for (var j =  0; j < categories.length; j++) {
@@ -25,14 +25,14 @@ var processData = function(info, callback) {
   var time = new Date().getTime();
   console.log("start")
   for (var i = items.length - 1; i >= 0; i--) {
-    var indexCat = categories.indexOf(items[i][category]),
-        indexStack = stacks.indexOf(items[i][stack]);
+    var indexCat = categories.indexOf(items[i][getDataHeaderKey(data, category)]),
+        indexStack = stacks.indexOf(items[i][getDataHeaderKey(data, stack)]);
 
     if (indexCat >= 0 && indexStack >= 0){
       if (measure == 'count')
         processedData[indexCat][stacks[indexStack]]++;
       else
-        processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][measure].replace(/,/g, ''))
+        processedData[indexCat][stacks[indexStack]] += JSON.parse(items[i][getDataHeaderKey(data, measure)].replace(/,/g, ''))
     }
   }
   console.log(new Date().getTime()-time)
