@@ -60,6 +60,8 @@ class DataController < ApplicationController
   def edit
     add_breadcrumb @datum.name, @datum
     add_breadcrumb "Edit"
+
+    @datum.content = ""
   end
 
   # POST /data
