@@ -208,8 +208,11 @@
   <script>
 
     $(document).ready(function() {
-      if(getParameterByName('notrack') == null)
-        ahoy.trackView();
+      
+      <% if @visualization.user != current_user %>
+        if(getParameterByName('notrack') == null)
+          ahoy.trackView();
+      <% end %>
 
       $("#iframe-content").text('<iframe src="<%= standalone_visualization_url(@visualization) %>" frameborder="0" height="100%" width="100%"></iframe>');
 
