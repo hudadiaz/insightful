@@ -229,6 +229,8 @@
 
         $("#loadingPlaceholder").fadeOut();
 
+        console.log("<%= pageviews standalone_visualization_url(@visualization) %>")
+
         if(getParameterByName('save') == "true")
           setTimeout(function() {save();}, 800);
       });
