@@ -47,6 +47,8 @@ gem 'devise'
 # Using omniauth google for user
 gem 'omniauth'
 gem 'omniauth-google'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # jQuery Turbolinks
