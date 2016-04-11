@@ -95,12 +95,14 @@ class Datum < ActiveRecord::Base
       keys
     end
 
-    def key_gen index
+    def k index
       letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
       key = ''
-      while index > -1
-        key += letters[index%letters.size]
-        index -= letters.size
+      while true
+        key = letters[index%letters.size] + key;
+        index -= index%letters.size
+        index /= letters.size
+        break if index == 0
       end
       key
     end
