@@ -8,7 +8,7 @@
  *= require bootstrap
  *= require bootstrap-material-design
  *= require material_icons
- *= require_tree .
+ *= require_directory .
 */
 
 $nprogress-color: #fff;
