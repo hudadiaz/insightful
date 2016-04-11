@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery.turbolinks
+//= require ahoy
 //= require jquery_ujs
 //= require selectize
 //= require bootstrap

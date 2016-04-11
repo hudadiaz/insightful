@@ -3,6 +3,9 @@ class Visualization < ActiveRecord::Base
   belongs_to :datum
   delegate :user, to: :datum, allow_nil: false
   after_initialize :default_values
+  
+  has_many :visits
+  visitable
 
   validates_presence_of :datum_id
 

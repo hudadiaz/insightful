@@ -10,6 +10,8 @@ gem 'oj'
 gem 'oj_mimic_json'
 # kaminari pagination
 gem 'kaminari'
+# Using ahoy for user interaction tracking
+gem 'ahoy_matey'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Using d3js for graphing
