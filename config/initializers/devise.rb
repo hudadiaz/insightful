@@ -8,14 +8,17 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '5082fb13533c871a960a746ec51fc3ac10a0e5bab8a4b1edaf3fa980b959d1bee5d2325213db37778c70aca7b78a7b948fb66fb9a11c3fbe5fcccbce55a077d3'
 
+  config.omniauth :google_oauth2, "71515350266-ce6m157ej712njrlgdm3l8djll6qvab2.apps.googleusercontent.com", "ZDIwnYePW2dLPNusoOxCug06", { }
+  config.omniauth :facebook, "220111061711977", "ff923231fc2ea6e263cf6a1f9aa01f8f", scope: 'email', info_fields: 'email,name'
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'noreply@insightful.com'
 
   # Configure the class responsible to send e-mails.
-  # config.mailer = 'Devise::Mailer'
+  config.mailer = 'Devise::Mailer'
 
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and

@@ -44,9 +44,11 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 # Using device for user management
 gem 'devise'
-# Using omniauth google for user
+# Using omniauth for user
 gem 'omniauth'
-gem 'omniauth-google'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+gem 'certified'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # jQuery Turbolinks
