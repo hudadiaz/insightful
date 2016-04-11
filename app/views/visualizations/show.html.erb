@@ -2,8 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <iframe src="<%= standalone_visualization_path @visualization %>" frameborder="0" height="600px" width="100%" style="border:1px dashed #bbb"></iframe>
-    </div>
-    <div class="col-md-12">
+    
       <%= link_to 'Edit', edit_visualization_path(@visualization) %> |
       <%= link_to 'Back', @visualization.datum %>
     </div>

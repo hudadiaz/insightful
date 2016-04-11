@@ -17,40 +17,51 @@
 
 </style>
 
-<h1>Draw#stacked_bar</h1>
+<div class="bs-docs-section">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Draw#stacked_bar</h1>
+  
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="select-category">Select variable you want to compare</label>
+            <select id="select-category" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="select-stack">Select variable to compare them on</label>
+            <select id="select-stack" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="select-measure">According to</label>
+            <select id="select-measure" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-<div class="row">
-  <div class="col-sm-4">
-    <div class="form-group">
-      <label for="select-category">Select variable you want to compare</label>
-      <select id="select-category" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
+      <button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
+
     </div>
   </div>
-  <div class="col-sm-4">
-    <div class="form-group">
-      <label for="select-stack">Select variable to compare them on</label>
-      <select id="select-stack" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="form-group">
-      <label for="select-measure">According to</label>
-      <select id="select-measure" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
-    </div>
-  </div>
-</div>
 
-<button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
-
-<div class="draw-container">
-  <div class="visualization-container">
-    <div id="chart"></div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="draw-container">
+        <div class="visualization-container">
+          <div id="chart"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

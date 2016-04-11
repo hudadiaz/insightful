@@ -39,33 +39,44 @@ path {
 
 </style>
 
-<h1>Draw#sunburst</h1>
+<div class="bs-docs-section">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Draw#sunburst</h1>
+  
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="form-group">
+            <label for="select-main">Select variables you want to compare</label>
+            <select id="select-main" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="select-size">Compare them on</label>
+            <select id="select-size" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-<div class="row">
-  <div class="col-sm-9">
-    <div class="form-group">
-      <label for="select-main">Select variables you want to compare</label>
-      <select id="select-main" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
+      <button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
+      
     </div>
   </div>
-  <div class="col-sm-3">
-    <div class="form-group">
-      <label for="select-size">Compare them on</label>
-      <select id="select-size" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="draw-container">
+        <div id="sequence"></div>
+        <div class="visualization-container">
+          <div id="chart"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
-<button id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</button>
-
-<div class="draw-container">
-  <div id="sequence"></div>
-  <div class="visualization-container">
-    <div id="chart"></div>
   </div>
 </div>
 

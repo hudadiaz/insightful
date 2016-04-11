@@ -44,43 +44,54 @@
 
 </style>
 
-<h1>Draw#sankey</h1>
+<div class="bs-docs-section">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Draw#sankey</h1>
+  
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="form-group">
+            <label for="select-main">Select variables you want to see the relationships between them</label>
+            <select id="select-main" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="select-measure">Relate based on</label>
+            <select id="select-measure" class="form-control">
+              <option disabled selected> loading... </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-<div class="row">
-  <div class="col-sm-9">
-    <div class="form-group">
-      <label for="select-main">Select variables you want to see the relationships between them</label>
-      <select id="select-main" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
+      <a class="btn btn-primary" onclick="draw()">Draw</a>
+      <a id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</a>
+
     </div>
   </div>
-  <div class="col-sm-3">
-    <div class="form-group">
-      <label for="select-measure">Relate based on</label>
-      <select id="select-measure" class="form-control">
-        <option disabled selected> loading... </option>
-      </select>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="draw-container">
+        <div class="visualization-container">
+          <div id="chart"></div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="form-group">
-  <a class="btn btn-primary" onclick="draw()">Draw</a>
-  <a id="saveButton" onclick="save()" class="btn btn-primary" style="display: none">Save</a>
-</div>
-
-<div class="draw-container">
-  <div class="visualization-container">
-    <div id="chart"></div>
+  <div class="row">
+    <div class="col-md-12">
+      <p>You can select which element of a variable to be shown in the sankey. To hide, click the element.</p>
+      <div class="row">
+        <div id="selectedItems"></div>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <p>You can select which element of a variable to be shown in the sankey. To hide, click the element.</p>
-  </div>
-  <div id="selectedItems"></div>
 </div>
 
 <%= javascript_include_tag 'draw/'+action_name.dasherize %>

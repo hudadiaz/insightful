@@ -1,33 +1,39 @@
-<h1>Listing Visualizations</h1>
+<div class="bs-docs-section">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Listing Visualizations</h1>
+      
+      <div class="table-wrapper">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Datum</th>
+              <th>User</th>
+              <th></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% @visualizations.each do |visualization| %>
+              <tr>
+                <td><%= visualization.title %></td>
+                <td><%= visualization.type.humanize %></td>
+                <td><%= visualization.datum.name %></td>
+                <td><%= visualization.user.email %></td>
+                <td>
+                  <%= link_to 'Show', visualization %>&nbsp;&nbsp;
+                  <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
+                  <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
 
-<div class="table-wrapper">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Type</th>
-        <th>Datum</th>
-        <th>User</th>
-        <th></th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <% @visualizations.each do |visualization| %>
-        <tr>
-          <td><%= visualization.title %></td>
-          <td><%= visualization.type.humanize %></td>
-          <td><%= visualization.datum.name %></td>
-          <td><%= visualization.user.email %></td>
-          <td>
-            <%= link_to 'Show', visualization %>&nbsp;&nbsp;
-            <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
-            <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+        <%= paginate @visualizations %>
+      </div>
+    </div>
+  </div>
 </div>
-
-<%= paginate @visualizations %>
