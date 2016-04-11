@@ -1,31 +1,37 @@
-<h1>Listing data</h1>
+<div class="bs-docs-section">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Listing data</h1>
+      
+      <div class="table-wrapper">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Last modified</th>
+              <th></th>
+            </tr>
+          </thead>
+        
+          <tbody>
+            <% @data.each do |datum| %>
+              <tr>
+                <td><%= datum.name %></td>
+                <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
+                <td>
+                  <%= link_to 'Show', datum_path(datum) %>&nbsp;
+                  <%= link_to 'Edit', edit_datum_path(datum) %>&nbsp;
+                  <%= link_to 'Delete', datum, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
 
-<div class="table-wrapper">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Last modified</th>
-        <th></th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <% @data.each do |datum| %>
-        <tr>
-          <td><%= datum.name %></td>
-          <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
-          <td>
-            <%= link_to 'Show', datum_path(datum) %>&nbsp;
-            <%= link_to 'Edit', edit_datum_path(datum) %>&nbsp;
-            <%= link_to 'Delete', datum, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+        <%= paginate @data %><br>
+
+        <%= link_to 'New Data', new_datum_path, class: 'btn btn-success waves-effect btn-raised' %>
+      </div>
+    </div>
+  </div>
 </div>
-
-<%= paginate @data %><br>
-
-<%= link_to 'New Data', new_datum_path, class: 'btn btn-success waves-effect btn-raised' %>
