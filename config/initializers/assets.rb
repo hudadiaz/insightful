@@ -9,8 +9,17 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
+
+# assets for drawing visualizations
 Rails.application.config.assets.precompile += %w( draw/sunburst.js )
 Rails.application.config.assets.precompile += %w( draw/stacked-bar.js )
 Rails.application.config.assets.precompile += %w( draw/normalized-stacked-bar.js )
 Rails.application.config.assets.precompile += %w( draw/sankey.js )
+
+# assets for material design sharing button
+Rails.application.config.assets.precompile += %w( mfb/mfb.min.js )
+Rails.application.config.assets.precompile += %w( mfb/mfb.min.css )
+Rails.application.config.assets.precompile += %w( mfb/mfb.css.map )
+
+# assets for welcome
 Rails.application.config.assets.precompile += %w( welcome/landing-page.css )

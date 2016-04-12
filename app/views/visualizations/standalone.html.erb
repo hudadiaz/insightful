@@ -3,9 +3,12 @@
 <head>
   <title>Insightful</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+  <%= stylesheet_link_tag    'mfb/mfb.min.css' %>
   <%= stylesheet_link_tag    'application', media: 'all' %>
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag 'draw/'+@visualization.type.dasherize %>
+  <%= javascript_include_tag 'mfb/mfb.min.js' %>
   <%= csrf_meta_tags %>
 
   <style>
@@ -152,6 +155,37 @@
       <em class="caption"><%= @visualization.caption %></em>
       <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %> visualization, updated <%= I18n.l @visualization.modified.localtime, format: :long %></p>
   </div>
+
+  <ul id="menu" class="mfb-component--tr mfb-zoomin" data-mfb-toggle="hover">
+    <li class="mfb-component__wrap">
+      <a href="#" class="mfb-component__button--main">
+        <i class="mfb-component__main-icon--resting ion-plus-round"></i>
+        <i class="mfb-component__main-icon--active ion-close-round"></i>
+      </a>
+      <ul class="mfb-component__list">
+        <li>
+          <a data-mfb-label="Tweet on Twitter" class="mfb-component__button--child">
+            <i class="mfb-component__child-icon ion-social-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a data-mfb-label="Post to Facebook" class="mfb-component__button--child">
+            <i class="mfb-component__child-icon ion-social-facebook"></i>
+          </a>
+        </li>
+        <li>
+          <a data-mfb-label="Share to Google+" class="mfb-component__button--child">
+            <i class="mfb-component__child-icon ion-social-googleplus"></i>
+          </a>
+        </li>
+        <li>
+          <a data-mfb-label="Download as image" class="mfb-component__button--child">
+            <i class="mfb-component__child-icon ion-image"></i>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
 
   <!-- Button trigger modal -->
   <a href="#" class="download-btn waves-effect" data-toggle="modal" data-target="#myModal">
