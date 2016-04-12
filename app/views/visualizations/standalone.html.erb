@@ -10,7 +10,10 @@
   <%= javascript_include_tag 'draw/'+@visualization.type.dasherize %>
   <%= javascript_include_tag 'mfb/mfb.min.js' %>
   <%= csrf_meta_tags %>
-
+  <meta property="og:url"         content="<%= request.original_url %>" />
+  <meta property="og:type"        content="<%= @visualization.type.humanize %>" />
+  <meta property="og:title"       content="<%= @visualization.title.humanize %>" />
+  <meta property="og:description" content="<%= @visualization.caption %>" />
   <style>
 
     @media print {
@@ -26,6 +29,10 @@
       bottom: 0;
       left: 0;
       right: 0;
+    }
+
+    a:hover, a:focus {
+      color: darkorange;
     }
 
     .visualization-container {
@@ -115,11 +122,13 @@
       margin: 0;
     }
 
-    .download-btn {
-      position: absolute !important;
-      right: 15px;
-      top: 15px;
-      width: auto;
+    li.mfb-component__wrap {
+        opacity: .3;
+        transition: .6s opacity;
+    }
+
+    li.mfb-component__wrap:hover {
+        opacity: 1;
     }
 
     .form-group {
@@ -159,27 +168,27 @@
   <ul id="menu" class="mfb-component--tr mfb-zoomin" data-mfb-toggle="hover">
     <li class="mfb-component__wrap">
       <a href="#" class="mfb-component__button--main">
-        <i class="mfb-component__main-icon--resting ion-plus-round"></i>
+        <i class="mfb-component__main-icon--resting ion-android-share-alt"></i>
         <i class="mfb-component__main-icon--active ion-close-round"></i>
       </a>
       <ul class="mfb-component__list">
         <li>
-          <a data-mfb-label="Tweet on Twitter" class="mfb-component__button--child">
+          <a onclick="openPopup(this)" data-url="http://twitter.com/home?status=<%= URI.encode(@visualization.title.humanize+': '+@visualization.title.humanize) %>+<%= URI.encode(request.original_url) %>" data-mfb-label="Tweet to Twitter" class="mfb-component__button--child">
             <i class="mfb-component__child-icon ion-social-twitter"></i>
           </a>
         </li>
         <li>
-          <a data-mfb-label="Post to Facebook" class="mfb-component__button--child">
+          <a onclick="openPopup(this)" data-url="http://www.facebook.com/share.php?u=<%= URI.encode(request.original_url) %>&t=<%= URI.encode(@visualization.title.humanize) %>" data-mfb-label="Post to Facebook" class="mfb-component__button--child">
             <i class="mfb-component__child-icon ion-social-facebook"></i>
           </a>
         </li>
         <li>
-          <a data-mfb-label="Share to Google+" class="mfb-component__button--child">
+          <a onclick="openPopup(this)" data-url="https://plus.google.com/share?url=<%= URI.encode(request.original_url) %>" data-mfb-label="Share to Google+" class="mfb-component__button--child">
             <i class="mfb-component__child-icon ion-social-googleplus"></i>
           </a>
         </li>
         <li>
-          <a data-mfb-label="Download as image" class="mfb-component__button--child">
+          <a data-mfb-label="Download as image" class="mfb-component__button--child" data-toggle="modal" data-target="#myModal">
             <i class="mfb-component__child-icon ion-image"></i>
           </a>
         </li>
@@ -188,9 +197,9 @@
   </ul>
 
   <!-- Button trigger modal -->
-  <a href="#" class="download-btn waves-effect" data-toggle="modal" data-target="#myModal">
+  <!-- <a href="#" class="download-btn waves-effect" data-toggle="modal" data-target="#myModal">
     <i class="material-icons">share</i>
-  </a>
+  </a> -->
 
   <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -273,6 +282,11 @@
 
     function save() {
       screenGrabber('<%= @visualization.title.blank? ? @visualization.id : @visualization.title.titleize.delete(' ').underscore %>');
+    }
+
+    function openPopup(link) {
+       window.open(link.dataset.url,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
+       return false;
     }
 
   </script>
