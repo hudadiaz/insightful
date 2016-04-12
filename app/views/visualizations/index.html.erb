@@ -11,6 +11,7 @@
               <th>Type</th>
               <th>Datum</th>
               <th>User</th>
+              <th>Views</th>
               <th></th>
             </tr>
           </thead>
@@ -22,6 +23,7 @@
                 <td><%= visualization.type.humanize %></td>
                 <td><%= visualization.datum.name %></td>
                 <td><%= visualization.user.email %></td>
+                <td><%= pageviews standalone_visualization_url(visualization) %></td>
                 <td>
                   <%= link_to 'Show', visualization %>&nbsp;&nbsp;
                   <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
