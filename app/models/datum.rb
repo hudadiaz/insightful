@@ -5,6 +5,7 @@ class Datum < ActiveRecord::Base
 
   after_initialize :default_values
   before_save :retrieve_headers
+  after_update :reload_cache
 
   def significant_headers
     headers = []
@@ -50,6 +51,13 @@ class Datum < ActiveRecord::Base
   end
 
   private
+    def reload_cache
+      puts "cache reloaded"
+      Rails.cache.write(cache_key("csv"), nil)
+      Rails.cache.write(cache_key("json"), nil)
+      as_json_helper
+    end
+
     def cache_key name
       "datum_"+self.id.to_s+"_"+name
     end
