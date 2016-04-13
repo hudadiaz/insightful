@@ -12,6 +12,8 @@ gem 'oj_mimic_json'
 gem 'kaminari'
 # Using ahoy for user interaction tracking
 gem 'ahoy_matey'
+# Using impressionists for tracking
+gem 'impressionist'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Using d3js for graphing

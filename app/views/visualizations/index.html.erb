@@ -23,7 +23,7 @@
                 <td><%= visualization.type.humanize %></td>
                 <td><%= visualization.datum.name %></td>
                 <td><%= visualization.user.email %></td>
-                <td><%= pageviews standalone_visualization_url(visualization) %></td>
+                <td><%= visualization.views_counter_cache %></td>
                 <td>
                   <%= link_to 'Show', visualization %>&nbsp;&nbsp;
                   <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;

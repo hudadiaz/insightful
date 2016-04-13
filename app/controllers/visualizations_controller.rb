@@ -11,7 +11,7 @@ class VisualizationsController < ApplicationController
   # GET /visualizations
   # GET /visualizations.json
   def index
-    @visualizations = Visualization.all.page params[:page]
+    @visualizations = Visualization.all.order("views_counter_cache DESC").page params[:page]
   end
 
   # GET /visualizations/1
@@ -22,6 +22,9 @@ class VisualizationsController < ApplicationController
   end
 
   def standalone
+    if current_user != @visualization.user
+      impressionist @visualization
+    end
     render layout: false
   end
 

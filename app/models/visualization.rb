@@ -7,6 +7,8 @@ class Visualization < ActiveRecord::Base
   has_many :visits
   visitable
 
+  is_impressionable counter_cache: true, column_name: :views_counter_cache, unique: :session_hash
+
   validates_presence_of :datum_id
 
   def modified
