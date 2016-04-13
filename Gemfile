@@ -10,8 +10,6 @@ gem 'oj'
 gem 'oj_mimic_json'
 # kaminari pagination
 gem 'kaminari'
-# Using ahoy for user interaction tracking
-gem 'ahoy_matey'
 # Using impressionists for tracking
 gem 'impressionist'
 # Use SCSS for stylesheets

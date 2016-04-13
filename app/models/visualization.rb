@@ -3,9 +3,6 @@ class Visualization < ActiveRecord::Base
   belongs_to :datum
   delegate :user, to: :datum, allow_nil: false
   after_initialize :default_values
-  
-  has_many :visits
-  visitable
 
   is_impressionable counter_cache: true, column_name: :views_counter_cache, unique: :session_hash
 

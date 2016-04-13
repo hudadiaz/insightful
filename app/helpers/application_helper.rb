@@ -22,13 +22,4 @@ module ApplicationHelper
       end
     end
   end
-
-  def pageviews path
-    pageviews_since path, 1.month.ago
-  end
-
-  def pageviews_since path, since
-    since = since || 1.month.ago
-    Ahoy::Event.where("properties ->> 'url' = '#{path}' and time > ?", since).count
-  end
 end
