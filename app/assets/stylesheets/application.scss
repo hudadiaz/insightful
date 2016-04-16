@@ -60,3 +60,8 @@ $nprogress-color: #fff;
 .thumb-img:hover {
   opacity: .8;
 }
+
+tr td:last-child{
+    width:1%;
+    white-space:nowrap;
+}
