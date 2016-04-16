@@ -232,7 +232,7 @@
             <textarea class="form-control" id="iframe-content"></textarea>
           </div>
           <h4>Image</h4>
-          <form class="form-inline" action="" target="_blank">
+          <form id="saveForm" class="form-inline" action="" target="_blank">
           <input hidden name="save" placeholder="Height" value="true">
 
             <div class="form-group">
@@ -253,7 +253,7 @@
               </div>
             </div>
 
-            <button class="btn btn-primary">Generate</button>
+            <button class="btn btn-primary btn-raised">Generate</button>
           </form>
 
           <div class="well" id="image-link" style="display: none"></div>
@@ -297,6 +297,15 @@
        window.open(link.dataset.url,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
        return false;
     }
+
+    $("#saveForm").on('submit', function(e) {
+      window.open(
+        this.action+"?"+$("#saveForm").serialize(),
+        '',
+        'menubar=no,toolbar=no,resizable=no,scrollbars=no,width='+$("#widthInput").val()+',height='+$("#heightInput").val()
+      );
+      return false;
+    })
 
   </script>
 </body>
