@@ -9,7 +9,7 @@
             <tr>
               <th>Title</th>
               <th>Type</th>
-              <th>User</th>
+              <th>Owner</th>
               <th>Views</th>
               <th></th>
             </tr>
@@ -18,14 +18,12 @@
           <tbody>
             <% @visualizations.each do |visualization| %>
               <tr>
-                <td><%= visualization.title %></td>
+                <td><%= current_user == visualization.user ? (link_to visualization.title, visualization) : visualization.title %></td>
                 <td><%= visualization.type.humanize %></td>
-                <td><%= visualization.user.email %></td>
+                <td><%= visualization.user.email.split('@').first %></td>
                 <td><%= visualization.views_counter_cache %></td>
                 <td>
-                  <%= link_to 'Show', visualization %>&nbsp;&nbsp;
-                  <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
-                  <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
+                  <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
                 </td>
               </tr>
             <% end %>
