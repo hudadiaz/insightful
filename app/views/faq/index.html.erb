@@ -5,11 +5,11 @@
       <ol>
         <li>
           <h4>What is Insightful?</h4>
-          <p>Insightful is a web application which purpose of existent is too help reasearchers and anyone with raw data to visualize their data with beautiful charts and graphs.</p>
+          <p>Insightful is a web application which purpose of existent is too help researchers and anyone with raw data to visualize their data with beautiful charts and graphs.</p>
         </li>
         <li>
           <h4>How do I use Insightful?</h4>
-          <p>You need an account to use Insightful. You can create an accoumt <%= link_to 'here', edit_user_registration_path %>. Then, upload your data to insightful wether by uploading a file or manually entering them in the textarea provided in the new data <%= link_to 'form', new_datum_path %>. Insightful only accepts Comma Separated Values (<code>CSV</code>). If your data is not in <code>CSV</code> format, you need to convert them first. You can start visualizing your data using four visualizations options provided which are sankey, sunburst, stacked bar and normalize stacked bar.</p>
+          <p>You need an account to use Insightful. You can create an account <%= link_to 'here', edit_user_registration_path %>. Then, upload your data to insightful whether by uploading a file or manually entering them in the text area provided in the new data <%= link_to 'form', new_datum_path %>. Insightful only accepts Comma Separated Values (<code>CSV</code>). If your data is not in <code>CSV</code> format, you need to convert them first. You can start visualizing your data using four visualizations options provided which are sankey, sunburst, stacked bar and normalize stacked bar.</p>
         </li>
         <li>
           <h4>Which visualization should I use?</h4>
@@ -20,12 +20,24 @@
           <p>Insightful only accepts properly formatted <code>CSV</code> files and texts. Make sure your data is a valid <code>CSV</code>.</p>
         </li>
         <li>
+          <h4>I am sure my data is in <code>CSV</code>. What happens?</h4>
+          <p>For the moment, Insightful can only process raw data (1 record per row).</p>
+        </li>
+        <li>
           <h4>What is sankey?</h4>
           <p>Sankey diagrams are a specific type of flow diagram, in which the width of the arrows is shown proportionally to the flow quantity. Sankey diagrams are typically used to visualize energy or material or cost transfers between processes. <a href="https://en.wikipedia.org/wiki/Sankey_diagram">Wikipedia</a></p>
         </li>
         <li>
+          <h4>How to draw a sankey diagram?</h4>
+          <p>In the draw sankey page, there are 2 selects input. The first select input is where you select at most 4 columns that you want to see the relationship. Order of selection will determine the order of the sankey layers. The second select is used to determine how you want to measure the relationships. By default, the algorithm will count records. Be careful when drawing sankey with huge amount of unique values.</p>
+        </li>
+        <li>
           <h4>What is sunburst?</h4>
-          <p>A ring chart, also known as a sunburst chart or a multilevel pie chart, is used to visualize hierarchical data, depicted by concentric circles. The circle in the centre represents the root node, with the hierarchy moving outward from the center. A segment of the inner circle bears a hierarchical relationship to those segments of the outer circle which lie within the angular sweep of the parent segment. <a href="https://en.wikipedia.org/wiki/Pie_chart">Wikipedia</a></p>
+          <p>A ring chart, also known as a sunburst chart or a multilevel pie chart, is used to visualize hierarchical data, depicted by concentric circles. The circle in the center represents the root node, with the hierarchy moving outward from the center. A segment of the inner circle bears a hierarchical relationship to those segments of the outer circle which lie within the angular sweep of the parent segment. <a href="https://en.wikipedia.org/wiki/Pie_chart">Wikipedia</a></p>
+        </li>
+        <li>
+          <h4>How to draw a sunburst?</h4>
+          <p>In the draw sunburst diagram, there are 2 selects inputs. The first input is where you select what column you want to draw on the sunburst. The order of selection determine the position of the column's values in the sunburst. There is no limit to how many layers you want to draw. The second select input is used to determine the size of arc of each values. By default, the algorithm will count the records. Arcs smaller than 0.29 degrees are hidden. Be careful when adding layer with huge amount of unique values.</p>
         </li>
         <li>
           <h4>What is stacked bars?</h4>
@@ -36,11 +48,19 @@
           <p>Stacked bar graphs present the information in the same sequence on each bar normalized to 100%. <a href="https://en.wikipedia.org/wiki/Bar_chart">Wikipedia</a></p>
         </li>
         <li>
+          <h4>How to draw stacked bars?</h4>
+          <p>In the draw stacked bar and normalized stacked bar, there are 3 selects inputs. The first select determines the x-axis, the second select determines the grouping and the last determines values measured. The x-axis is limited to the highest 80 items. It is advised that the number of unique values of the second argument to be not more than 9.</p>
+        </li>
+        <li>
+          <h4>How to save visualization?</h4>
+          <p>When you are ready to share your visualization, click on the save button. You will be taken to a form where you can edit the title and caption of the visualization after the visualization is saved. Click <code>Update Visualization</code> when you are done.</p>
+        </li>
+        <li>
           <h4>How can I share my visualizations?</h4>
           <p>There are multiple ways of sharing your visualization. By clicking or hovering on the sharing icon at the top right corner of your visualization, you can:</p>
           <ol>
             <li>share the link to your visualization via Facebook, Google+ and Twitter,</li>
-            <li>embed your visualization into webpages and websites using the generated iframe code,</li>
+            <li>embed your visualization into web pages and websites using the generated iframe code,</li>
             <li>download and share picture of your visualizations manually.</li>
           </ol>
         </li>
@@ -54,15 +74,15 @@
         </li>
         <li>
           <h4>How can I edit my data?</h4>
-          <p>To maximize user experience and performance, saved data is designed not to be editable. You can still update your data by uploading updated file which will replace the saved data. This is to ensure that you do not need to download huge data everytime you want to edit your data even when just want to change the name.</p>
+          <p>To maximize user experience and performance, saved data is not designed to be editable. You can still update your data by saving updated data which will replace the saved data. This is to ensure that you do not need to download huge data every time you open the edit form.</p>
         </li>
         <li>
-          <h4>Why my visualizations' views is not increasing?</h4>
+          <h4>Why are my visualizations' views not increasing?</h4>
           <p>Your visualizations' views are only counted when viewed by anyone but you in a unique session. Reloading the page will not increase the views.</p>
         </li>
         <li>
           <h4>What happen if I delete my data?</h4>
-          <p>Your data will be completely deleted along with all its visualizations. If it has been embedded anywhere on the internet, it will results 404 error.</p>
+          <p>Your data will be completely deleted along with all its visualizations. If it has been embedded anywhere on the Internet, it will results 404 error.</p>
         </li>
         <li>
           <h4>How can I cancel my account?</h4>
