@@ -70,7 +70,7 @@
                   <td><%= visualization.views_counter_cache %></td>
                   <td><%= I18n.l visualization.updated_at.localtime, format: :long %></td>
                   <td>
-                    <%= link_to 'Share', '', onclick: 'share("'+visualization_url(visualization)+'")', data: { toggle: :modal, target: "#myModal" } %>&nbsp;&nbsp;
+                    <%= link_to 'Share', '', onclick: 'share("'+standalone_visualization_url(visualization)+'")', data: { toggle: :modal, target: "#myModal" } %>&nbsp;&nbsp;
                     <%= link_to 'Show', visualization %>&nbsp;&nbsp;
                     <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
                     <%= link_to 'Edit', edit_visualization_path(visualization) %>&nbsp;&nbsp;
@@ -141,6 +141,15 @@
     </div>
 
     <script>
+      $("#saveForm").on('submit', function(e) {
+        window.open(
+          this.action+"?"+$("#saveForm").serialize(),
+          '',
+          'menubar=no,toolbar=no,resizable=no,scrollbars=no,width='+$("#widthInput").val()+',height='+$("#heightInput").val()
+        );
+        return false;
+      })
+
       var share = function(url) {
         $("#saveForm").attr('action', url);
         $("#iframe-content").text('<iframe src="'+url+'" frameborder="0" height="100%" width="100%"></iframe>');
