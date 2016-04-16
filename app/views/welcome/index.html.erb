@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="#">Insightful</a>
+                <%= link_to 'Insightful', root_path, class: "navbar-brand topnav" %>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -131,7 +131,7 @@
 
   <a name="contact"></a>
     <% if @visualization.present? %>
-    <div class="banner">
+    <div class="content-section-b">
 
         <div class="container">
 
@@ -155,7 +155,7 @@
                 <div class="col-lg-12">
                     <ul class="list-inline">
                         <li>
-                            <a href="#">Home</a>
+                            <%= link_to 'Home', root_path %>
                         </li>
                         <li class="footer-menu-divider">⋅</li>
                         <li>
