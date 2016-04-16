@@ -100,8 +100,22 @@ class DataController < ApplicationController
   # PATCH/PUT /data/1
   # PATCH/PUT /data/1.json
   def update
+    datum_params_copy = datum_params.dup
+    unless datum_params[:file].nil?
+      file_data = datum_params[:file]
+      if file_data.respond_to?(:read)
+        datum_params_copy[:content] = file_data.read
+      elsif file_data.respond_to?(:path)
+        datum_params_copy[:content] = File.read(file_data.path)
+      else
+        logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
+      end
+      puts file_data.path
+    end
+    datum_params_copy.delete :file
+    
     respond_to do |format|
-      if @datum.update(datum_params)
+      if @datum.update(datum_params_copy)
         format.html { redirect_to @datum, notice: 'Data was successfully updated.', notice_type: 'primary' }
         format.json { render :show, status: :ok, location: @datum }
       else
