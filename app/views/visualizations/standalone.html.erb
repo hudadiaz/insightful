@@ -41,7 +41,24 @@
 
     .title {
       margin-top: 0;
-      font-size: 3vw;
+    }
+
+    @media all and (max-width: 959px) and (min-width: 700px) {
+    .title{
+        font-size: 3vw;
+      }
+    }
+
+    @media all and (max-width: 699px) and (min-width: 500px) {
+    .title{
+        font-size: 4vw;
+      }
+    }
+
+    @media all and (max-width: 499px) and (min-width: 50px) {
+    .title{
+        font-size: 5vw;
+      }
     }
 
     path {
@@ -158,7 +175,7 @@
   <div class="visualization-container">
       <div id="loadingPlaceholder"><div id="loadingCenter"><%= render partial: 'layouts/squares_loading' %></div></div>
     <!-- Content Start -->
-      <h1 class="title"><%= @visualization.title %></h1>
+      <h2 class="title"><%= @visualization.title %></h2>
       <div id="sequence"></div>
       <div id="chart"></div>
       <em class="caption"><%= @visualization.caption %></em>
