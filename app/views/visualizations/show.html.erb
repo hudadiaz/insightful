@@ -3,8 +3,8 @@
     <div class="col-md-12">
       <iframe src="<%= standalone_visualization_path @visualization %>" frameborder="0" height="600px" width="100%" style="border:1px dashed #bbb"></iframe>
     
-      <%= link_to 'Edit', edit_visualization_path(@visualization) %> |
-      <%= link_to 'Back', @visualization.datum %>
+      <%= link_to 'Edit', edit_visualization_path(@visualization), class: "btn btn-sm"  %>
+      <%= link_to 'Back', @visualization.datum, class: "btn btn-sm" %>
     </div>
   </div>
 </div>
