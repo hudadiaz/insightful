@@ -22,7 +22,7 @@ class VisualizationsController < ApplicationController
   end
 
   def standalone
-    if current_user != @visualization.user
+    if current_user != @visualization.user && !params.has_key?(:notrack)
       impressionist @visualization
     end
     render layout: false
