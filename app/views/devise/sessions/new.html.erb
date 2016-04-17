@@ -3,6 +3,7 @@
     <h2>Log in</h2>
     
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
     
       <div class="form-group label-placeholder is-empty">
         <%= f.label :email, class: "control-label" %>
@@ -15,9 +16,7 @@
         <%= f.password_field :password, autocomplete: :off, class: "form-control" %>
         <span class="material-input"></span>
       </div>
-    
       
-    
       <% if devise_mapping.rememberable? -%>
         <div class="form-group">
           <div class="checkbox">

@@ -11,7 +11,8 @@
 <body>
   <%= render partial: "layouts/nav" %>
   <div class="container">
-    <%= alert notice, notice_type %>
+    <%= alert flash[:notice], notice_type %>
+    <%= alert flash[:alert], "danger" %>
     <% unless breadcrumbs.empty? %>
       <ul class="breadcrumb" style="margin-bottom: 5px;">
         <%= render_breadcrumbs :tag => :li, :separator => "" %>
