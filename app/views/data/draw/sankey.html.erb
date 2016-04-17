@@ -117,16 +117,21 @@
   var updateMainSelect = function(options) {
     $.each(options, function(i, key) {
       if (data["numbers"].indexOf(key) != -1) return true;
+
+      var tempKey = key;
+      if (data["values"][getDataHeaderKey(data, key)].length > 9)
+        tempKey += " - NOT RECOMMENDED";
+
       $("#select-main")
         .append($("<option></option>")
         .attr("value",key)
-        .text(key)); 
+        .text(tempKey)); 
     })
     selectize = $("#select-main").selectize({
-        maxItems: 4,
-        onItemAdd: function(value, $item) {addPanel(value)},
-        onItemRemove: function(value) {removePanel(value)}
-      })[0].selectize;
+      maxItems: 4,
+      onItemAdd: function(value, $item) {addPanel(value)},
+      onItemRemove: function(value) {removePanel(value)}
+    })[0].selectize;
   }
 
   var updateMeasureSelect = function(options) {
