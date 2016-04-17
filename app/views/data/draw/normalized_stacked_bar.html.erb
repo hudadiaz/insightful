@@ -101,10 +101,15 @@
     $.each(keys, function(i, key) {
       if (index != 2 && data["numbers"].indexOf(key) != -1) return true;
       if (index == 2 && data["numbers"].indexOf(key) == -1) return true;
+      
+      var tempKey = key;
+      if (index == 1 && data["values"][getDataHeaderKey(data, key)].length > 9)
+        tempKey += " - NOT RECOMMENDED";
+
       $("#select-"+id)
         .append($("<option></option>")
         .attr("value",key)
-        .text(key)); 
+        .text(tempKey)); 
     })
   }
 
