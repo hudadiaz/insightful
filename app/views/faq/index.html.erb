@@ -1,62 +1,70 @@
 <div class="bs-docs-section">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-lg-7 col-md-9">
       <h1>Frequently Asked Question</h1>
-      <ol>
-        <li>
-          <h4>What is Insightful?</h4>
+
+      <div class="form-group is-empty" id="filterInputHolder">
+      </div>
+
+      <ol class="faq-lists" id="filterableList">
+        <li class="faq-items">
+          <h5>What is Insightful?</h5>
           <p>Insightful is a web application which purpose of existent is too help researchers and anyone with raw data to visualize their data with beautiful charts and graphs.</p>
         </li>
-        <li>
-          <h4>How do I use Insightful?</h4>
+        <li class="faq-items">
+          <h5>How do I use Insightful?</h5>
           <p>You need an account to use Insightful. You can create an account <%= link_to 'here', edit_user_registration_path %>. Then, upload your data to insightful whether by uploading a file or manually entering them in the text area provided in the new data <%= link_to 'form', new_datum_path %>. Insightful only accepts Comma Separated Values (<code>CSV</code>). If your data is not in <code>CSV</code> format, you need to convert them first. You can start visualizing your data using four visualizations options provided which are sankey, sunburst, stacked bar and normalize stacked bar.</p>
         </li>
-        <li>
-          <h4>Which visualization should I use?</h4>
+        <li class="faq-items">
+          <h5>Which visualization should I use?</h5>
           <p>Depending on the nature of your data, you might want to experiment which visualization option is the best.</p>
         </li>
-        <li>
-          <h4>Help, I cannot save my data!</h4>
+        <li class="faq-items">
+          <h5>Help, I cannot save my data!</h5>
           <p>Insightful only accepts properly formatted <code>CSV</code> files and texts. Make sure your data is a valid <code>CSV</code>.</p>
         </li>
-        <li>
-          <h4>I am sure my data is in <code>CSV</code>. What happens?</h4>
+        <li class="faq-items">
+          <h5>I am sure my data is in <code>CSV</code>. What happens?</h5>
           <p>For the moment, Insightful can only process raw data (1 record per row).</p>
         </li>
-        <li>
-          <h4>What is sankey?</h4>
+        <li class="faq-items">
+          <h5>What is sankey?</h5>
           <p>Sankey diagrams are a specific type of flow diagram, in which the width of the arrows is shown proportionally to the flow quantity. Sankey diagrams are typically used to visualize energy or material or cost transfers between processes. <a href="https://en.wikipedia.org/wiki/Sankey_diagram">Wikipedia</a></p>
         </li>
-        <li>
-          <h4>How to draw a sankey diagram?</h4>
+        <li class="faq-items">
+          <h5>How to draw a sankey diagram?</h5>
           <p>In the draw sankey page, there are 2 selects input. The first select input is where you select at most 4 columns that you want to see the relationship. Order of selection will determine the order of the sankey layers. The second select is used to determine how you want to measure the relationships. By default, the algorithm will count records. Be careful when drawing sankey with huge amount of unique values.</p>
         </li>
-        <li>
-          <h4>What is sunburst?</h4>
+        <li class="faq-items">
+          <h5>What is sunburst?</h5>
           <p>A ring chart, also known as a sunburst chart or a multilevel pie chart, is used to visualize hierarchical data, depicted by concentric circles. The circle in the center represents the root node, with the hierarchy moving outward from the center. A segment of the inner circle bears a hierarchical relationship to those segments of the outer circle which lie within the angular sweep of the parent segment. <a href="https://en.wikipedia.org/wiki/Pie_chart">Wikipedia</a></p>
         </li>
-        <li>
-          <h4>How to draw a sunburst?</h4>
+        <li class="faq-items">
+          <h5>How to draw a sunburst?</h5>
           <p>In the draw sunburst diagram, there are 2 selects inputs. The first input is where you select what column you want to draw on the sunburst. The order of selection determine the position of the column's values in the sunburst. There is no limit to how many layers you want to draw. The second select input is used to determine the size of arc of each values. By default, the algorithm will count the records. Arcs smaller than 0.29 degrees are hidden. Be careful when adding layer with huge amount of unique values.</p>
         </li>
-        <li>
-          <h4>What is stacked bars?</h4>
+        <li class="faq-items">
+          <h5>What is stacked bars?</h5>
           <p>Stacked bar graphs present the information in the same sequence on each bar. <a href="https://en.wikipedia.org/wiki/Bar_chart">Wikipedia</a></p>
         </li>
-        <li>
-          <h4>What is normalize stacked bars?</h4>
+        <li class="faq-items">
+          <h5>What is normalize stacked bars?</h5>
           <p>Stacked bar graphs present the information in the same sequence on each bar normalized to 100%. <a href="https://en.wikipedia.org/wiki/Bar_chart">Wikipedia</a></p>
         </li>
-        <li>
-          <h4>How to draw stacked bars?</h4>
+        <li class="faq-items">
+          <h5>How to draw stacked bars?</h5>
           <p>In the draw stacked bar and normalized stacked bar, there are 3 selects inputs. The first select determines the x-axis, the second select determines the grouping and the last determines values measured. The x-axis is limited to the highest 80 items. It is advised that the number of unique values of the second argument to be not more than 9.</p>
         </li>
-        <li>
-          <h4>How to save visualization?</h4>
+        <li class="faq-items">
+          <h5>How to save visualization?</h5>
           <p>When you are ready to share your visualization, click on the save button. You will be taken to a form where you can edit the title and caption of the visualization after the visualization is saved. Click <code>Update Visualization</code> when you are done.</p>
         </li>
-        <li>
-          <h4>How can I share my visualizations?</h4>
+        <li class="faq-items">
+          <h5>What does <code>NOT RECOMMENDED</code> means?</h5>
+          <p>The <code>NOT RECOMMENDED</code> you see when creating visualization is to help you choose the right columns. Choosing those columns might produce unsatisfactory visualizations.</p>
+        </li>
+        <li class="faq-items">
+          <h5>How can I share my visualizations?</h5>
           <p>There are multiple ways of sharing your visualization. By clicking or hovering on the sharing icon at the top right corner of your visualization, you can:</p>
           <ol>
             <li>share the link to your visualization via Facebook, Google+ and Twitter,</li>
@@ -64,33 +72,33 @@
             <li>download and share picture of your visualizations manually.</li>
           </ol>
         </li>
-        <li>
-          <h4>How can I ignore a column from my data?</h4>
+        <li class="faq-items">
+          <h5>How can I ignore a column from my data?</h5>
           <p>You can ignore columns from your data by selecting them in the edit data form. In <em>What do you want to ignore from your data?</em>, select the columns you want to ignore. Ignored columns will not be shown when you create a visualization. DO NOT ignore columns that is being used in a visualization to avoid breaking it. To un-ignore a column, click it then press <code>backspace</code>.</p>
         </li>
-        <li>
-          <h4>Why are numbers not treated as numbers?</h4>
+        <li class="faq-items">
+          <h5>Why are numbers not treated as numbers?</h5>
           <p>You have to explicitly tell insightful to treat a column as numbers when it should be treated as numbers. You can do so by selecting numbers columns in the edit data form in <em>Select columns that should be processed as numbers</em>. To treat a columns normally as texts, click it then press <code>backspace</code>.</p>
         </li>
-        <li>
-          <h4>How can I edit my data?</h4>
+        <li class="faq-items">
+          <h5>How can I edit my data?</h5>
           <p>To maximize user experience and performance, saved data is not designed to be editable. You can still update your data by saving updated data which will replace the saved data. This is to ensure that you do not need to download huge data every time you open the edit form.</p>
         </li>
-        <li>
-          <h4>Why are my visualizations' views not increasing?</h4>
+        <li class="faq-items">
+          <h5>Why are my visualizations' views not increasing?</h5>
           <p>Your visualizations' views are only counted when viewed by anyone but you in a unique session. Reloading the page will not increase the views.</p>
         </li>
-        <li>
-          <h4>What happen if I delete my data?</h4>
+        <li class="faq-items">
+          <h5>I got <em>You are not authorized for that action!</em> error. What does it mean?</h5>
+          <p>That error happens when you try to carry out an unauthorized action. Please check that you are logged in to the correct account. <%= user_signed_in? ? "You are logged in as #{current_user.email}." : (link_to 'Login', new_user_session_path) %></p>
+        </li>
+        <li class="faq-items">
+          <h5>What happen if I delete my data?</h5>
           <p>Your data will be completely deleted along with all its visualizations. If it has been embedded anywhere on the Internet, it will results 404 error.</p>
         </li>
-        <li>
-          <h4>How can I cancel my account?</h4>
+        <li class="faq-items">
+          <h5>How can I cancel my account?</h5>
           <p>If you ever want to cancel your account, you can do so by visiting this <%= link_to 'page', edit_user_registration_path %>. The option is at the bottom of the page.</p>
-        </li>
-        <li>
-          <h4>I got <em>You are not authorized for that action!</em> error. What does it mean?</h4>
-          <p>That error happens when you try to carry out an unauthorized action. Please check that you are logged in to the correct account. <%= user_signed_in? ? "You are logged in as #{current_user.email}." : (link_to 'Login', new_user_session_path) %></p>
         </li>
       </ol>
     </div>

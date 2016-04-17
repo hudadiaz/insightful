@@ -62,6 +62,16 @@ $nprogress-color: #fff;
 }
 
 tr td:last-child{
-    width:1%;
-    white-space:nowrap;
+  width:1%;
+  white-space:nowrap;
+}
+
+ol.faq-lists {
+  -webkit-padding-start: 15px;
+  padding-start: 15px;
+}
+
+li.faq-items {
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
