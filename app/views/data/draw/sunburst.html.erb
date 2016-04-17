@@ -96,10 +96,15 @@ path {
   var updateMainSelect = function(keys) {
     $.each(keys, function(i, key) {
       if (data["numbers"].indexOf(key) != -1) return true;
+      
+      var tempKey = key;
+      if (data["values"][getDataHeaderKey(data, key)].length > 9)
+        tempKey += " - NOT RECOMMENDED";
+
       $("#select-main")
         .append($("<option></option>")
         .attr("value",key)
-        .text(key)); 
+        .text(tempKey)); 
     })
     $("#select-main").selectize({ maxItems: 10 });
     $("#select-main").on("change" ,function() {
