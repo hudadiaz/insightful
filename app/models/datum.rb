@@ -1,7 +1,7 @@
 class Datum < ActiveRecord::Base
   belongs_to :user
   has_many :visualizations, dependent: :destroy
-  validates_presence_of :user_id, :content
+  validates_presence_of :user_id, :content, :name
 
   after_initialize :default_values
   before_save :retrieve_headers

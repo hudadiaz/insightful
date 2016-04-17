@@ -91,7 +91,10 @@ class DataController < ApplicationController
         format.html { redirect_to edit_datum_path(@datum), notice: 'Data was successfully created.', notice_type: 'primary' }
         format.json { render :show, status: :created, location: @datum }
       else
-        format.html { render :new }
+        format.html {
+          @datum.content = ""
+          render :new
+        }
         format.json { render json: @datum.errors, status: :unprocessable_entity }
       end
     end
@@ -119,7 +122,10 @@ class DataController < ApplicationController
         format.html { redirect_to @datum, notice: 'Data was successfully updated.', notice_type: 'primary' }
         format.json { render :show, status: :ok, location: @datum }
       else
-        format.html { render :edit }
+        format.html {
+          @datum.content = ""
+          render :edit
+        }
         format.json { render json: @datum.errors, status: :unprocessable_entity }
       end
     end
