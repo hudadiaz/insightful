@@ -3,13 +3,35 @@
 <head>
   <title>We're sorry, but something went wrong (500)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
   <style>
+  html{
+    height:100%;
+    min-height:100%;
+  }
+
   body {
-    background-color: #EFEFEF;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height:100%;
+    background: url("image/water_ships_lonely_depressing_desktop_1920x1080_hd-wallpaper-1130568.jpg") no-repeat right;
+    background-size: cover;
     color: #2E2F30;
     text-align: center;
     font-family: arial, sans-serif;
     margin: 0;
+  }
+
+  div.cover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url("image/body-bg1.png");
   }
 
   div.dialog {
@@ -26,15 +48,33 @@
     border-top: #B00100 solid 4px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
-    background-color: white;
+    background-color: rgba(255,255,255,0.85);
     padding: 7px 12% 0;
     box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
   }
 
   h1 {
-    font-size: 100%;
     color: #730E15;
-    line-height: 1.5em;
+    margin: 10px;
+    font-family: 'Alfa Slab One', cursive;
+  }
+
+  @media all and (min-width: 700px) {
+  h1 {
+      font-size: 7vw;
+    }
+  }
+
+  @media all and (max-width: 699px) and (min-width: 500px) {
+  h1 {
+      font-size: 9vw;
+    }
+  }
+
+  @media all and (max-width: 499px) and (min-width: 50px) {
+  h1 {
+      font-size: 11vw;
+    }
   }
 
   div.dialog > p {
@@ -56,11 +96,14 @@
 
 <body>
   <!-- This file lives in public/500.html -->
-  <div class="dialog">
-    <div>
-      <h1>We're sorry, but something went wrong.</h1>
+  <div class="cover">
+    <div class="dialog">
+      <div>
+        <h1>500</h1>
+        <p>Pheww.. Barely alive.</p>
+      </div>
+      <p>We're sorry, but something went wrong.</p>
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
   </div>
 </body>
 </html>
