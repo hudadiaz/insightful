@@ -70,7 +70,6 @@ class Visualization < ActiveRecord::Base
       existing_index = findWithAttr(parent_node[:children], :name, item[self.datum.as_json[:header_keys][levels[ii].to_s].to_s] )
       if existing_index.present?
         existing = parent_node[:children][existing_index]
-        puts existing[:size].present?
         if existing[:size].present?
           if measure == "count"
             existing[:size] += 1
