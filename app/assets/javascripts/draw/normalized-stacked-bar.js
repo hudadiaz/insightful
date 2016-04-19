@@ -353,9 +353,13 @@ var drawStackedBars = function (data, info) {
   // });
 }
 
-var visualize = function(res, selections) {
-  data = res;
-  processData(selections, function(processedData){
-    drawStackedBars(processedData, selections);
-  });
+// var visualize = function(res, selections) {
+//   data = res;
+//   processData(selections, function(processedData){
+//     drawStackedBars(processedData, selections);
+//   });
+// }
+
+var visualize = function(processedData, selections) {
+  drawStackedBars(processedData, selections);
 }

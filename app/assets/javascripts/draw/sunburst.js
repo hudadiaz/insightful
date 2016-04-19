@@ -302,9 +302,13 @@ function drawZoomable(root) {
   }
 }
 
-var visualize = function(res, selections) {
-  data = res;
-  processData(selections.data, selections.measure, function(processedData){
-    drawZoomable(processedData);
-  });
+// var visualize = function(res, selections) {
+//   data = res;
+//   processData(selections.data, selections.measure, function(processedData){
+//     drawZoomable(processedData);
+//   });
+// }
+
+var visualize = function(processedData, selections) {
+  drawZoomable(processedData, selections);
 }

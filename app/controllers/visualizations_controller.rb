@@ -1,9 +1,9 @@
 class VisualizationsController < ApplicationController
   include ActionView::Helpers::TextHelper
 
-  before_action :authenticate_user!, only: [:show, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:show, :create, :edit, :update, :destroy], unless: :show_json_request?
   before_action :set_visualization, only: [:show, :standalone, :edit, :update, :destroy]
-  before_action :require_ownership, only: [:show, :edit, :update, :destroy]
+  before_action :require_ownership, only: [:show, :edit, :update, :destroy], unless: :show_json_request?
 
   add_breadcrumb "Home", :root_path, except: [:index, :standalone]
   add_breadcrumb "Data", :data_path, except: [:index, :standalone]
@@ -17,8 +17,13 @@ class VisualizationsController < ApplicationController
   # GET /visualizations/1
   # GET /visualizations/1.json
   def show
-    add_breadcrumb bc_datum_name, @visualization.datum
-    add_breadcrumb bc_name
+    respond_to do |format|
+      format.html {
+        add_breadcrumb bc_datum_name, @visualization.datum
+        add_breadcrumb bc_name
+      }
+      format.json { render json: Oj.dump(@visualization.processed_data) }
+    end
   end
 
   def standalone
@@ -95,6 +100,10 @@ class VisualizationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def visualization_params
       params.require(:visualization).permit(:title, :caption, :type, :selections, :datum_id)
+    end
+
+    def show_json_request?
+      :show && request.format.json?
     end
 
     def bc_datum_name

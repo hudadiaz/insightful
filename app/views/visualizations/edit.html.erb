@@ -4,14 +4,14 @@
       <h1>Editing Visualization</h1>
       
       <%= form_for(@visualization) do |f| %>
-        <% if @datum.errors.any? %>
+        <% if @visualization.errors.any? %>
           <div class="panel panel-danger">
             <div class="panel-heading">
-              <h3 class="panel-title"><%= pluralize(@datum.errors.count, "error") %> prohibited this datum from being saved:</h3>
+              <h3 class="panel-title"><%= pluralize(@visualization.errors.count, "error") %> prohibited this visualization from being saved:</h3>
             </div>
             <div class="panel-body">
               <ul>
-              <% @datum.errors.full_messages.each do |message| %>
+              <% @visualization.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
               </ul>
