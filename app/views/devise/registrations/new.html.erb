@@ -5,13 +5,13 @@
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= devise_error_messages! %>
 
-      <div class="form-group label-placeholder is-empty">
+      <div class="form-group label-floating">
         <%= f.label :email, class: "control-label" %>
         <%= f.email_field :email, autofocus: true, class: "form-control" %>
         <span class="material-input"></span>
       </div>
 
-      <div class="form-group label-placeholder is-empty">
+      <div class="form-group label-floating">
         <%= f.label :password, class: "control-label" %>
         <%= f.password_field :password, autocomplete: :off, class: "form-control" %>
         <% if @minimum_password_length %>
@@ -20,7 +20,7 @@
         <span class="material-input"></span>
       </div>
 
-      <div class="form-group label-placeholder is-empty">
+      <div class="form-group label-floating">
         <%= f.label :password_confirmation, class: "control-label" %>
         <%= f.password_field :password_confirmation, autocomplete: :off, class: "form-control" %>
         <span class="material-input"></span>

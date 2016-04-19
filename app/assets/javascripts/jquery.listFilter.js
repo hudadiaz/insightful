@@ -32,7 +32,7 @@
 
   function listFilter(filterInputHolder, list) { // filterInputHolder is any element, list is an unordered list
     // create and add the filter form to the filterInputHolder
-    var input = $("<input>").attr({"class":"filterinput form-control","type":"text","placeholder":"Search"});
+    var input = $("<input>").attr({"class":"filterinput form-control","type":"text"});
     $(input).appendTo(filterInputHolder);
 
     $(input)

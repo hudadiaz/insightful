@@ -11,19 +11,19 @@
     </div>
   <% end %>
 
-  <div class="form-group label-static is-empty">
+  <div class="form-group label-static">
     <%= f.label :name, 'Data name', class: "control-label" %>
     <%= f.text_field :name, class: "form-control", placeholder: 'Data name' %>
     <p class="help-block">Give a name or short description for the data so you do not have to wonder what it contains later.</p>
   </div>
 
-  <div class="form-group is-empty is-fileinput">
+  <div class="form-group is-fileinput">
     <%= f.label :file, 'Upload a CSV file', class: "control-label" %>
     <%= f.file_field :file, accept: ".csv" %>
     <input type="text" readonly="" class="form-control" placeholder="Upload a CSV file">
   </div>
 
-  <div class="form-group label-floating is-empty">
+  <div class="form-group label-floating">
     <%= f.text_area :content, class: "form-control", rows: 6, placeholder: "You can also paste your CSV here" %>
     <p class="help-block">Leave this empty if you are uploading a <code>file</code>. Will be overridden with the content of the <code>file</code> above if applicable.</p>
   </div>
