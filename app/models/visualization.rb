@@ -124,7 +124,7 @@ class Visualization < ActiveRecord::Base
         items.each do |item|
           category_index = categories.index(item[self.datum.as_json[:header_keys][selection_category.to_s].to_s])
           stack_index = item[self.datum.as_json[:header_keys][selection_stack.to_s].to_s]
-          if category_index >= 0
+          if category_index.present? && stack_index.present?
             if selection_measure == 'count'
               processedData[category_index][stack_index.to_s] += 1 
             else
