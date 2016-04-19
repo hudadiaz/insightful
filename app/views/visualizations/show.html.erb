@@ -1,10 +1,16 @@
 <div class="bs-docs-section">
   <div class="row">
     <div class="col-md-12">
+      <div class="page-header">
+        <h1>Visualization Preview</h1>
+      </div>
+    </div>
+    <div class="col-md-12">
       <iframe src="<%= standalone_visualization_path @visualization %>" frameborder="0" height="600px" width="100%" style="border:1px dashed #bbb"></iframe>
     
       <%= link_to 'Edit', edit_visualization_path(@visualization), class: "btn btn-sm"  %>
       <%= link_to 'Back', @visualization.datum, class: "btn btn-sm" %>
+      <%= link_to 'Delete', @visualization, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
     </div>
   </div>
 </div>
