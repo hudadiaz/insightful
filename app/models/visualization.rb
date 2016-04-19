@@ -36,7 +36,7 @@ class Visualization < ActiveRecord::Base
     def sunburst_data
       processedData = Rails.cache.read(cache_key("processedData"))
       if processedData.nil? || processedData.blank?
-        
+
         selections = eval(self.selections)
         levels = selections[:data]
         measure = selections[:measure]
@@ -105,14 +105,13 @@ class Visualization < ActiveRecord::Base
     def stacked_bar_data
       processedData = Rails.cache.read(cache_key("processedData"))
       if processedData.nil? || processedData.blank?
-        puts "caching"
         selections = eval(self.selections)
         selection_category = selections[:category]
         selection_stack = selections[:stack]
         selection_measure = selections[:measure]
         items = self.datum.as_json[:items]
         categories = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_category.to_s].to_s]
-        stacks = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_stack.to_s].to_s]
+        stacks = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_stack.to_s].to_s].reverse
         processedData = []
 
         categories.each_with_index do |category, index|
@@ -143,5 +142,9 @@ class Visualization < ActiveRecord::Base
 
     def cache_key name
       "visuzalization_"+self.id.to_s+"_"+name+"_"+self.type
+    end
+
+    def clear_cache
+      Rails.cache.write(cache_key("processedData"), nil)
     end
 end
