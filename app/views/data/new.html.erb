@@ -1,46 +1,52 @@
 <div class="docs-bs-section">
   <div class="row">
+    <div class="col-md-12">
+      <div class="page-header">
+        <h1 id="forms">New Data</h1>
+      </div>
+    </div>
     <div class="col-sm-12">
-      <h1>New Data</h1>
       
-      <%= form_for(@datum, { :multipart => true }) do |f| %>
-        <% if @datum.errors.any? %>
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <h3 class="panel-title"><%= pluralize(@datum.errors.count, "error") %> prohibited this datum from being saved:</h3>
+      <div class="well">
+        <%= form_for(@datum, { :multipart => true }) do |f| %>
+          <% if @datum.errors.any? %>
+            <div class="panel panel-danger">
+              <div class="panel-heading">
+                <h3 class="panel-title"><%= pluralize(@datum.errors.count, "error") %> prohibited this datum from being saved:</h3>
+              </div>
+              <div class="panel-body">
+                <ul>
+                <% @datum.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+                </ul>
+              </div>
             </div>
-            <div class="panel-body">
-              <ul>
-              <% @datum.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-              </ul>
-            </div>
+          <% end %>
+        
+          <div class="form-group label-static is-empty">
+            <%= f.label :name, 'Data name', class: "control-label" %>
+            <%= f.text_field :name, class: "form-control", placeholder: 'Data name' %>
+            <p class="help-block">Give a name or short description for the data so you do not have to wonder what it contains later.</p>
+          </div>
+        
+          <div class="form-group is-empty is-fileinput">
+            <%= f.label :file, 'Upload a CSV file', class: "control-label" %>
+            <%= f.file_field :file, accept: ".csv" %>
+            <input type="text" readonly="" class="form-control" placeholder="Upload a CSV file">
+          </div>
+        
+          <div class="form-group label-floating is-empty">
+            <%= f.text_area :content, class: "form-control", rows: 6, placeholder: "You can also paste your CSV here" %>
+            <p class="help-block">Leave this empty if you are uploading a <code>file</code>. Will be overridden with the content of the <code>file</code> above if applicable.</p>
+          </div>
+        
+          <div class="form-group">
+            <%= f.button 'Save', class: "btn btn-primary waves-effect btn-raised" %>
+            <%= link_to 'Cancel', data_path, class: "btn btn-sm waves-effect" %>
           </div>
         <% end %>
-      
-        <div class="form-group label-static is-empty">
-          <%= f.label :name, 'Data name', class: "control-label" %>
-          <%= f.text_field :name, class: "form-control", placeholder: 'Data name' %>
-          <p class="help-block">Give a name or short description for the data so you do not have to wonder what it contains later.</p>
-        </div>
-      
-        <div class="form-group is-empty is-fileinput">
-          <%= f.label :file, 'Upload a CSV file', class: "control-label" %>
-          <%= f.file_field :file, accept: ".csv" %>
-          <input type="text" readonly="" class="form-control" placeholder="Upload a CSV file">
-        </div>
-      
-        <div class="form-group label-floating is-empty">
-          <%= f.text_area :content, class: "form-control", rows: 6, placeholder: "You can also paste your CSV here" %>
-          <p class="help-block">Leave this empty if you are uploading a <code>file</code>. Will be overridden with the content of the <code>file</code> above if applicable.</p>
-        </div>
-      
-        <div class="form-group">
-          <%= f.button 'Save', class: "btn btn-primary waves-effect btn-raised" %>
-          <%= link_to 'Cancel', data_path, class: "btn btn-sm waves-effect" %>
-        </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>
