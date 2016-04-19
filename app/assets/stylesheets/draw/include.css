@@ -1,0 +1,17 @@
+/*
+ *= require bootstrap
+ *= require bootstrap-material-design
+ *= require_directory .
+*/
+
+.visualization-container {
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#chart {
+  text-align: center;
+}

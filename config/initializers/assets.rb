@@ -11,6 +11,8 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 # assets for drawing visualizations
+Rails.application.config.assets.precompile += %w( draw/include.css )
+Rails.application.config.assets.precompile += %w( draw/include.js )
 Rails.application.config.assets.precompile += %w( draw/sunburst.js )
 Rails.application.config.assets.precompile += %w( draw/stacked-bar.js )
 Rails.application.config.assets.precompile += %w( draw/normalized-stacked-bar.js )

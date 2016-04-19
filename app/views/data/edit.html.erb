@@ -90,7 +90,10 @@
   })
 
   var update = function(el, input) {
-    $(input).val(JSON.stringify($(el).val()) || "[]");
-    console.log($(input).val())
+    var temp = $(el).val()
+    if(temp == null)
+      temp = [];
+    $(input).val(JSON.stringify(temp));
+    // console.log($(input).val())
   }
 </script>
