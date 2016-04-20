@@ -74,7 +74,7 @@ class Visualization < ActiveRecord::Base
           if measure == "count"
             existing[:size] += 1
           else
-            existing[:size] += item[self.datum.as_json[:header_keys][measure.to_s].to_s].to_i
+            existing[:size] += item[self.datum.as_json[:header_keys][measure.to_s].to_s].to_f
           end
         end
 
@@ -90,7 +90,7 @@ class Visualization < ActiveRecord::Base
         if measure == "count"
           current_node[:size] += 1
         else
-          current_node[:size] += item[self.datum.as_json[:header_keys][measure.to_s].to_s].to_i
+          current_node[:size] += item[self.datum.as_json[:header_keys][measure.to_s].to_s].to_f
         end
       end
 
@@ -128,7 +128,7 @@ class Visualization < ActiveRecord::Base
             if selection_measure == 'count'
               processedData[category_index][stack_index.to_s] += 1 
             else
-              processedData[category_index][stack_index.to_s] += item[self.datum.as_json[:header_keys][selection_measure.to_s].to_s].to_i
+              processedData[category_index][stack_index.to_s] += item[self.datum.as_json[:header_keys][selection_measure.to_s].to_s].to_f
             end
           end
         end
