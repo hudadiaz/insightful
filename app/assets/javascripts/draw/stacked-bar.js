@@ -45,14 +45,20 @@ var drawStackedBars = function (data, info) {
       stack = info.stack,
       measure = info.measure;
 
+  var buildLegend = category != stack;
+
   var measurePad = 30,
       margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = $(".visualization-container").width() - margin.left - margin.right,
       height = $(".visualization-container").height() - $("#sequence").height() - $(".title").height() - $(".caption").height() - 15 - margin.top - margin.bottom;
 
+  var color_range = ['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'].reverse();
+
+  if (!buildLegend)
+    color_range = ['#800026']
 
   var color = d3.scale.ordinal()
-      .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'].reverse());
+      .range(color_range);
 
 
   var svg = d3.select("#chart").append("svg")
@@ -198,156 +204,160 @@ var drawStackedBars = function (data, info) {
           .style("font-weight", "600")
           .text(category);
 
-    var stackLabel = svg.append("g")
-          .attr("class", "visualization-labels")
-          .attr("transform", "translate(" + width + "," + 13 + ")")
-        .append("text")
-          .style("text-anchor", "end")
-          .style("font-weight", "600")
-          .text(stack);
+    if (buildLegend) {
 
-    var legend = svg.selectAll(".legend")
-        .data(color.domain().slice().reverse())
-      .enter().append("g")
-        //.attr("class", "legend")
-        .attr("class", function (d) {
-          legendClassArray.push(d.replace(/\s/g, '')); //remove spaces
-          return "legend";
-        })
-        .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 20) + ")"; });
+      var stackLabel = svg.append("g")
+            .attr("class", "visualization-labels")
+            .attr("transform", "translate(" + width + "," + 13 + ")")
+          .append("text")
+            .style("text-anchor", "end")
+            .style("font-weight", "600")
+            .text(stack);
 
-    //reverse order to match order in which bars are stacked    
-    legendClassArray = legendClassArray.reverse();
+      var legend = svg.selectAll(".legend")
+          .data(color.domain().slice().reverse())
+        .enter().append("g")
+          //.attr("class", "legend")
+          .attr("class", function (d) {
+            legendClassArray.push(d.replace(/\s/g, '')); //remove spaces
+            return "legend";
+          })
+          .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 20) + ")"; });
 
-    legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", color)
-        .attr("id", function (d, i) {
-          return "id" + d.replace(/\s/g, '');
-        })
-        .on("mouseover",function(){        
+      //reverse order to match order in which bars are stacked    
+      legendClassArray = legendClassArray.reverse();
 
-          if (active_link === "0") d3.select(this).style("cursor", "pointer");
-          else {
-            if (active_link.split("class").pop() === this.id.split("id").pop()) {
-              d3.select(this).style("cursor", "pointer");
-            } else d3.select(this).style("cursor", "auto");
-          }
-        })
-        .on("click",function(d){         
+      legend.append("rect")
+          .attr("x", width - 18)
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", color)
+          .attr("id", function (d, i) {
+            return "id" + d.replace(/\s/g, '');
+          })
+          .on("mouseover",function(){        
 
-          if (active_link === "0") { //nothing selected, turn on this selection
-            d3.select(this)           
-              .style("stroke", "black")
-              .style("stroke-width", 2);
-
-              active_link = this.id.split("id").pop();
-              plotSingle(this);
-
-              //gray out the others
-              for (i = 0; i < legendClassArray.length; i++) {
-                if (legendClassArray[i] != active_link) {
-                  d3.select("#id" + legendClassArray[i])
-                    .style("opacity", 0.5);
-                }
-              }
-             
-          } else { //deactivate
-            if (active_link === this.id.split("id").pop()) {//active square selected; turn it OFF
-              d3.select(this)           
-                .style("stroke", "none");
-
-              active_link = "0"; //reset
-
-              //restore remaining boxes to normal opacity
-              for (i = 0; i < legendClassArray.length; i++) {              
-                  d3.select("#id" + legendClassArray[i])
-                    .style("opacity", 1);
-              }
-
-              //restore plot to original
-              restorePlot(d);
-
+            if (active_link === "0") d3.select(this).style("cursor", "pointer");
+            else {
+              if (active_link.split("class").pop() === this.id.split("id").pop()) {
+                d3.select(this).style("cursor", "pointer");
+              } else d3.select(this).style("cursor", "auto");
             }
+          })
+          .on("click",function(d){         
 
-          } //end active_link check
+            if (active_link === "0") { //nothing selected, turn on this selection
+              d3.select(this)           
+                .style("stroke", "black")
+                .style("stroke-width", 2);
 
-        });
+                active_link = this.id.split("id").pop();
+                plotSingle(this);
 
-    legend.append("text")
-        .attr("x", width - 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "end")
-        .text(function(d) { return d; });
+                //gray out the others
+                for (i = 0; i < legendClassArray.length; i++) {
+                  if (legendClassArray[i] != active_link) {
+                    d3.select("#id" + legendClassArray[i])
+                      .style("opacity", 0.5);
+                  }
+                }
+               
+            } else { //deactivate
+              if (active_link === this.id.split("id").pop()) {//active square selected; turn it OFF
+                d3.select(this)           
+                  .style("stroke", "none");
 
-    function restorePlot(d) {
+                active_link = "0"; //reset
 
-      catgory.selectAll("rect").forEach(function (d, i) {      
-        //restore shifted bars to original posn
-        d3.select(d[idx])
-          .transition()
-          .duration(500)        
-          .attr("y", y_orig[i]);
-      })
+                //restore remaining boxes to normal opacity
+                for (i = 0; i < legendClassArray.length; i++) {              
+                    d3.select("#id" + legendClassArray[i])
+                      .style("opacity", 1);
+                }
 
-      //restore opacity of erased bars
-      for (i = 0; i < legendClassArray.length; i++) {
-        if (legendClassArray[i] != class_keep) {
-          d3.selectAll(".class" + legendClassArray[i])
+                //restore plot to original
+                restorePlot(d);
+
+              }
+
+            } //end active_link check
+
+          });
+
+      legend.append("text")
+          .attr("x", width - 24)
+          .attr("y", 9)
+          .attr("dy", ".35em")
+          .style("text-anchor", "end")
+          .text(function(d) { return d; });
+
+      function restorePlot(d) {
+
+        catgory.selectAll("rect").forEach(function (d, i) {      
+          //restore shifted bars to original posn
+          d3.select(d[idx])
             .transition()
-            .duration(500)
-            .delay(250)
-            .style("opacity", 1);
+            .duration(500)        
+            .attr("y", y_orig[i]);
+        })
+
+        //restore opacity of erased bars
+        for (i = 0; i < legendClassArray.length; i++) {
+          if (legendClassArray[i] != class_keep) {
+            d3.selectAll(".class" + legendClassArray[i])
+              .transition()
+              .duration(500)
+              .delay(250)
+              .style("opacity", 1);
+          }
         }
+
       }
+
+      function plotSingle(d) {
+            
+        class_keep = d.id.split("id").pop();
+        idx = legendClassArray.indexOf(class_keep);    
+       
+        //erase all but selected bars by setting opacity to 0
+        for (i = 0; i < legendClassArray.length; i++) {
+          if (legendClassArray[i] != class_keep) {
+            d3.selectAll(".class" + legendClassArray[i])
+              .transition()
+              .duration(500)          
+              .style("opacity", 0);
+          }
+        }
+
+        //lower the bars to start on x-axis
+        y_orig = [];
+        catgory.selectAll("rect").forEach(function (d, i) {        
+        
+          //get height and y posn of base bar and selected bar
+          h_keep = d3.select(d[idx]).attr("height");
+          y_keep = d3.select(d[idx]).attr("y");
+          //store y_base in array to restore plot
+          y_orig.push(y_keep);
+
+          h_base = d3.select(d[0]).attr("height");
+          y_base = d3.select(d[0]).attr("y");    
+
+          h_shift = h_keep - h_base;
+          y_new = y_base - h_shift;
+
+          //reposition selected bars
+          d3.select(d[idx])
+            .transition()
+            .ease("bounce")
+            .duration(1000)
+            .delay(250)
+            .attr("y", y_new);
+       
+        })    
+       
+      } 
 
     }
-
-    function plotSingle(d) {
-          
-      class_keep = d.id.split("id").pop();
-      idx = legendClassArray.indexOf(class_keep);    
-     
-      //erase all but selected bars by setting opacity to 0
-      for (i = 0; i < legendClassArray.length; i++) {
-        if (legendClassArray[i] != class_keep) {
-          d3.selectAll(".class" + legendClassArray[i])
-            .transition()
-            .duration(500)          
-            .style("opacity", 0);
-        }
-      }
-
-      //lower the bars to start on x-axis
-      y_orig = [];
-      catgory.selectAll("rect").forEach(function (d, i) {        
-      
-        //get height and y posn of base bar and selected bar
-        h_keep = d3.select(d[idx]).attr("height");
-        y_keep = d3.select(d[idx]).attr("y");
-        //store y_base in array to restore plot
-        y_orig.push(y_keep);
-
-        h_base = d3.select(d[0]).attr("height");
-        y_base = d3.select(d[0]).attr("y");    
-
-        h_shift = h_keep - h_base;
-        y_new = y_base - h_shift;
-
-        //reposition selected bars
-        d3.select(d[idx])
-          .transition()
-          .ease("bounce")
-          .duration(1000)
-          .delay(250)
-          .attr("y", y_new);
-     
-      })    
-     
-    } 
 
   // });
 }
