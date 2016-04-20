@@ -30,6 +30,20 @@
             <p class="help-block">Give a name or short description for the data so you do not have to wonder what it contains later.</p>
           </div>
         
+          <%= f.hidden_field :ignored, hidden: true %>
+          <%= f.hidden_field :numbers, hidden: true %>
+          <div class="form-group">
+            <%= f.label :ignore, 'What do you want to ignore from your data?', class: "control-label" %>
+            <%= select_tag :select_ignored, options_for_select([nil]+eval(@datum.headers)), class: "form-control", placeholder: "Select here",onchange: "update(this, '#datum_ignored')" %>
+            <p class="help-block">Values of selected properties will be ignored in processing.</p>
+          </div>
+        
+          <div class="form-group">
+            <%= f.label :numbers, 'Select columns that should be processed as numbers', class: "control-label" %>
+            <%= select_tag :select_numbers, options_for_select([nil]+eval(@datum.headers)), class: "form-control", placeholder: "Select here",onchange: "update(this, '#datum_numbers')" %>
+            <p class="help-block">Values of selected properties will be treated as numbers.</p>
+          </div>
+        
           <div class="form-group is-fileinput">
             <%= f.label :file, 'Upload new CSV file to update existing data', class: "control-label" %>
             <%= f.file_field :file, accept: ".csv" %>
@@ -40,20 +54,6 @@
             <%= f.label :content, 'You can also paste your new CSV here', class: "control-label" %>
             <%= f.text_area :content, class: "form-control", rows: 6 %>
             <p class="help-block">Leave this empty if you are uploading a <code>file</code> or do not want to update your data.</p>
-          </div>
-        
-          <%= f.hidden_field :ignored, hidden: true %>
-          <%= f.hidden_field :numbers, hidden: true %>
-          <div class="form-group">
-            <%= f.label :ignore, 'What do you want to ignore from your data?', class: "control-label" %>
-            <%= select_tag :select_ignored, options_for_select([nil]+eval(@datum.headers)), class: "form-control", onchange: "update(this, '#datum_ignored')" %>
-            <p class="help-block">Values of selected properties will be ignored in processing.</p>
-          </div>
-        
-          <div class="form-group">
-            <%= f.label :numbers, 'Select columns that should be processed as numbers', class: "control-label" %>
-            <%= select_tag :select_numbers, options_for_select([nil]+eval(@datum.headers)), class: "form-control", onchange: "update(this, '#datum_numbers')" %>
-            <p class="help-block">Values of selected properties will be treated as numbers.</p>
           </div>
         
           <div class="form-group">
