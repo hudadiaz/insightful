@@ -28,6 +28,7 @@ gem 'selectize-rails'
 source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap'
   gem 'rails-assets-bootstrap-material-design'
+  gem 'rails-assets-bootstrap-select'
 end
 
 #Using breadcrumbs_on_rails for breadcrumbs

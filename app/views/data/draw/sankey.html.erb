@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag    'bootstrap-select/bootstrap-select', media: 'all', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'bootstrap-select/bootstrap-select', 'data-turbolinks-track' => true %>
 <style>
 
   .node rect {
@@ -25,21 +27,8 @@
     min-height: 25px;
   }
 
-  .panel-body > .checkbox {
-    margin-bottom: 0;
+  .panels > .form-group {
     margin-top: 0;
-  }
-
-  .panel-body.selected {
-    background: #efefef;
-  }
-
-  .panel-body.selected:hover {
-    background: #fafafa;
-  }
-
-  .panel-body:hover {
-    background: #eaeaea;
   }
 
 </style>
@@ -79,20 +68,20 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-12">
-      <div class="draw-container">
-        <div class="visualization-container">
-          <div id="chart"></div>
-        </div>
+    <div class="col-md-12">
+      <p>You can select which element of a variable to be shown in the sankey.</p>
+      <div class="row">
+        <div id="selectedItems"></div>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <p>You can select which element of a variable to be shown in the sankey. To hide, click the element.</p>
-      <div class="row">
-        <div id="selectedItems"></div>
+    <div class="col-sm-12">
+      <div class="draw-container">
+        <div class="visualization-container">
+          <div id="chart"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -102,9 +91,8 @@
 <script>
   var data,
     graph,
-    graphCopy;
-    nodes = {},
-    panelsCount = 0,
+    graphCopy,
+    selectorCount = 0,
     maxPanel = 4,
     selectize = null,
     measure = 'count';
@@ -113,7 +101,6 @@
 
   $.when(req).done(function(res) {
     data = res;
-    console.log(res)
     updateMainSelect(Object.keys(data.header_keys));
     updateMeasureSelect(Object.keys(data.header_keys));
   });
@@ -156,24 +143,21 @@
       });
   }
 
-
   var addPanel = function(header) {
-    if (panelsCount < maxPanel) {
-      $('.panels').removeClass("col-sm-"+(12/panelsCount++))
-      $('.panels').addClass("col-sm-"+(12/panelsCount))
-      $("#selectedItems").append(createPanel(header));
-      nodes[header] = [];
-      nodes[header] = JSON.parse(JSON.stringify(data["values"][getDataHeaderKey(data, header)]));
+    if (selectorCount < maxPanel) {
+      $('.panels').removeClass("col-sm-"+(12/selectorCount++))
+      $('.panels').addClass("col-sm-"+(12/selectorCount))
+      $("#selectedItems").append(createSelector(header));
+      $("#select-"+removePunct(header)).selectpicker('selectAll');
     }
   }
 
   var removePanel = function(header) {
-    if (panelsCount > 0) {
-      $('.panels').removeClass("col-sm-"+(12/panelsCount--))
-      $('.panels').addClass("col-sm-"+(12/panelsCount))
-      $("#panel-"+removePunct(header)).remove();
-      $("#panel-body-"+removePunct(header)).show();
-      nodes[header] = [];
+    if (selectorCount > 0) {
+      $('.panels').removeClass("col-sm-"+(12/selectorCount--))
+      $('.panels').addClass("col-sm-"+(12/selectorCount))
+      $("#selector-"+removePunct(header)).remove();
+      $("#selector-body-"+removePunct(header)).show();
     }
   }
 
@@ -181,42 +165,26 @@
     return str.replace(/[.,\/?#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s+/g, '');
   }
 
-  var createPanel = function(header) {
-    return  '<div class="panels col-sm-'+(12/panelsCount)+'" id="panel-'+removePunct(header)+'">' +
-              '<div class="bs-component">' +
-                '<div class="panel panel-primary">' +
-                  '<div class="panel-heading">' +
-                    '<h3 class="panel-title">'+header+'</h3>' +
-                  '</div>' +
-                  '<div class="list-group">' + fillPanel(header) +
-                  '</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>'
-  }
+  var createSelector = function(header) {
 
-  var fillPanel = function(header) {
-    var r = "";
+    var populateOptions = function(header) {
+      var r = "";
 
-    for (var i = 0; i < data["values"][getDataHeaderKey(data, header)].length; i++) {
-      r += '<div class="panel-body selected" onclick="valueSelected(\''+header+'\', \''+data["values"][getDataHeaderKey(data, header)][i]+'\', this)">'+data["values"][getDataHeaderKey(data, header)][i]+'</div>'
-    }
-
-    return r;
-  }
-
-  var valueSelected = function(header, item, el) {
-    if ($(el).hasClass('selected')) {
-      var index = nodes[header].indexOf(item);
-      if (index > -1) {
-        nodes[header].splice(index, 1);
+      for (var i = 0; i < data["values"][getDataHeaderKey(data, header)].length; i++) {
+        r += '<option value="'+data["values"][getDataHeaderKey(data, header)][i]+'">'+data["values"][getDataHeaderKey(data, header)][i]+'</option>';
       }
-      $(el).removeClass('selected');
+
+      return r;
     }
-    else {
-      nodes[header].push(item);
-      $(el).addClass('selected');
-    }
+
+    return  '<div class="panels col-sm-'+(12/selectorCount)+'" id="selector-'+removePunct(header)+'">' +
+            '  <div class="form-group">'+
+            '    <label for="select-'+removePunct(header)+'">'+header+'</label>'+
+            '    <select id="select-'+removePunct(header)+'" class="form-control selector"'+
+            '      multiple data-actions-box="true" data-selected-text-format="count > 3"'+
+            '      data-live-search="true">'+populateOptions(header)+'</select>'+
+            '  </div>'+
+            '</div>'
   }
 
   var reset = function() {
@@ -229,16 +197,15 @@
   var draw = function() {
     reset();
 
-    $.each($(".panels"), function(i, panel) {
-      if ($(panel).height() > $('.draw-container').height())
-        $('.draw-container').height($(panel).height());
-      console.log($(panel).height())
-      console.log($('.draw-container').height())
-    })
+    var nodes = {};
 
-    for (var i = 0; i < selectize.getValue().length; i++) {
-      addNode(selectize.getValue()[i]);
-    }
+    $.each(selectize.getValue(), function(i, h){
+      var values = $("#select-"+removePunct(h)).val();
+      if(values == null) return;
+      nodes[h] = values;
+    })
+    addNodesToGraph(nodes);
+
     linkNodes(graph, data, measure);
     graphCopy = jQuery.extend(true, {}, graph)
     $("#saveButton").show();
@@ -246,8 +213,16 @@
     return false;
   }
 
+  var addNodesToGraph = function(nodes) {
+    $.each(nodes, function(h, n) {
+      for (var i = n.length - 1; i >= 0; i--) {
+        var node = {"node":graph.nodes.length,"name":n[i], "header": h};
+        graph.nodes.push(node);
+      }
+    })
+  }
+
   var save = function() {
-    console.log(graphCopy)
     var type = "sankey",
       selections = JSON.stringify(graphCopy),
       datum_id = <%= @datum.id %>;
@@ -259,15 +234,6 @@
       .fail(function() {
         alert( "Error! Please try again later." );
       });
-  }
-
-  var addNode = function(header) {
-    var d = nodes[header];
-
-    for (var i = d.length - 1; i >= 0; i--) {
-      var node = {"node":graph.nodes.length,"name":d[i], "header": header};
-      graph.nodes.push(node);
-    }
   }
 
 </script>

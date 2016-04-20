@@ -9,6 +9,8 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
+Rails.application.config.assets.precompile += %w( bootstrap-select/bootstrap-select.js )
+Rails.application.config.assets.precompile += %w( bootstrap-select/bootstrap-select.css )
 
 # assets for drawing visualizations
 Rails.application.config.assets.precompile += %w( draw/include.css )
