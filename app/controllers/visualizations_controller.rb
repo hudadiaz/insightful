@@ -27,6 +27,7 @@ class VisualizationsController < ApplicationController
   end
 
   def standalone
+    response.headers.delete "X-Frame-Options"
     if current_user != @visualization.user && !params.has_key?(:notrack)
       impressionist @visualization
     end
