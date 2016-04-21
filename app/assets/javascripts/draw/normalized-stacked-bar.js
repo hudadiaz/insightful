@@ -89,7 +89,7 @@ var drawStackedBars = function (data, info) {
 
     data.sort(function(a, b) { return b.ages[0].y1 - a.ages[0].y1; });
 
-    data = data.slice(0, 80);
+    data = data.slice(0, width/13);
 
     x.domain(data.map(function(d) { return d[category]; }));
 
