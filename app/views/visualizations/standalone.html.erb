@@ -139,15 +139,6 @@
       margin: 0;
     }
 
-    li.mfb-component__wrap {
-        opacity: .3;
-        transition: .6s opacity;
-    }
-
-    li.mfb-component__wrap:hover {
-        opacity: 1;
-    }
-
     .form-group {
       margin: 0; 
       width: 35%;
@@ -168,6 +159,38 @@
     #loadingCenter {
       margin: auto;
     }
+
+    .mfb-component__wrap {
+      padding: 0;
+      margin: 0;
+    }
+    .mfb-component__button--main {
+      height: 42px;
+      width: 42px;
+    }
+    .mfb-component__button--child {
+      height: 42px;
+      width: 42px;
+    }
+    .mfb-component__icon, .mfb-component__main-icon--active,
+    .mfb-component__main-icon--resting, .mfb-component__child-icon {
+      line-height: 42px;
+    }
+
+    .mfb-component--bl, .mfb-component--br, .mfb-component--tl, .mfb-component--tr {
+      margin: 15px;
+    }
+
+    .mfb-component__button--child, .mfb-component__button--main {
+        background-color: #009688;
+        opacity: 0.3;
+        transition: .6s opacity;
+    }
+
+    .mfb-component__button--child, .mfb-component__button--main:hover {
+        opacity: 1;
+    }
+
 
 </style>
 </head>
