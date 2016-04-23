@@ -215,7 +215,7 @@
       <div id="sequence"></div>
       <div id="chart"></div>
       <em class="caption"><%= @visualization.caption %></em>
-      <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %>, <%= I18n.l @visualization.modified.localtime, format: :long %></p>
+      <p class="credit-link"><%= link_to 'Insightful', root_url, target: '_blank' %>, <%= I18n.l @visualization.modified_at.localtime, format: :long %></p>
   </div>
 
   <ul id="menu" class="mfb-component--tr mfb-zoomin" data-mfb-toggle="hover">

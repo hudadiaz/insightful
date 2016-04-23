@@ -8,21 +8,39 @@ class Visualization < ActiveRecord::Base
 
   validates_presence_of :datum_id
 
-  def modified
+  def modified?
+    self.updated_at > self.datum.updated_at
+  end
+
+  def modified_at
     (self.updated_at > self.datum.updated_at ? self : self.datum).updated_at
   end
 
   def processed_data
-    case self.type
-      when "sankey"
-        sankey_data
-      when "sunburst"
-        sunburst_data
-      when "stacked_bar"
-        stacked_bar_data
-      when "normalized_stacked_bar"
-        stacked_bar_data
+    if self.modified?
+      clear_cache
+      puts "modified"
     end
+
+    processedData = Rails.cache.read(cache_key("processedData"))
+
+    if processedData.nil? || processedData.blank?
+      puts "caching"
+      case self.type
+        when "sankey"
+          processedData = sankey_data
+        when "sunburst"
+          processedData = sunburst_data
+        when "stacked_bar"
+          processedData = stacked_bar_data
+        when "normalized_stacked_bar"
+          processedData = stacked_bar_data
+      end
+
+      Rails.cache.write(cache_key("processedData"), processedData)
+    end
+
+    processedData
   end
 
   private
@@ -34,22 +52,17 @@ class Visualization < ActiveRecord::Base
     end
 
     def sunburst_data
-      processedData = Rails.cache.read(cache_key("processedData"))
-      if processedData.nil? || processedData.blank?
 
-        selections = eval(self.selections)
-        levels = selections[:data]
-        measure = selections[:measure]
-        items = self.datum.as_json[:items]
-        processedData = {name: "All", children: []}
+      selections = eval(self.selections)
+      levels = selections[:data]
+      measure = selections[:measure]
+      items = self.datum.as_json[:items]
+      processedData = {name: "All", children: []}
 
-        items.each do |item|
-          ii = 0
-          max_i = levels.size
-          sunburst_helper processedData, {name: nil, children: [], size: 0}, ii, levels, measure, item, max_i
-        end
-
-        Rails.cache.write(cache_key("processedData"), processedData)
+      items.each do |item|
+        ii = 0
+        max_i = levels.size
+        sunburst_helper processedData, {name: nil, children: [], size: 0}, ii, levels, measure, item, max_i
       end
 
       processedData
@@ -102,38 +115,33 @@ class Visualization < ActiveRecord::Base
     end
 
     def stacked_bar_data
-      processedData = Rails.cache.read(cache_key("processedData"))
-      if processedData.nil? || processedData.blank?
-        selections = eval(self.selections)
-        selection_category = selections[:category]
-        selection_stack = selections[:stack]
-        selection_measure = selections[:measure]
-        items = self.datum.as_json[:items]
-        categories = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_category.to_s].to_s]
-        stacks = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_stack.to_s].to_s].reverse
-        processedData = []
+      selections = eval(self.selections)
+      selection_category = selections[:category]
+      selection_stack = selections[:stack]
+      selection_measure = selections[:measure]
+      items = self.datum.as_json[:items]
+      categories = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_category.to_s].to_s]
+      stacks = self.datum.as_json[:values][self.datum.as_json[:header_keys][selection_stack.to_s].to_s].reverse
+      processedData = []
 
-        categories.each_with_index do |category, index|
-          datum = {}
-          category = "nil"+index.to_s if category.nil?
-          datum[selection_category.to_s] = category
-          stacks.each { |s| datum[s] = 0 }
-          processedData << datum
-        end
+      categories.each_with_index do |category, index|
+        datum = {}
+        category = "nil"+index.to_s if category.nil?
+        datum[selection_category.to_s] = category
+        stacks.each { |s| datum[s] = 0 }
+        processedData << datum
+      end
 
-        items.each do |item|
-          category_index = categories.index(item[self.datum.as_json[:header_keys][selection_category.to_s].to_s])
-          stack_index = item[self.datum.as_json[:header_keys][selection_stack.to_s].to_s]
-          if category_index.present? && stack_index.present?
-            if selection_measure == 'count'
-              processedData[category_index][stack_index.to_s] += 1 
-            else
-              processedData[category_index][stack_index.to_s] += item[self.datum.as_json[:header_keys][selection_measure.to_s].to_s].to_f
-            end
+      items.each do |item|
+        category_index = categories.index(item[self.datum.as_json[:header_keys][selection_category.to_s].to_s])
+        stack_index = item[self.datum.as_json[:header_keys][selection_stack.to_s].to_s]
+        if category_index.present? && stack_index.present?
+          if selection_measure == 'count'
+            processedData[category_index][stack_index.to_s] += 1 
+          else
+            processedData[category_index][stack_index.to_s] += item[self.datum.as_json[:header_keys][selection_measure.to_s].to_s].to_f
           end
         end
-
-        Rails.cache.write(cache_key("processedData"), processedData)
       end
 
       processedData
