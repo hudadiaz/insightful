@@ -45,6 +45,7 @@ class VisualizationsController < ApplicationController
   # POST /visualizations.json
   def create
     @visualization = Visualization.new(visualization_params)
+    @visualization.datum_last_updated_at = @visualization.datum.updated_at
     
     if current_user != @visualization.user
       redirect_to :root, notice: 'You are not authorized for that action!', notice_type: 'danger'

@@ -9,7 +9,7 @@ class Visualization < ActiveRecord::Base
   validates_presence_of :datum_id
 
   def modified?
-    self.updated_at > self.datum.updated_at
+    self.datum.updated_at > self.datum_last_updated_at
   end
 
   def modified_at
@@ -19,13 +19,13 @@ class Visualization < ActiveRecord::Base
   def processed_data
     if self.modified?
       clear_cache
-      puts "modified"
+      self.datum_last_updated_at = self.datum.updated_at
+      self.save
     end
 
     processedData = Rails.cache.read(cache_key("processedData"))
 
-    if processedData.nil? || processedData.blank?
-      puts "caching"
+    if processedData.nil?
       case self.type
         when "sankey"
           processedData = sankey_data
@@ -49,6 +49,7 @@ class Visualization < ActiveRecord::Base
     end
 
     def sankey_data
+      {}
     end
 
     def sunburst_data

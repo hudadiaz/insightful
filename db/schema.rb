@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413051752) do
+ActiveRecord::Schema.define(version: 20160423092248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,13 +30,17 @@ ActiveRecord::Schema.define(version: 20160413051752) do
 
   create_table "data", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "name",                      null: false
-    t.string   "headers",                   null: false
-    t.text     "content",                   null: false
-    t.string   "ignored",    default: "[]"
-    t.string   "numbers",    default: "[]"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "name",                               null: false
+    t.string   "headers",                            null: false
+    t.text     "content",                            null: false
+    t.string   "ignored",             default: "[]"
+    t.string   "numbers",             default: "[]"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.text     "significant_headers", default: "[]", null: false
+    t.text     "header_keys",         default: "[]", null: false
+    t.text     "values",              default: "[]", null: false
+    t.integer  "count",               default: 0,    null: false
   end
 
   add_index "data", ["user_id"], name: "index_data_on_user_id", using: :btree
@@ -122,12 +126,13 @@ ActiveRecord::Schema.define(version: 20160413051752) do
     t.integer  "datum_id"
     t.string   "title"
     t.string   "caption"
-    t.string   "type",                null: false
-    t.string   "selections",          null: false
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.string   "type",                                                  null: false
+    t.string   "selections",                                            null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.integer  "visit_id"
     t.integer  "views_counter_cache"
+    t.datetime "datum_last_updated_at", default: '2016-04-23 09:30:35', null: false
   end
 
   add_index "visualizations", ["datum_id"], name: "index_visualizations_on_datum_id", using: :btree
