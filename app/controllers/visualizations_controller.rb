@@ -17,13 +17,13 @@ class VisualizationsController < ApplicationController
   # GET /visualizations/1
   # GET /visualizations/1.json
   def show
-    respond_to do |format|
-      format.html {
+    # respond_to do |format|
+    #   format.html {
         add_breadcrumb bc_datum_name, @visualization.datum
         add_breadcrumb bc_name
-      }
-      format.json { render json: Oj.dump(@visualization.processed_data) }
-    end
+    #   }
+    #   format.json { render json: Oj.dump(@visualization.processed_data) }
+    # end
   end
 
   def standalone
