@@ -312,9 +312,7 @@
 
       var req = $.get("<%= visualization_path(@visualization, format: :json) %>");
       $.when(req).done(function(res) {
-        data = res;
-
-        visualize(res, <%= @visualization.selections.html_safe %>);
+        visualize(res.processed_data, res.selections);
 
         $("#loadingPlaceholder").fadeOut();
 
