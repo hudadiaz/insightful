@@ -6,6 +6,7 @@ class VisualizationsController < ApplicationController
   before_action :require_ownership, only: [:show, :edit, :update, :destroy], unless: :show_json_request?
 
   add_breadcrumb "Data", :data_path, except: [:index, :my, :standalone]
+  add_breadcrumb "Visualizations", :visualizations_path
 
   # GET /visualizations
   # GET /visualizations.json
@@ -14,6 +15,7 @@ class VisualizationsController < ApplicationController
   end
 
   def my
+    add_breadcrumb "Mine"
     @visualizations = current_user.visualizations.order("views_counter_cache DESC").page params[:page]
   end
 
