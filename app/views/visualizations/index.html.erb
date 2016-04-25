@@ -7,35 +7,40 @@
     </div>
     <div class="col-sm-12">
       
-      <div class="table-wrapper">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Owner</th>
-              <th>Views</th>
-              <th></th>
-            </tr>
-          </thead>
-        
-          <tbody>
-            <% @visualizations.each do |visualization| %>
+      <% if @visualizations.present? %>
+        <div class="table-wrapper">
+          <table class="table table-striped">
+            <thead>
               <tr>
-                <td><%= current_user == visualization.user ? (link_to visualization.title, visualization) : visualization.title %></td>
-                <td><%= visualization.type.humanize %></td>
-                <td><%= visualization.user.email.split('@').first %></td>
-                <td><%= visualization.views_counter_cache %></td>
-                <td>
-                  <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
-                </td>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Owner</th>
+                <th>Views</th>
+                <th></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+          
+            <tbody>
+              <% @visualizations.each do |visualization| %>
+                <tr>
+                  <td><%= current_user == visualization.user ? (link_to visualization.title, visualization) : visualization.title %></td>
+                  <td><%= visualization.type.humanize %></td>
+                  <td><%= visualization.user.email.split('@').first %></td>
+                  <td><%= visualization.views_counter_cache %></td>
+                  <td>
+                    <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
 
-        <%= paginate @visualizations %>
-      </div>
+          <%= paginate @visualizations %>
+        </div>
+
+      <% else %>
+        <p><em>No visualizations have been created</em></p>
+      <% end %>
     </div>
   </div>
 </div>
