@@ -26,7 +26,7 @@
                   <td><%= visualization.type.humanize %></td>
                   <td><%= visualization.views_counter_cache %></td>
                   <td>
-                    <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
+                    <%= link_to 'Preview', standalone_visualization_path(visualization), target: '_blank' %>
                     <%= (link_to 'Edit', edit_visualization_path(visualization)) %>
                     <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this visualization. Are you sure?' }, class: 'text-danger' %>
                   </td>
