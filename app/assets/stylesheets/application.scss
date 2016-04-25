@@ -64,6 +64,12 @@ $nprogress-color: #fff;
 tr td:last-child{
   width:1%;
   white-space:nowrap;
+  padding: 7px !important;
+}
+
+tr td:last-child > .btn {
+  margin: 0;
+  padding: 3px 8px;
 }
 
 ol.faq-lists {

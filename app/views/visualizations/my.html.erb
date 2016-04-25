@@ -26,9 +26,9 @@
                   <td><%= visualization.type.humanize %></td>
                   <td><%= visualization.views_counter_cache %></td>
                   <td>
-                    <%= link_to 'Preview', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;
-                    <%= (link_to 'Edit', edit_visualization_path(visualization)) %>&nbsp;
-                    <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this visualization. Are you sure?' }, class: 'text-danger' %>
+                    <%= link_to 'Preview', standalone_visualization_path(visualization), target: '_blank', class: 'btn btn-xs btn-primary' %>&nbsp;
+                    <%= link_to 'Edit', edit_visualization_path(visualization), class: 'btn btn-xs' %>&nbsp;
+                    <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this visualization. Are you sure?' }, class: 'btn btn-xs btn-primary btn-danger' %>
                   </td>
                 </tr>
               <% end %>

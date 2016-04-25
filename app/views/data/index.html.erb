@@ -24,9 +24,9 @@
                   <td><%= datum.name %></td>
                   <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
                   <td>
-                    <%= link_to 'Show', datum_path(datum) %>&nbsp;
-                    <%= link_to 'Edit', edit_datum_path(datum) %>&nbsp;
-                    <%= link_to 'Delete', datum, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
+                    <%= link_to 'Show', datum_path(datum), class: 'btn btn-xs btn-primary' %>&nbsp;
+                    <%= link_to 'Edit', edit_datum_path(datum), class: 'btn btn-xs' %>&nbsp;
+                    <%= link_to 'Delete', datum, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'btn btn-xs btn-danger' %>
                   </td>
                 </tr>
               <% end %>

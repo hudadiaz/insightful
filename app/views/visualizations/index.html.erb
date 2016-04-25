@@ -28,7 +28,7 @@
                   <td><%= link_to visualization.user.email.split('@').first, controller: :visualizations, user: visualization.user.id %></td>
                   <td><%= visualization.views_counter_cache %></td>
                   <td>
-                    <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
+                    <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank', class: 'btn btn-xs btn-primary' %>
                   </td>
                 </tr>
               <% end %>
