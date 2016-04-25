@@ -7,35 +7,39 @@
     </div>
     <div class="col-sm-12">
       
-      <div class="table-wrapper">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Last modified</th>
-              <th></th>
-            </tr>
-          </thead>
-        
-          <tbody>
-            <% @data.each do |datum| %>
+      <% if @data.present? %>
+        <div class="table-wrapper">
+          <table class="table table-striped">
+            <thead>
               <tr>
-                <td><%= datum.name %></td>
-                <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
-                <td>
-                  <%= link_to 'Show', datum_path(datum) %>&nbsp;
-                  <%= link_to 'Edit', edit_datum_path(datum) %>&nbsp;
-                  <%= link_to 'Delete', datum, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
-                </td>
+                <th>Name</th>
+                <th>Last modified</th>
+                <th></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+          
+            <tbody>
+              <% @data.each do |datum| %>
+                <tr>
+                  <td><%= datum.name %></td>
+                  <td><%= I18n.l datum.updated_at.localtime, format: :long %></td>
+                  <td>
+                    <%= link_to 'Show', datum_path(datum) %>&nbsp;
+                    <%= link_to 'Edit', edit_datum_path(datum) %>&nbsp;
+                    <%= link_to 'Delete', datum, method: :delete, data: { confirm: 'Deleting this data will delete all its visualizations. Are you sure?' }, class: 'text-danger' %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
 
-        <%= paginate @data %><br>
+          <%= paginate @data %><br>
+        </div>
+      <% else %>
+        <p><em>You have not added any data</em></p>
+      <% end %>
 
-        <%= link_to 'New Data', new_datum_path, class: 'btn btn-primary waves-effect btn-raised' %>
-      </div>
+      <%= link_to 'New Data', new_datum_path, class: 'btn btn-primary waves-effect btn-raised' %>
     </div>
   </div>
 </div>
