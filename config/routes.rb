@@ -18,9 +18,9 @@ Rails.application.routes.draw do
     end
   end
 
-  authenticated :user do
-    root to: 'data#index', as: :authenticated_root
-  end
+  # authenticated :user do
+  #   root to: 'data#index', as: :authenticated_root
+  # end
   
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
