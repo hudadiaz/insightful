@@ -73,10 +73,10 @@
                   <td><%= visualization.views_counter_cache %></td>
                   <td><%= I18n.l visualization.updated_at.localtime, format: :long %></td>
                   <td>
-                    <%= link_to 'Share', '', onclick: 'share("'+standalone_visualization_url(visualization)+'")', data: { toggle: :modal, target: "#myModal" } %>&nbsp;&nbsp;
-                    <%= link_to 'Show', visualization %>&nbsp;&nbsp;
-                    <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;&nbsp;
-                    <%= link_to 'Edit', edit_visualization_path(visualization) %>&nbsp;&nbsp;
+                    <%= link_to 'Share', '', onclick: 'share("'+standalone_visualization_url(visualization)+'")', data: { toggle: :modal, target: "#myModal" } %>&nbsp;
+                    <%= link_to 'Show', visualization %>&nbsp;
+                    <%= link_to 'Permalink', standalone_visualization_path(visualization), target: '_blank' %>&nbsp;
+                    <%= link_to 'Edit', edit_visualization_path(visualization) %>&nbsp;
                     <%= link_to 'Destroy', visualization, method: :delete, data: { confirm: 'Are you sure?' }, class: "text-danger" %>
                   </td>
                 </tr>
