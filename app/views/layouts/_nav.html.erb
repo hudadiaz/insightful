@@ -18,7 +18,7 @@
           <% end %>
         <% end %>
         <li><%= active_link_to 'All Visualizations', visualizations_path,
-                  wrap_tag: :li, active: :exact %></li>
+                  wrap_tag: :li, active: [['visualizations'], ['index']] %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown open">

@@ -24,8 +24,8 @@
               <% @visualizations.each do |visualization| %>
                 <tr>
                   <td><%= current_user == visualization.user ? (link_to visualization.title, visualization) : visualization.title %></td>
-                  <td><%= visualization.type.humanize %></td>
-                  <td><%= visualization.user.email.split('@').first %></td>
+                  <td><%= link_to visualization.type.humanize, controller: :visualizations, type: visualization.type %></td>
+                  <td><%= link_to visualization.user.email.split('@').first, controller: :visualizations, user: visualization.user.id %></td>
                   <td><%= visualization.views_counter_cache %></td>
                   <td>
                     <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
@@ -35,7 +35,7 @@
             </tbody>
           </table>
 
-          <%= paginate @visualizations %>
+          <%#= paginate @visualizations %>
         </div>
 
       <% else %>

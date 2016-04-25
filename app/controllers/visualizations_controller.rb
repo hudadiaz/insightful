@@ -11,7 +11,13 @@ class VisualizationsController < ApplicationController
   # GET /visualizations
   # GET /visualizations.json
   def index
-    @visualizations = Visualization.all.order("views_counter_cache DESC").page params[:page]
+    if params.has_key?(:user)
+      @visualizations = User.find(params[:user]).visualizations.order("views_counter_cache DESC").page params[:page]
+    elsif params.has_key?(:type)
+      @visualizations = Visualization.where(type: params[:type]).order("views_counter_cache DESC").page params[:page]
+    else
+      @visualizations = Visualization.all.order("views_counter_cache DESC").page params[:page]
+    end
   end
 
   def my
