@@ -30,7 +30,7 @@
               <div class="ripple-container"></div>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to 'FAQ', faq_path %></li>
+              <li><%= active_link_to 'FAQ', faq_path, wrap_tag: :li %></li>
               <li><%= active_link_to 'Account', edit_user_registration_path, wrap_tag: :li %></li>
               <li class="divider"></li>
               <li><%= link_to 'Logout', destroy_user_session_path, :method => :delete %></li>
