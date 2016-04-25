@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="page-header">
-        <h1>All Visualizations</h1>
+        <h1>My Visualizations</h1>
       </div>
     </div>
     <div class="col-sm-12">
@@ -14,7 +14,6 @@
               <tr>
                 <th>Title</th>
                 <th>Type</th>
-                <th>Author</th>
                 <th>Views</th>
                 <th></th>
               </tr>
@@ -25,10 +24,11 @@
                 <tr>
                   <td><%= current_user == visualization.user ? (link_to visualization.title, visualization) : visualization.title %></td>
                   <td><%= visualization.type.humanize %></td>
-                  <td><%= visualization.user.email.split('@').first %></td>
                   <td><%= visualization.views_counter_cache %></td>
                   <td>
                     <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank' %>
+                    <%= (link_to 'Edit', edit_visualization_path(visualization)) %>
+                    <%= link_to 'Delete', visualization, method: :delete, data: { confirm: 'Deleting this visualization. Are you sure?' }, class: 'text-danger' %>
                   </td>
                 </tr>
               <% end %>
@@ -39,7 +39,7 @@
         </div>
 
       <% else %>
-        <p><em>No visualizations have been created</em></p>
+        <p><em>You have not created any visualizations</em></p>
       <% end %>
     </div>
   </div>

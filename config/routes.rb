@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   end
   
   resources :visualizations, except: :new do
+    collection do
+      get :my
+    end
     member do
       get :standalone
     end

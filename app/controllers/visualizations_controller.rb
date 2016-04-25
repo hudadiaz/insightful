@@ -1,17 +1,20 @@
 class VisualizationsController < ApplicationController
   include ActionView::Helpers::TextHelper
 
-  before_action :authenticate_user!, only: [:show, :create, :edit, :update, :destroy], unless: :show_json_request?
+  before_action :authenticate_user!, only: [:my, :show, :create, :edit, :update, :destroy], unless: :show_json_request?
   before_action :set_visualization, only: [:show, :standalone, :edit, :update, :destroy]
   before_action :require_ownership, only: [:show, :edit, :update, :destroy], unless: :show_json_request?
 
-  add_breadcrumb "Home", :root_path, except: [:index, :standalone]
-  add_breadcrumb "Data", :data_path, except: [:index, :standalone]
+  add_breadcrumb "Data", :data_path, except: [:index, :my, :standalone]
 
   # GET /visualizations
   # GET /visualizations.json
   def index
     @visualizations = Visualization.all.order("views_counter_cache DESC").page params[:page]
+  end
+
+  def my
+    @visualizations = current_user.visualizations.order("views_counter_cache DESC").page params[:page]
   end
 
   # GET /visualizations/1
