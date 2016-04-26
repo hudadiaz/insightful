@@ -92,70 +92,10 @@
 
       </div>
     </div>
-    
-    <!-- Modal -->
-    <style>
-      .form-group {
-          margin: 0;
-          width: 35%;
-      }
-    </style>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Share</h4>
-          </div>
-          <div class="modal-body">
-            <h4>Iframe</h4>
-            <div class="form-group" style="width: 100%">
-              <textarea class="form-control" id="iframe-content"></textarea>
-            </div>
-            <h4>Image</h4>
-            <form class="form-inline" id="saveForm" action="" target="_blank">
-              <input hidden name="save" placeholder="Height" value="true">
 
-              <div class="form-group">
-                <label class="sr-only" for="widthInput">Width</label>
-                <div class="input-group">
-                  <div class="input-group-addon">Width</div>
-                  <input type="number" class="form-control" id="widthInput" name="width" value="800">
-                  <div class="input-group-addon">px</div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="sr-only" for="heightInput">Height</label>
-                <div class="input-group">
-                  <div class="input-group-addon">Height</div>
-                  <input type="number" class="form-control" id="heightInput" name="height" value="600">
-                  <div class="input-group-addon">px</div>
-                </div>
-              </div>
-
-              <button class="btn btn-primary btn-raised">Generate</button>
-            </form>
-
-            <div class="well" id="image-link" style="display: none"></div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render partial: "layouts/share_modal" %>
 
     <script>
-      $("#saveForm").on('submit', function(e) {
-        window.open(
-          this.action+"?"+$("#saveForm").serialize(),
-          '',
-          'menubar=no,toolbar=no,resizable=no,scrollbars=no,width='+$("#widthInput").val()+',height='+$("#heightInput").val()
-        );
-        return false;
-      })
-
       var share = function(url) {
         $("#saveForm").attr('action', url);
         $("#iframe-content").text('<iframe src="'+url+'" frameborder="0" height="100%" width="100%"></iframe>');
