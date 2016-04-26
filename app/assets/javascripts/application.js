@@ -28,7 +28,7 @@ $(document).ready(function () {
 
   setTimeout(function() {
     $(".alert.alert-dismissible").fadeOut();
-  }, 7000);
+  }, 5000);
 });
 
 function getParameterByName(name, url) {
