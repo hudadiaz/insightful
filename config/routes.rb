@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       get :stacked_bar
       get :normalized_stacked_bar
       get :sunburst
+
+      get :download_csv
     end
   end
   

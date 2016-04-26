@@ -1,9 +1,9 @@
 class DataController < ApplicationController
   include ActionView::Helpers::TextHelper
   
-  before_action :set_datum, only: [:show, :edit, :update, :destroy, :sankey, :sunburst, :stacked_bar, :normalized_stacked_bar]
+  before_action :set_datum, only: [:download_csv, :show, :edit, :update, :destroy, :sankey, :sunburst, :stacked_bar, :normalized_stacked_bar]
   before_action :authenticate_user!, unless: :show_json_request?
-  before_action :require_ownership, unless: :show_json_request?, only: [:show, :edit, :update, :destroy, :sankey, :sunburst, :stacked_bar, :normalized_stacked_bar]
+  before_action :require_ownership, unless: :show_json_request?, only: [:download_csv, :show, :edit, :update, :destroy, :sankey, :sunburst, :stacked_bar, :normalized_stacked_bar]
 
   # add_breadcrumb "Home", :root_path
   add_breadcrumb "Data", :data_path
@@ -22,6 +22,10 @@ class DataController < ApplicationController
       format.html
       format.json { render json: Oj.dump(@datum.as_json) }
     end
+  end
+
+  def download_csv
+    send_data @datum.content, filename: "#{@datum.name}.csv"
   end
 
   def sankey
