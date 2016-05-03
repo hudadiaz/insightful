@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="col-md-12">
-      <iframe src="<%= standalone_visualization_path @visualization %>" frameborder="0" height="600px" width="100%" style="border:1px dashed #bbb"></iframe>
+      <iframe src="<%= standalone_visualization_path @visualization, {bg: 'none'} %>" frameborder="0" height="600px" width="100%" style="border:1px dashed #bbb"></iframe>
     
       <%= link_to 'Preview', standalone_visualization_path(@visualization), target: '_blank', class: 'btn btn-sm btn-primary' %>
       <%= link_to 'Edit', edit_visualization_path(@visualization), class: "btn btn-sm"  %>

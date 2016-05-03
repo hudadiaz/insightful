@@ -24,7 +24,7 @@
     }
 
     body {
-      background: none;
+      background: white;
       position: absolute;
       top: 0;
       bottom: 0;
@@ -256,7 +256,9 @@
   <script>
     $(document).ready(function() {
       $("#iframe-content").text('<iframe src="<%= standalone_visualization_url(@visualization) %>" frameborder="0" height="100%" width="100%"></iframe>');
-
+      
+      if(getParameterByName('bg'))
+        $("body").css('background', getParameterByName('bg'));
       if(getParameterByName('height'))
         $("body").height(getParameterByName('height')+"px");
       if(getParameterByName('width'))

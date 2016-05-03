@@ -44,6 +44,7 @@
         <script>
           var share = function(url) {
             $("#saveForm").attr('action', url);
+            $("#url").val(url);
             $("#iframe-content").text('<iframe src="'+url+'" frameborder="0" height="100%" width="100%"></iframe>');
           }
         </script>
