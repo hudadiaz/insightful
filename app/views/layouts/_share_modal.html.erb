@@ -93,10 +93,13 @@
 
   var updateIframeSrc = function(el){
     var color = encodeURIComponent($(el).val());
+    $(".modal-content").css('background', 'white');
+    $(".modal-content").css('background', decodeURIComponent(color));
     var url = $("#url").val();
 
-    if(color != undefined && color.length > 0)
+    if(color != undefined && color.length > 0) {
       url += "?bg="+color;
+    }
 
     $("#iframe-content").text('<iframe src="'+url+'" frameborder="0" height="100%" width="100%"></iframe>');
   };
