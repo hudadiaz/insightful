@@ -28,6 +28,7 @@
                   <td><%= link_to visualization.user.email.split('@').first, controller: :visualizations, user: visualization.user.id %></td>
                   <td><%= visualization.views_counter_cache %></td>
                   <td>
+                    <%= link_to 'Share', '', onclick: 'share("'+standalone_visualization_url(visualization)+'")', data: { toggle: :modal, target: "#myModal" }, class: 'btn btn-xs btn-primary' %>&nbsp;
                     <%= link_to 'View', standalone_visualization_path(visualization), target: '_blank', class: 'btn btn-xs btn-primary' %>
                   </td>
                 </tr>
@@ -37,6 +38,15 @@
 
           <%= paginate @visualizations %>
         </div>
+
+        <%= render partial: "layouts/share_modal" %>
+
+        <script>
+          var share = function(url) {
+            $("#saveForm").attr('action', url);
+            $("#iframe-content").text('<iframe src="'+url+'" frameborder="0" height="100%" width="100%"></iframe>');
+          }
+        </script>
 
       <% else %>
         <p><em>No visualizations have been created</em></p>
