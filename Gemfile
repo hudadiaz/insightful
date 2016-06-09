@@ -5,6 +5,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.5.1'
 # Use pg as the database for Active Record
 gem 'pg'
+# required gem to deploy to Heroku
+gem 'rails_12factor'
 # Using oj for faster JSON parsing
 gem 'oj'
 gem 'oj_mimic_json'
